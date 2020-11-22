@@ -1,0 +1,18 @@
+.. vrt_tools_cmd documentation master file, created by sphinx-quickstart on Wed Jun 24 11:46:27 2020.
+
+Welcome to VRT command line tools' documentation!
+======================================================
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+    
+Indices and tables
+==================
+
+* :ref:`genindex`
+
+.. toctree::
+   :maxdepth: 2
+
+   api/library_root

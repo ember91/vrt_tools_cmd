@@ -1,0 +1,281 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Program Listing for File main.cpp &mdash; VRT command line tools  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> VRT command line tools
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="library_root.html">Library API</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">VRT command line tools</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Program Listing for File main.cpp</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/api/program_listing_file__home_emil_vrt_tools_cmd_print_src_main.cpp.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="program-listing-for-file-main-cpp">
+<span id="program-listing-file-home-emil-vrt-tools-cmd-print-src-main-cpp"></span><h1>Program Listing for File main.cpp<a class="headerlink" href="#program-listing-for-file-main-cpp" title="Permalink to this headline">¶</a></h1>
+<p>↰ <a class="reference internal" href="file__home_emil_vrt_tools_cmd_print_src_main.cpp.html#file-home-emil-vrt-tools-cmd-print-src-main-cpp"><span class="std std-ref">Return to documentation for file</span></a> (<code class="docutils literal notranslate"><span class="pre">/home/emil/vrt_tools_cmd/print/src/main.cpp</span></code>)</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;cstdlib&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;map&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdexcept&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;vrt/vrt_util.h&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span> <span class="cpf">&quot;CLI11.hpp&quot;</span><span class="cp"></span>
+
+<span class="cp">#include</span> <span class="cpf">&quot;process.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;program_arguments.h&quot;</span><span class="cp"></span>
+
+<span class="k">static</span> <span class="n">vrt</span><span class="o">::</span><span class="n">print</span><span class="o">::</span><span class="n">ProgramArguments</span> <span class="n">parse_arguments</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">vrt</span><span class="o">::</span><span class="n">print</span><span class="o">::</span><span class="n">ProgramArguments</span> <span class="n">args</span><span class="p">;</span>
+
+    <span class="n">CLI</span><span class="o">::</span><span class="n">App</span> <span class="n">app</span><span class="p">(</span>
+        <span class="s">&quot;Prints information in vita49 VRT format files in a human readable format. Only prints, does not &quot;</span>
+        <span class="s">&quot;validate packets.&quot;</span><span class="p">,</span>
+        <span class="s">&quot;vrt_print&quot;</span><span class="p">);</span>
+
+    <span class="n">CLI</span><span class="o">::</span><span class="n">Option</span><span class="o">*</span> <span class="n">opt_file</span><span class="p">{</span><span class="n">app</span><span class="p">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-f,--file,file&quot;</span><span class="p">,</span> <span class="n">args</span><span class="p">.</span><span class="n">file_path</span><span class="p">,</span> <span class="s">&quot;Input file path&quot;</span><span class="p">)};</span>
+    <span class="n">opt_file</span><span class="o">-&gt;</span><span class="n">required</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+    <span class="n">opt_file</span><span class="o">-&gt;</span><span class="n">check</span><span class="p">(</span><span class="n">CLI</span><span class="o">::</span><span class="n">ExistingFile</span><span class="p">);</span>
+
+    <span class="n">CLI</span><span class="o">::</span><span class="n">Option</span><span class="o">*</span> <span class="n">opt_packet_skip</span><span class="p">{</span>
+        <span class="n">app</span><span class="p">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-s,--packet_skip&quot;</span><span class="p">,</span> <span class="n">args</span><span class="p">.</span><span class="n">packet_skip</span><span class="p">,</span> <span class="s">&quot;Number of packets to skip before starting to print&quot;</span><span class="p">)};</span>
+    <span class="n">opt_packet_skip</span><span class="o">-&gt;</span><span class="n">check</span><span class="p">(</span><span class="n">CLI</span><span class="o">::</span><span class="n">NonNegativeNumber</span><span class="p">);</span>
+    <span class="c1">// Put prefixes in reverse order, so they are shown in ascending order.</span>
+    <span class="n">opt_packet_skip</span><span class="o">-&gt;</span><span class="n">transform</span><span class="p">(</span><span class="n">CLI</span><span class="o">::</span><span class="n">AsNumberWithUnit</span><span class="p">(</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="o">&gt;</span><span class="p">{{</span><span class="s">&quot;T&quot;</span><span class="p">,</span> <span class="mi">1000000000000</span><span class="p">},</span> <span class="p">{</span><span class="s">&quot;G&quot;</span><span class="p">,</span> <span class="mi">1000000000</span><span class="p">},</span> <span class="p">{</span><span class="s">&quot;M&quot;</span><span class="p">,</span> <span class="mi">1000000</span><span class="p">},</span> <span class="p">{</span><span class="s">&quot;k&quot;</span><span class="p">,</span> <span class="mi">1000</span><span class="p">}},</span>
+        <span class="n">CLI</span><span class="o">::</span><span class="n">AsNumberWithUnit</span><span class="o">::</span><span class="n">CASE_SENSITIVE</span><span class="p">));</span>
+
+    <span class="n">args</span><span class="p">.</span><span class="n">packet_count</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">size_t</span><span class="o">&gt;</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+    <span class="n">CLI</span><span class="o">::</span><span class="n">Option</span><span class="o">*</span> <span class="n">opt_packet_count</span><span class="p">{</span><span class="n">app</span><span class="p">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-c,--packet_count&quot;</span><span class="p">,</span> <span class="n">args</span><span class="p">.</span><span class="n">packet_count</span><span class="p">,</span> <span class="s">&quot;Number of packets to print&quot;</span><span class="p">)};</span>
+    <span class="n">opt_packet_count</span><span class="o">-&gt;</span><span class="n">check</span><span class="p">(</span><span class="n">CLI</span><span class="o">::</span><span class="n">PositiveNumber</span><span class="p">);</span>
+    <span class="n">opt_packet_count</span><span class="o">-&gt;</span><span class="n">transform</span><span class="p">(</span><span class="n">CLI</span><span class="o">::</span><span class="n">AsNumberWithUnit</span><span class="p">(</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="o">&gt;</span><span class="p">{{</span><span class="s">&quot;T&quot;</span><span class="p">,</span> <span class="mi">1000000000000</span><span class="p">},</span> <span class="p">{</span><span class="s">&quot;G&quot;</span><span class="p">,</span> <span class="mi">1000000000</span><span class="p">},</span> <span class="p">{</span><span class="s">&quot;M&quot;</span><span class="p">,</span> <span class="mi">1000000</span><span class="p">},</span> <span class="p">{</span><span class="s">&quot;k&quot;</span><span class="p">,</span> <span class="mi">1000</span><span class="p">}},</span>
+        <span class="n">CLI</span><span class="o">::</span><span class="n">AsNumberWithUnit</span><span class="o">::</span><span class="n">CASE_SENSITIVE</span><span class="p">));</span>
+
+    <span class="n">app</span><span class="p">.</span><span class="n">add_flag</span><span class="p">(</span><span class="s">&quot;-b,--byte_swap&quot;</span><span class="p">,</span> <span class="n">args</span><span class="p">.</span><span class="n">do_byte_swap</span><span class="p">,</span> <span class="s">&quot;Apply byte swap before parsing file&quot;</span><span class="p">);</span>
+
+    <span class="n">app</span><span class="p">.</span><span class="n">parse</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+
+    <span class="c1">// Check that endianness of platform compared to byte swap parameter makes sense</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">vrt_is_platform_little_endian</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">args</span><span class="p">.</span><span class="n">do_byte_swap</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Warning: Detected little endian platform, but byte swap is NOT enabled. This will only work on &quot;</span>
+                     <span class="s">&quot;non-conforming VRT packets.&quot;</span>
+                  <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">args</span><span class="p">.</span><span class="n">do_byte_swap</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Warning: Detected big endian platform, but byte swap IS enabled. This will only work on &quot;</span>
+                     <span class="s">&quot;non-conforming VRT packets.&quot;</span>
+                  <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">args</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Overall design: Print information directly when it&#39;s available. This makes debugging broken packet streams</span>
+    <span class="c1">// easier. Flush only when exiting program for performance.</span>
+
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="c1">// Parse arguments</span>
+        <span class="n">vrt</span><span class="o">::</span><span class="n">print</span><span class="o">::</span><span class="n">ProgramArguments</span> <span class="n">args</span><span class="p">{</span><span class="n">parse_arguments</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">)};</span>
+        <span class="c1">// Process</span>
+        <span class="n">vrt</span><span class="o">::</span><span class="n">print</span><span class="o">::</span><span class="n">process</span><span class="p">(</span><span class="n">args</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">exception</span><span class="o">&amp;</span> <span class="n">exc</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="n">exc</span><span class="p">.</span><span class="n">what</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="k">return</span> <span class="n">EXIT_FAILURE</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">catch</span> <span class="p">(...)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Unknown error&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="k">return</span> <span class="n">EXIT_FAILURE</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">EXIT_SUCCESS</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Emil Berg
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

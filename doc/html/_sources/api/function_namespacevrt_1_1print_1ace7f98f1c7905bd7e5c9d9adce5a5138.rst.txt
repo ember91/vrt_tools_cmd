@@ -1,0 +1,13 @@
+.. _exhale_function_namespacevrt_1_1print_1ace7f98f1c7905bd7e5c9d9adce5a5138:
+
+Function vrt::print::WriteCols
+==============================
+
+- Defined in :ref:`file__home_emil_vrt_tools_cmd_print_src_stringify.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: vrt::print::WriteCols(const std::string&, const std::string&, unsigned)

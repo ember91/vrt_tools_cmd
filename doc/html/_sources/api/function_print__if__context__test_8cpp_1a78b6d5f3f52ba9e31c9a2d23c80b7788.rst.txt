@@ -1,0 +1,13 @@
+.. _exhale_function_print__if__context__test_8cpp_1a78b6d5f3f52ba9e31c9a2d23c80b7788:
+
+Function TEST_F(PrintIfContextTest, RelativeEphemerisAltitudeAlpha)
+===================================================================
+
+- Defined in :ref:`file__home_emil_vrt_tools_cmd_print_test_src_print_if_context_test.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: TEST_F(PrintIfContextTest, RelativeEphemerisAltitudeAlpha)

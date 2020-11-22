@@ -1,0 +1,13 @@
+.. _exhale_function_namespacevrt_1_1print_1ab78bcc95694957d952a32c357c40723a:
+
+Function vrt::print::print_trailer
+==================================
+
+- Defined in :ref:`file__home_emil_vrt_tools_cmd_print_src_type_printer.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: vrt::print::print_trailer(const vrt_trailer&)

@@ -1,0 +1,13 @@
+.. _exhale_function_src_2main_8cpp_1a072a2cf882c4ef9d3a096768f9ec5002:
+
+Function parse_arguments
+========================
+
+- Defined in :ref:`file__home_emil_vrt_tools_cmd_print_src_main.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: parse_arguments(int, const char **)

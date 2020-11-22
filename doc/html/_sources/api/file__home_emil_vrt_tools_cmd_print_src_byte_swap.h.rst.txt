@@ -1,0 +1,43 @@
+
+.. _file__home_emil_vrt_tools_cmd_print_src_byte_swap.h:
+
+File byte_swap.h
+================
+
+|exhale_lsh| :ref:`Parent directory <dir__home_emil_vrt_tools_cmd_print_src>` (``/home/emil/vrt_tools_cmd/print/src``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``/home/emil/vrt_tools_cmd/print/src/byte_swap.h``)
+---------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file__home_emil_vrt_tools_cmd_print_src_byte_swap.h.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``byteswap.h``
+
+
+
+Included By
+-----------
+
+
+- :ref:`file__home_emil_vrt_tools_cmd_print_src_process.cpp`
+
+
+

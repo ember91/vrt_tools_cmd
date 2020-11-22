@@ -1,0 +1,75 @@
+
+.. _file__home_emil_vrt_tools_cmd_print_src_type_printer.cpp:
+
+File type_printer.cpp
+=====================
+
+|exhale_lsh| :ref:`Parent directory <dir__home_emil_vrt_tools_cmd_print_src>` (``/home/emil/vrt_tools_cmd/print/src``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``/home/emil/vrt_tools_cmd/print/src/type_printer.cpp``)
+--------------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file__home_emil_vrt_tools_cmd_print_src_type_printer.cpp.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``iostream``
+
+- ``string`` (:ref:`file__home_emil_vrt_tools_cmd_print_src_stringify.cpp`)
+
+- ``stringify.h`` (:ref:`file__home_emil_vrt_tools_cmd_print_src_stringify.h`)
+
+- ``type_printer.h`` (:ref:`file__home_emil_vrt_tools_cmd_print_src_type_printer.h`)
+
+- ``vrt/vrt_string.h``
+
+- ``vrt/vrt_util.h``
+
+
+
+
+
+
+Namespaces
+----------
+
+
+- :ref:`namespace_vrt`
+
+- :ref:`namespace_vrt__print`
+
+
+Functions
+---------
+
+
+- :ref:`exhale_function_namespacevrt_1_1print_1ac753b78dee19942bcba784029ac4833e`
+
+- :ref:`exhale_function_namespacevrt_1_1print_1a904b2f1923743dd034f1480f0ac3f95c`
+
+- :ref:`exhale_function_namespacevrt_1_1print_1a049e4b1bdf3e1148cd61ae0a874881d1`
+
+- :ref:`exhale_function_namespacevrt_1_1print_1a549cf87dba4c2debea0f665d8f722a0f`
+
+- :ref:`exhale_function_namespacevrt_1_1print_1a681f9ed0a8d013e5472aa163c5963014`
+
+- :ref:`exhale_function_namespacevrt_1_1print_1a42bb5a8cf2dde88ebd69408660019361`
+
+- :ref:`exhale_function_namespacevrt_1_1print_1ab78bcc95694957d952a32c357c40723a`
+

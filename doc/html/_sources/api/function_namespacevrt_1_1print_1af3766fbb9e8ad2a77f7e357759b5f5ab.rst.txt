@@ -1,0 +1,13 @@
+.. _exhale_function_namespacevrt_1_1print_1af3766fbb9e8ad2a77f7e357759b5f5ab:
+
+Function vrt::print::parse_fields
+=================================
+
+- Defined in :ref:`file__home_emil_vrt_tools_cmd_print_src_process.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: vrt::print::parse_fields(std::vector<uint32_t> *, size_t, const vrt_header&, int32_t, vrt_fields *)

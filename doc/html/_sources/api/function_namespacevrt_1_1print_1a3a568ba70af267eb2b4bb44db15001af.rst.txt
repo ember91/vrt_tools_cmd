@@ -1,0 +1,13 @@
+.. _exhale_function_namespacevrt_1_1print_1a3a568ba70af267eb2b4bb44db15001af:
+
+Function vrt::print::Uint32ToHexStr
+===================================
+
+- Defined in :ref:`file__home_emil_vrt_tools_cmd_print_src_stringify.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: vrt::print::Uint32ToHexStr(uint32_t, int)

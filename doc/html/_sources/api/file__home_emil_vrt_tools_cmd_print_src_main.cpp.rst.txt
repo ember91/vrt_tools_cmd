@@ -1,0 +1,62 @@
+
+.. _file__home_emil_vrt_tools_cmd_print_src_main.cpp:
+
+File main.cpp
+=============
+
+|exhale_lsh| :ref:`Parent directory <dir__home_emil_vrt_tools_cmd_print_src>` (``/home/emil/vrt_tools_cmd/print/src``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``/home/emil/vrt_tools_cmd/print/src/main.cpp``)
+------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file__home_emil_vrt_tools_cmd_print_src_main.cpp.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``CLI11.hpp``
+
+- ``cstdlib``
+
+- ``iostream``
+
+- ``map``
+
+- ``process.h`` (:ref:`file__home_emil_vrt_tools_cmd_print_src_process.h`)
+
+- ``program_arguments.h`` (:ref:`file__home_emil_vrt_tools_cmd_print_src_program_arguments.h`)
+
+- ``stdexcept``
+
+- ``string`` (:ref:`file__home_emil_vrt_tools_cmd_print_src_stringify.cpp`)
+
+- ``vrt/vrt_util.h``
+
+
+
+
+
+
+Functions
+---------
+
+
+- :ref:`exhale_function_main_8cpp_1a217dbf8b442f20279ea00b898af96f52`
+
+- :ref:`exhale_function_main_8cpp_1a072a2cf882c4ef9d3a096768f9ec5002`
+

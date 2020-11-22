@@ -1,0 +1,13 @@
+.. _exhale_function_print__if__context__test_8cpp_1ad94707e3adbd66123efd1f6e3e052527:
+
+Function TEST_F(PrintIfContextTest, StateAndEventIndicatorsReferenceLock)
+=========================================================================
+
+- Defined in :ref:`file__home_emil_vrt_tools_cmd_print_test_src_print_if_context_test.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: TEST_F(PrintIfContextTest, StateAndEventIndicatorsReferenceLock)

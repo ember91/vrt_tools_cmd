@@ -1,0 +1,13 @@
+.. _exhale_function_namespacevrt_1_1print_1a4c5be734afe8f188849ed7990a45e21d:
+
+Function vrt::print::process
+============================
+
+- Defined in :ref:`file__home_emil_vrt_tools_cmd_print_src_process.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: vrt::print::process(const ProgramArguments&)

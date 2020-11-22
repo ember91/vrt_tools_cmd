@@ -1,0 +1,16 @@
+.. _exhale_struct_structvrt_1_1print_1_1ProgramArguments:
+
+Struct ProgramArguments
+=======================
+
+- Defined in :ref:`file__home_emil_vrt_tools_cmd_print_src_program_arguments.h`
+
+
+Struct Documentation
+--------------------
+
+
+.. doxygenstruct:: vrt::print::ProgramArguments
+   :members:
+   :protected-members:
+   :undoc-members:

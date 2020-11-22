@@ -1,0 +1,65 @@
+
+.. _file__home_emil_vrt_tools_cmd_print_src_stringify.h:
+
+File stringify.h
+================
+
+|exhale_lsh| :ref:`Parent directory <dir__home_emil_vrt_tools_cmd_print_src>` (``/home/emil/vrt_tools_cmd/print/src``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``/home/emil/vrt_tools_cmd/print/src/stringify.h``)
+---------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file__home_emil_vrt_tools_cmd_print_src_stringify.h.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``cstdint``
+
+- ``string`` (:ref:`file__home_emil_vrt_tools_cmd_print_src_stringify.cpp`)
+
+
+
+Included By
+-----------
+
+
+- :ref:`file__home_emil_vrt_tools_cmd_print_src_process.cpp`
+
+- :ref:`file__home_emil_vrt_tools_cmd_print_src_stringify.cpp`
+
+- :ref:`file__home_emil_vrt_tools_cmd_print_src_type_printer.cpp`
+
+
+
+
+Namespaces
+----------
+
+
+- :ref:`namespace_vrt`
+
+- :ref:`namespace_vrt__print`
+
+
+Functions
+---------
+
+
+- :ref:`exhale_function_namespacevrt_1_1print_1a5bb0be2841a275f6f58ec54654c27df8`
+

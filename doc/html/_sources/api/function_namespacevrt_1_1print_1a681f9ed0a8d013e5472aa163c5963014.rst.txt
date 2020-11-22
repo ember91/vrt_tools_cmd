@@ -1,0 +1,13 @@
+.. _exhale_function_namespacevrt_1_1print_1a681f9ed0a8d013e5472aa163c5963014:
+
+Function vrt::print::print_header
+=================================
+
+- Defined in :ref:`file__home_emil_vrt_tools_cmd_print_src_type_printer.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: vrt::print::print_header(const vrt_header&)

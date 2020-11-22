@@ -1,0 +1,145 @@
+
+.. _file__home_emil_vrt_tools_cmd_print_test_src_print_trailer_test.cpp:
+
+File print_trailer_test.cpp
+===========================
+
+|exhale_lsh| :ref:`Parent directory <dir__home_emil_vrt_tools_cmd_print_test_src>` (``/home/emil/vrt_tools_cmd/print/test/src``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``/home/emil/vrt_tools_cmd/print/test/src/print_trailer_test.cpp``)
+-------------------------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file__home_emil_vrt_tools_cmd_print_test_src_print_trailer_test.cpp.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``../../src/type_printer.h``
+
+- ``array``
+
+- ``cstdint``
+
+- ``gtest/gtest.h``
+
+- ``vrt/vrt_init.h``
+
+- ``vrt/vrt_write.h``
+
+
+
+
+
+
+Classes
+-------
+
+
+- :ref:`exhale_class_classPrintTrailerTest`
+
+
+Functions
+---------
+
+
+- :ref:`exhale_function_print__trailer__test_8cpp_1a896d5c538553e30e405f7ebf40aa3a05`
+
+- :ref:`exhale_function_print__trailer__test_8cpp_1adf39afad6ac58d5f832086b925e9cab4`
+
+- :ref:`exhale_function_print__trailer__test_8cpp_1ab071bffaae46e03cc186a4ba3cf16a8d`
+
+- :ref:`exhale_function_print__trailer__test_8cpp_1ab7dd578876da28ab42417248236fe182`
+
+- :ref:`exhale_function_print__trailer__test_8cpp_1aaa1b4a6a9e9826c2312bd8ad20010f38`
+
+- :ref:`exhale_function_print__trailer__test_8cpp_1af4957fc8e29eb0573ad6a554e7766dca`
+
+- :ref:`exhale_function_print__trailer__test_8cpp_1aed79ce84aea95a27b885ea2cacf43a9f`
+
+- :ref:`exhale_function_print__trailer__test_8cpp_1aae8e1805e305d6d4bfed27df3c943469`
+
+- :ref:`exhale_function_print__trailer__test_8cpp_1a071562d458c8e94613a1445263e28ac9`
+
+- :ref:`exhale_function_print__trailer__test_8cpp_1a75b194ecbc8cfe413f38f56d74105156`
+
+- :ref:`exhale_function_print__trailer__test_8cpp_1aedcc6c4103ef3fb5222540280ddcc1f4`
+
+- :ref:`exhale_function_print__trailer__test_8cpp_1a331c8e9940e22f7ab485325c1a6da9a1`
+
+- :ref:`exhale_function_print__trailer__test_8cpp_1a071352efea8ae91470599b2a691b8f58`
+
+- :ref:`exhale_function_print__trailer__test_8cpp_1a5882df49dda8fd53bbb8272f37c59b67`
+
+- :ref:`exhale_function_print__trailer__test_8cpp_1a6ba9602e824c1ee5bc88214dfbf9324d`
+
+- :ref:`exhale_function_print__trailer__test_8cpp_1a497db3b26f92e476bd7c88d7c402dea6`
+
+- :ref:`exhale_function_print__trailer__test_8cpp_1a5f9c86a1f700b47b6439512fe6104399`
+
+- :ref:`exhale_function_print__trailer__test_8cpp_1a180756cc1b5e30f7169eb664c9d12b31`
+
+- :ref:`exhale_function_print__trailer__test_8cpp_1a81ea466817e72eb9ba202e590c1af6d9`
+
+- :ref:`exhale_function_print__trailer__test_8cpp_1ace70d7a6bddfe27b2d06b682645d6306`
+
+- :ref:`exhale_function_print__trailer__test_8cpp_1a02da553d6b65998e0485f6f5aba07526`
+
+- :ref:`exhale_function_print__trailer__test_8cpp_1aa77e5c99030293630e56d06d64574e1d`
+
+- :ref:`exhale_function_print__trailer__test_8cpp_1aa76c0432976ab8127417edca8fa192d6`
+
+- :ref:`exhale_function_print__trailer__test_8cpp_1a8c9872a4147d6705c4951c268eba3833`
+
+- :ref:`exhale_function_print__trailer__test_8cpp_1a061746c40f80eae6b41978ea6add8507`
+
+- :ref:`exhale_function_print__trailer__test_8cpp_1a968bc589dc8b9a943fa6bdb0211d16d3`
+
+- :ref:`exhale_function_print__trailer__test_8cpp_1a039c836c24d1fac3a5bf737abbca96ac`
+
+- :ref:`exhale_function_print__trailer__test_8cpp_1a3d4f81b5303a1560cb0894462986af81`
+
+- :ref:`exhale_function_print__trailer__test_8cpp_1a5a1b3d0574ffb6868718ff2c17c99c02`
+
+- :ref:`exhale_function_print__trailer__test_8cpp_1a71605621047b231f397f9f9d4f81dab4`
+
+- :ref:`exhale_function_print__trailer__test_8cpp_1a7bf5e1b5d38c2b2c999134590347caf9`
+
+- :ref:`exhale_function_print__trailer__test_8cpp_1a122b8ae60942d001bcbf77d1bdad0b6d`
+
+- :ref:`exhale_function_print__trailer__test_8cpp_1a5a6772c6a9d0077eeb7688415acc5764`
+
+- :ref:`exhale_function_print__trailer__test_8cpp_1ae891132321653270d7382e9d319c0aee`
+
+- :ref:`exhale_function_print__trailer__test_8cpp_1a9b49514b9d287d1931d4fea441a2a8e8`
+
+- :ref:`exhale_function_print__trailer__test_8cpp_1ac13c27aad3a7b6d1510983aabbea0021`
+
+- :ref:`exhale_function_print__trailer__test_8cpp_1a6bca8bd86d74a5f1a36bf145f96a2b09`
+
+- :ref:`exhale_function_print__trailer__test_8cpp_1ae2bee2fe6523c70a243cd8039783d5a3`
+
+- :ref:`exhale_function_print__trailer__test_8cpp_1a0ebec7290c463ce2d5b4e784af07c18d`
+
+- :ref:`exhale_function_print__trailer__test_8cpp_1a1a4a3819cddf42c9656b9f23441b1441`
+
+- :ref:`exhale_function_print__trailer__test_8cpp_1a68cbf5ae04c172fdcf0a190510515542`
+
+- :ref:`exhale_function_print__trailer__test_8cpp_1aec7fec23fbdb42f4a640dcea8b01ae95`
+
+- :ref:`exhale_function_print__trailer__test_8cpp_1aec1fd54294728665a3c9883ca85902e3`
+

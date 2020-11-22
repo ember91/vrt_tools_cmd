@@ -1,0 +1,68 @@
+:orphan:
+
+
+Full API
+========
+
+Directories
+***********
+
+
+.. toctree::
+   :maxdepth: 5
+
+   dir__home_emil_vrt_tools_cmd_print.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   dir__home_emil_vrt_tools_cmd_print_src.rst
+
+Files
+*****
+
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_emil_vrt_tools_cmd_print_src_byte_swap.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_emil_vrt_tools_cmd_print_src_main.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_emil_vrt_tools_cmd_print_src_process.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_emil_vrt_tools_cmd_print_src_process.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_emil_vrt_tools_cmd_print_src_program_arguments.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_emil_vrt_tools_cmd_print_src_stringify.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_emil_vrt_tools_cmd_print_src_stringify.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_emil_vrt_tools_cmd_print_src_type_printer.cpp.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file__home_emil_vrt_tools_cmd_print_src_type_printer.h.rst

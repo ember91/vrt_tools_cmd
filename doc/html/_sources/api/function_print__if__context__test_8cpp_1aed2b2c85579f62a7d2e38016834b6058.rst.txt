@@ -1,0 +1,13 @@
+.. _exhale_function_print__if__context__test_8cpp_1aed2b2c85579f62a7d2e38016834b6058:
+
+Function TEST_F(PrintIfContextTest, FormattedInsGeolocationMagneticVariation)
+=============================================================================
+
+- Defined in :ref:`file__home_emil_vrt_tools_cmd_print_test_src_print_if_context_test.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: TEST_F(PrintIfContextTest, FormattedInsGeolocationMagneticVariation)

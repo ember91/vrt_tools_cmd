@@ -1,0 +1,20 @@
+
+.. _namespace_vrt:
+
+Namespace vrt
+=============
+
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+
+
+
+
+Namespaces
+----------
+
+
+- :ref:`namespace_vrt__print`

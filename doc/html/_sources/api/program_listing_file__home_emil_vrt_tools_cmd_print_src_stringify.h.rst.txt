@@ -1,0 +1,31 @@
+
+.. _program_listing_file__home_emil_vrt_tools_cmd_print_src_stringify.h:
+
+Program Listing for File stringify.h
+====================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file__home_emil_vrt_tools_cmd_print_src_stringify.h>` (``/home/emil/vrt_tools_cmd/print/src/stringify.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef VRT_PRINT_SRC_STRINGIFY_H_
+   #define VRT_PRINT_SRC_STRINGIFY_H_
+   
+   #include <cstdint>
+   #include <string>
+   
+   namespace vrt::print {
+   
+   inline std::string BoolToStr(bool b) {
+       return b ? "true" : "false";
+   }
+   
+   std::string Uint32ToHexStr(uint32_t v, int symbols = 8);
+   
+   void WriteCols(const std::string& name, const std::string& value, unsigned indentation_level = 0);
+   
+   }  // namespace vrt::print
+   
+   #endif

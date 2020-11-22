@@ -1,0 +1,16 @@
+.. _dir__home_emil_vrt_tools_cmd_print:
+
+
+Directory print
+===============
+
+
+*Directory path:* ``/home/emil/vrt_tools_cmd/print``
+
+Subdirectories
+--------------
+
+- :ref:`dir__home_emil_vrt_tools_cmd_print_src`
+
+
+

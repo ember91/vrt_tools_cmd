@@ -1,0 +1,13 @@
+.. _exhale_function_namespacevrt_1_1print_1a42bb5a8cf2dde88ebd69408660019361:
+
+Function vrt::print::print_if_context
+=====================================
+
+- Defined in :ref:`file__home_emil_vrt_tools_cmd_print_src_type_printer.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: vrt::print::print_if_context(const vrt_if_context&)

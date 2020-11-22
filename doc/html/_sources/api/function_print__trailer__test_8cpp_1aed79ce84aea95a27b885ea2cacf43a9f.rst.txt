@@ -1,0 +1,13 @@
+.. _exhale_function_print__trailer__test_8cpp_1aed79ce84aea95a27b885ea2cacf43a9f:
+
+Function TEST_F(PrintTrailerTest, ReferenceLock)
+================================================
+
+- Defined in :ref:`file__home_emil_vrt_tools_cmd_print_test_src_print_trailer_test.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: TEST_F(PrintTrailerTest, ReferenceLock)

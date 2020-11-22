@@ -1,0 +1,456 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Program Listing for File print_trailer_test.cpp &mdash; VRT command line tools  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> VRT command line tools
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="library_root.html">Library API</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">VRT command line tools</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Program Listing for File print_trailer_test.cpp</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/api/program_listing_file__home_emil_vrt_tools_cmd_print_test_src_print_trailer_test.cpp.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="program-listing-for-file-print-trailer-test-cpp">
+<span id="program-listing-file-home-emil-vrt-tools-cmd-print-test-src-print-trailer-test-cpp"></span><h1>Program Listing for File print_trailer_test.cpp<a class="headerlink" href="#program-listing-for-file-print-trailer-test-cpp" title="Permalink to this headline">¶</a></h1>
+<p>↰ <a class="reference internal" href="file__home_emil_vrt_tools_cmd_print_test_src_print_trailer_test.cpp.html#file-home-emil-vrt-tools-cmd-print-test-src-print-trailer-test-cpp"><span class="std std-ref">Return to documentation for file</span></a> (<code class="docutils literal notranslate"><span class="pre">/home/emil/vrt_tools_cmd/print/test/src/print_trailer_test.cpp</span></code>)</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;gtest/gtest.h&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;array&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;cstdint&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;vrt/vrt_init.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;vrt/vrt_write.h&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span> <span class="cpf">&quot;../../src/type_printer.h&quot;</span><span class="cp"></span>
+
+<span class="k">class</span> <span class="nc">PrintTrailerTest</span> <span class="o">:</span> <span class="k">public</span> <span class="o">::</span><span class="n">testing</span><span class="o">::</span><span class="n">Test</span> <span class="p">{</span>
+   <span class="k">protected</span><span class="o">:</span>
+    <span class="n">PrintTrailerTest</span><span class="p">()</span> <span class="o">:</span> <span class="n">t_</span><span class="p">()</span> <span class="p">{}</span>
+
+    <span class="kt">void</span> <span class="n">SetUp</span><span class="p">()</span> <span class="k">override</span> <span class="p">{</span> <span class="n">vrt_init_trailer</span><span class="p">(</span><span class="o">&amp;</span><span class="n">t_</span><span class="p">);</span> <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">TearDown</span><span class="p">()</span> <span class="k">override</span> <span class="p">{</span> <span class="n">vrt</span><span class="o">::</span><span class="n">print</span><span class="o">::</span><span class="n">print_trailer</span><span class="p">(</span><span class="n">t_</span><span class="p">);</span> <span class="p">}</span>
+
+    <span class="n">vrt_trailer</span> <span class="n">t_</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintTrailerTest</span><span class="p">,</span> <span class="n">None</span><span class="p">)</span> <span class="p">{}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintTrailerTest</span><span class="p">,</span> <span class="n">HasCalibratedTime</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">calibrated_time</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintTrailerTest</span><span class="p">,</span> <span class="n">HasValidData</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">valid_data</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintTrailerTest</span><span class="p">,</span> <span class="n">HasReferenceLock</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">reference_lock</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintTrailerTest</span><span class="p">,</span> <span class="n">HasAgcOrMgc</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">agc_or_mgc</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintTrailerTest</span><span class="p">,</span> <span class="n">HasDetectedSignal</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">detected_signal</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintTrailerTest</span><span class="p">,</span> <span class="n">HasSpectralInversion</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">spectral_inversion</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintTrailerTest</span><span class="p">,</span> <span class="n">HasOverRange</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">over_range</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintTrailerTest</span><span class="p">,</span> <span class="n">HasSampleLoss</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">sample_loss</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintTrailerTest</span><span class="p">,</span> <span class="n">HasUserDefined11</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">user_defined11</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintTrailerTest</span><span class="p">,</span> <span class="n">HasUserDefined10</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">user_defined10</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintTrailerTest</span><span class="p">,</span> <span class="n">HasUserDefined9</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">user_defined9</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintTrailerTest</span><span class="p">,</span> <span class="n">HasUserDefined8</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">user_defined8</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintTrailerTest</span><span class="p">,</span> <span class="n">CalibratedTime</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">calibrated_time</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintTrailerTest</span><span class="p">,</span> <span class="n">ValidData</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">valid_data</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintTrailerTest</span><span class="p">,</span> <span class="n">ReferenceLock</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">reference_lock</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintTrailerTest</span><span class="p">,</span> <span class="n">AgcOrMgc</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">agc_or_mgc</span> <span class="o">=</span> <span class="n">VRT_AOM_AGC</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintTrailerTest</span><span class="p">,</span> <span class="n">DetectedSignal</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">detected_signal</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintTrailerTest</span><span class="p">,</span> <span class="n">SpectralInversion</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">spectral_inversion</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintTrailerTest</span><span class="p">,</span> <span class="n">OverRange</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">over_range</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintTrailerTest</span><span class="p">,</span> <span class="n">SampleLoss</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">sample_loss</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintTrailerTest</span><span class="p">,</span> <span class="n">UserDefined11</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">user_defined11</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintTrailerTest</span><span class="p">,</span> <span class="n">UserDefined10</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">user_defined10</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintTrailerTest</span><span class="p">,</span> <span class="n">UserDefined9</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">user_defined9</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintTrailerTest</span><span class="p">,</span> <span class="n">UserDefined8</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">user_defined8</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintTrailerTest</span><span class="p">,</span> <span class="n">HasAssociatedPacketCount</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">associated_context_packet_count</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintTrailerTest</span><span class="p">,</span> <span class="n">AssociatedPacketCount</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">associated_context_packet_count</span> <span class="o">=</span> <span class="mh">0xFF</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintTrailerTest</span><span class="p">,</span> <span class="n">BothCalibratedTime</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">calibrated_time</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">calibrated_time</span>     <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintTrailerTest</span><span class="p">,</span> <span class="n">BothValidData</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">valid_data</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">valid_data</span>     <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintTrailerTest</span><span class="p">,</span> <span class="n">BothReferenceLock</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">reference_lock</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">reference_lock</span>     <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintTrailerTest</span><span class="p">,</span> <span class="n">BothAgcOrMgc</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">agc_or_mgc</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">agc_or_mgc</span>     <span class="o">=</span> <span class="n">VRT_AOM_AGC</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintTrailerTest</span><span class="p">,</span> <span class="n">BothDetectedSignal</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">detected_signal</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">detected_signal</span>     <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintTrailerTest</span><span class="p">,</span> <span class="n">BothSpectralInversion</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">spectral_inversion</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">spectral_inversion</span>     <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintTrailerTest</span><span class="p">,</span> <span class="n">BothOverRange</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">over_range</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">over_range</span>     <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintTrailerTest</span><span class="p">,</span> <span class="n">BothSampleLoss</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">sample_loss</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">sample_loss</span>     <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintTrailerTest</span><span class="p">,</span> <span class="n">BothUserDefined11</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">user_defined11</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">user_defined11</span>     <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintTrailerTest</span><span class="p">,</span> <span class="n">BothUserDefined10</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">user_defined10</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">user_defined10</span>     <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintTrailerTest</span><span class="p">,</span> <span class="n">BothUserDefined9</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">user_defined9</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">user_defined9</span>     <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintTrailerTest</span><span class="p">,</span> <span class="n">BothUserDefined8</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">user_defined8</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">user_defined8</span>     <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintTrailerTest</span><span class="p">,</span> <span class="n">BothAssociatedContextPacketCount</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">associated_context_packet_count</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">associated_context_packet_count</span>     <span class="o">=</span> <span class="mh">0x7E</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintTrailerTest</span><span class="p">,</span> <span class="n">EveryOther1</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">calibrated_time</span>                 <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">reference_lock</span>                  <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">detected_signal</span>                 <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">over_range</span>                      <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">user_defined11</span>                  <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">user_defined9</span>                   <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">calibrated_time</span>                     <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">reference_lock</span>                      <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">detected_signal</span>                     <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">over_range</span>                          <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">user_defined11</span>                      <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">user_defined9</span>                       <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">associated_context_packet_count</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintTrailerTest</span><span class="p">,</span> <span class="n">EveryOther2</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">valid_data</span>                  <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">agc_or_mgc</span>                  <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">spectral_inversion</span>          <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">sample_loss</span>                 <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">user_defined10</span>              <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">user_defined8</span>               <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">valid_data</span>                      <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">agc_or_mgc</span>                      <span class="o">=</span> <span class="n">VRT_AOM_AGC</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">spectral_inversion</span>              <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">sample_loss</span>                     <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">user_defined10</span>                  <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">user_defined8</span>                   <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">associated_context_packet_count</span> <span class="o">=</span> <span class="mh">0xFF</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintTrailerTest</span><span class="p">,</span> <span class="n">All</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">calibrated_time</span>                 <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">valid_data</span>                      <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">reference_lock</span>                  <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">agc_or_mgc</span>                      <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">detected_signal</span>                 <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">spectral_inversion</span>              <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">over_range</span>                      <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">sample_loss</span>                     <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">user_defined11</span>                  <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">user_defined10</span>                  <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">user_defined9</span>                   <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">user_defined8</span>                   <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">calibrated_time</span>                     <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">valid_data</span>                          <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">reference_lock</span>                      <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">agc_or_mgc</span>                          <span class="o">=</span> <span class="n">VRT_AOM_AGC</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">detected_signal</span>                     <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">spectral_inversion</span>                  <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">over_range</span>                          <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">sample_loss</span>                         <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">user_defined11</span>                      <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">user_defined10</span>                      <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">user_defined9</span>                       <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">user_defined8</span>                       <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">associated_context_packet_count</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">t_</span><span class="p">.</span><span class="n">associated_context_packet_count</span>     <span class="o">=</span> <span class="mh">0xFF</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Emil Berg
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

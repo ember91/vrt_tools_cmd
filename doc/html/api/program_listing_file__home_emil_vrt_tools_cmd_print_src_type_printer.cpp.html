@@ -1,0 +1,554 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Program Listing for File type_printer.cpp &mdash; VRT command line tools  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> VRT command line tools
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="library_root.html">Library API</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">VRT command line tools</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Program Listing for File type_printer.cpp</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/api/program_listing_file__home_emil_vrt_tools_cmd_print_src_type_printer.cpp.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="program-listing-for-file-type-printer-cpp">
+<span id="program-listing-file-home-emil-vrt-tools-cmd-print-src-type-printer-cpp"></span><h1>Program Listing for File type_printer.cpp<a class="headerlink" href="#program-listing-for-file-type-printer-cpp" title="Permalink to this headline">¶</a></h1>
+<p>↰ <a class="reference internal" href="file__home_emil_vrt_tools_cmd_print_src_type_printer.cpp.html#file-home-emil-vrt-tools-cmd-print-src-type-printer-cpp"><span class="std std-ref">Return to documentation for file</span></a> (<code class="docutils literal notranslate"><span class="pre">/home/emil/vrt_tools_cmd/print/src/type_printer.cpp</span></code>)</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&quot;type_printer.h&quot;</span><span class="cp"></span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;vrt/vrt_string.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;vrt/vrt_util.h&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span> <span class="cpf">&quot;stringify.h&quot;</span><span class="cp"></span>
+
+<span class="k">namespace</span> <span class="n">vrt</span><span class="o">::</span><span class="n">print</span> <span class="p">{</span>
+
+<span class="k">static</span> <span class="kt">void</span> <span class="n">print_formatted_geolocation</span><span class="p">(</span><span class="k">const</span> <span class="n">vrt_formatted_geolocation</span><span class="o">&amp;</span> <span class="n">g</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Formatted GPS geolocation</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+    <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;TSI&quot;</span><span class="p">,</span> <span class="n">vrt_string_tsi</span><span class="p">(</span><span class="n">g</span><span class="p">.</span><span class="n">tsi</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;TSF&quot;</span><span class="p">,</span> <span class="n">vrt_string_tsf</span><span class="p">(</span><span class="n">g</span><span class="p">.</span><span class="n">tsf</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;OUI&quot;</span><span class="p">,</span> <span class="n">Uint32ToHexStr</span><span class="p">(</span><span class="n">g</span><span class="p">.</span><span class="n">oui</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">g</span><span class="p">.</span><span class="n">tsi</span> <span class="o">!=</span> <span class="n">VRT_TSI_UNDEFINED</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Integer second timestamp&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">g</span><span class="p">.</span><span class="n">integer_second_timestamp</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">g</span><span class="p">.</span><span class="n">tsf</span> <span class="o">!=</span> <span class="n">VRT_TSF_UNDEFINED</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Fractional second timestamp&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">g</span><span class="p">.</span><span class="n">fractional_second_timestamp</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">g</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">latitude</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Latitude [degrees]&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">g</span><span class="p">.</span><span class="n">latitude</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">g</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">longitude</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Longitude [degrees]&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">g</span><span class="p">.</span><span class="n">longitude</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">g</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">altitude</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Altitude [m]&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">g</span><span class="p">.</span><span class="n">altitude</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">g</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">speed_over_ground</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Speed over ground [m/s]&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">g</span><span class="p">.</span><span class="n">speed_over_ground</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">g</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">heading_angle</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Heading angle [degrees]&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">g</span><span class="p">.</span><span class="n">heading_angle</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">g</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">track_angle</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Track angle [degrees]&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">g</span><span class="p">.</span><span class="n">track_angle</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">g</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">magnetic_variation</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Magnetic variation [degrees]&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">g</span><span class="p">.</span><span class="n">magnetic_variation</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kt">void</span> <span class="n">print_ephemeris</span><span class="p">(</span><span class="k">const</span> <span class="n">vrt_ephemeris</span><span class="o">&amp;</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;ECEF ephemeris</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+    <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;TSI&quot;</span><span class="p">,</span> <span class="n">vrt_string_tsi</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">tsi</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;TSF&quot;</span><span class="p">,</span> <span class="n">vrt_string_tsf</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">tsf</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;OUI&quot;</span><span class="p">,</span> <span class="n">Uint32ToHexStr</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">oui</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">tsi</span> <span class="o">!=</span> <span class="n">VRT_TSI_UNDEFINED</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Integer second timestamp&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">integer_second_timestamp</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">tsf</span> <span class="o">!=</span> <span class="n">VRT_TSF_UNDEFINED</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Fractional second timestamp&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">fractional_second_timestamp</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">position_x</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;position_x [m]&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">position_x</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">position_y</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;position_y [m]&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">position_y</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">position_z</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;position_z [m]&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">position_z</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">attitude_alpha</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;altitude_alpha [degrees]&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">attitude_alpha</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">attitude_beta</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;altitude_beta [degrees]&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">attitude_beta</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">attitude_phi</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;altitude_phi [degrees]&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">attitude_phi</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">velocity_dx</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;velocity_dx [m/s]&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">velocity_dx</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">velocity_dy</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;velocity_dy [m/s]&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">velocity_dy</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">velocity_dz</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;velocity_dz [m/s]&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">velocity_dz</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">print_header</span><span class="p">(</span><span class="k">const</span> <span class="n">vrt_header</span><span class="o">&amp;</span> <span class="n">header</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Packet type&quot;</span><span class="p">,</span> <span class="n">vrt_string_packet_type</span><span class="p">(</span><span class="n">header</span><span class="p">.</span><span class="n">packet_type</span><span class="p">));</span>
+    <span class="c1">// No idea to print has.class_id and has.trailer</span>
+    <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;tsm&quot;</span><span class="p">,</span> <span class="n">vrt_string_tsm</span><span class="p">(</span><span class="n">header</span><span class="p">.</span><span class="n">tsm</span><span class="p">));</span>
+    <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;TSI&quot;</span><span class="p">,</span> <span class="n">vrt_string_tsi</span><span class="p">(</span><span class="n">header</span><span class="p">.</span><span class="n">tsi</span><span class="p">));</span>
+    <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;TSF&quot;</span><span class="p">,</span> <span class="n">vrt_string_tsf</span><span class="p">(</span><span class="n">header</span><span class="p">.</span><span class="n">tsf</span><span class="p">));</span>
+    <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Packet count&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">header</span><span class="p">.</span><span class="n">packet_count</span><span class="p">));</span>
+    <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Packet size [words]&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">header</span><span class="p">.</span><span class="n">packet_size</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">print_fields</span><span class="p">(</span><span class="k">const</span> <span class="n">vrt_header</span><span class="o">&amp;</span> <span class="n">header</span><span class="p">,</span> <span class="k">const</span> <span class="n">vrt_fields</span><span class="o">&amp;</span> <span class="n">fields</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">vrt_has_stream_id</span><span class="p">(</span><span class="n">header</span><span class="p">.</span><span class="n">packet_type</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Stream ID&quot;</span><span class="p">,</span> <span class="n">Uint32ToHexStr</span><span class="p">(</span><span class="n">fields</span><span class="p">.</span><span class="n">stream_id</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">header</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">class_id</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Class ID</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;OUI&quot;</span><span class="p">,</span> <span class="n">Uint32ToHexStr</span><span class="p">(</span><span class="n">fields</span><span class="p">.</span><span class="n">class_id</span><span class="p">.</span><span class="n">oui</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Information class code&quot;</span><span class="p">,</span> <span class="n">Uint32ToHexStr</span><span class="p">(</span><span class="n">fields</span><span class="p">.</span><span class="n">class_id</span><span class="p">.</span><span class="n">information_class_code</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Packet class code&quot;</span><span class="p">,</span> <span class="n">Uint32ToHexStr</span><span class="p">(</span><span class="n">fields</span><span class="p">.</span><span class="n">class_id</span><span class="p">.</span><span class="n">packet_class_code</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">header</span><span class="p">.</span><span class="n">tsi</span> <span class="o">!=</span> <span class="n">VRT_TSI_NONE</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Integer seconds timestamp&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">fields</span><span class="p">.</span><span class="n">integer_seconds_timestamp</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">header</span><span class="p">.</span><span class="n">tsf</span> <span class="o">!=</span> <span class="n">VRT_TSF_NONE</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Fractional seconds timestamp&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">fields</span><span class="p">.</span><span class="n">fractional_seconds_timestamp</span><span class="p">));</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">print_body</span><span class="p">(</span><span class="k">const</span> <span class="n">vrt_header</span><span class="o">&amp;</span> <span class="n">header</span><span class="p">,</span> <span class="kt">int32_t</span> <span class="n">words_body</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">switch</span> <span class="p">(</span><span class="n">header</span><span class="p">.</span><span class="n">packet_type</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="nl">VRT_PT_IF_DATA_WITHOUT_STREAM_ID</span><span class="p">:</span>
+        <span class="k">case</span> <span class="nl">VRT_PT_IF_DATA_WITH_STREAM_ID</span><span class="p">:</span>
+        <span class="k">case</span> <span class="nl">VRT_PT_EXT_DATA_WITHOUT_STREAM_ID</span><span class="p">:</span>
+        <span class="k">case</span> <span class="nl">VRT_PT_EXT_DATA_WITH_STREAM_ID</span><span class="p">:</span> <span class="p">{</span>
+            <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Body size [words]&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">words_body</span><span class="p">));</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="nl">VRT_PT_IF_CONTEXT</span><span class="p">:</span> <span class="p">{</span>
+            <span class="c1">// Do nothing</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="nl">VRT_PT_EXT_CONTEXT</span><span class="p">:</span> <span class="p">{</span>
+            <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Extended context section size [words]&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">words_body</span><span class="p">));</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">print_if_context</span><span class="p">(</span><span class="k">const</span> <span class="n">vrt_if_context</span><span class="o">&amp;</span> <span class="n">if_context</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">context_field_change_indicator</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Changed&quot;</span><span class="p">,</span> <span class="n">BoolToStr</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">context_field_change_indicator</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">reference_point_identifier</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Reference point identifier&quot;</span><span class="p">,</span> <span class="n">Uint32ToHexStr</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">reference_point_identifier</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">bandwidth</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Bandwidth [Hz]&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">bandwidth</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">if_reference_frequency</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;IF reference frequency [Hz]&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">if_reference_frequency</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">rf_reference_frequency</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;RF reference frequency [Hz]&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">rf_reference_frequency</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">rf_reference_frequency_offset</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;RF reference frequency offset [Hz]&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">rf_reference_frequency_offset</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">if_band_offset</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;IF band offset [Hz]&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">if_band_offset</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">reference_level</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Reference level [dBm]&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">reference_level</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">gain</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Gain</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Stage 1 [dB]&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">gain</span><span class="p">.</span><span class="n">stage1</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Stage 2 [dB]&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">gain</span><span class="p">.</span><span class="n">stage2</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">over_range_count</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Over-range count&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">over_range_count</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">sample_rate</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Sample rate [Hz]&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">sample_rate</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">timestamp_adjustment</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Timestamp adjustment [ps]&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">timestamp_adjustment</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">timestamp_calibration_time</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Timestamp calibration time&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">timestamp_calibration_time</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">temperature</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Temperature [degrees C]&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">temperature</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">device_identifier</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Device identifier</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;OUI&quot;</span><span class="p">,</span> <span class="n">Uint32ToHexStr</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">device_identifier</span><span class="p">.</span><span class="n">oui</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Device code&quot;</span><span class="p">,</span> <span class="n">Uint32ToHexStr</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">device_identifier</span><span class="p">.</span><span class="n">device_code</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">state_and_event_indicators</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;State and event indicators</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">state_and_event_indicators</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">calibrated_time</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Calibrated time&quot;</span><span class="p">,</span> <span class="n">BoolToStr</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">state_and_event_indicators</span><span class="p">.</span><span class="n">calibrated_time</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">state_and_event_indicators</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">valid_data</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Valid data&quot;</span><span class="p">,</span> <span class="n">BoolToStr</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">state_and_event_indicators</span><span class="p">.</span><span class="n">valid_data</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">state_and_event_indicators</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">reference_lock</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Reference lock&quot;</span><span class="p">,</span> <span class="n">BoolToStr</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">state_and_event_indicators</span><span class="p">.</span><span class="n">reference_lock</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">state_and_event_indicators</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">agc_or_mgc</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;AGC/MGC&quot;</span><span class="p">,</span> <span class="n">vrt_string_agc_or_mgc</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">state_and_event_indicators</span><span class="p">.</span><span class="n">agc_or_mgc</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">state_and_event_indicators</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">detected_signal</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Detected signal&quot;</span><span class="p">,</span> <span class="n">BoolToStr</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">state_and_event_indicators</span><span class="p">.</span><span class="n">detected_signal</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">state_and_event_indicators</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">spectral_inversion</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Spectral inversion&quot;</span><span class="p">,</span> <span class="n">BoolToStr</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">state_and_event_indicators</span><span class="p">.</span><span class="n">spectral_inversion</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">state_and_event_indicators</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">over_range</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Over-range&quot;</span><span class="p">,</span> <span class="n">BoolToStr</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">state_and_event_indicators</span><span class="p">.</span><span class="n">over_range</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">state_and_event_indicators</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">sample_loss</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Sample loss&quot;</span><span class="p">,</span> <span class="n">BoolToStr</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">state_and_event_indicators</span><span class="p">.</span><span class="n">sample_loss</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;User defined 7&quot;</span><span class="p">,</span> <span class="n">BoolToStr</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">state_and_event_indicators</span><span class="p">.</span><span class="n">user_defined7</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;User defined 6&quot;</span><span class="p">,</span> <span class="n">BoolToStr</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">state_and_event_indicators</span><span class="p">.</span><span class="n">user_defined6</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;User defined 5&quot;</span><span class="p">,</span> <span class="n">BoolToStr</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">state_and_event_indicators</span><span class="p">.</span><span class="n">user_defined5</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;User defined 4&quot;</span><span class="p">,</span> <span class="n">BoolToStr</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">state_and_event_indicators</span><span class="p">.</span><span class="n">user_defined4</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;User defined 3&quot;</span><span class="p">,</span> <span class="n">BoolToStr</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">state_and_event_indicators</span><span class="p">.</span><span class="n">user_defined3</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;User defined 2&quot;</span><span class="p">,</span> <span class="n">BoolToStr</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">state_and_event_indicators</span><span class="p">.</span><span class="n">user_defined2</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;User defined 1&quot;</span><span class="p">,</span> <span class="n">BoolToStr</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">state_and_event_indicators</span><span class="p">.</span><span class="n">user_defined1</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;User defined 0&quot;</span><span class="p">,</span> <span class="n">BoolToStr</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">state_and_event_indicators</span><span class="p">.</span><span class="n">user_defined0</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">data_packet_payload_format</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Data packet payload format</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Packing method&quot;</span><span class="p">,</span> <span class="n">vrt_string_packing_method</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">data_packet_payload_format</span><span class="p">.</span><span class="n">packing_method</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Real/Complex&quot;</span><span class="p">,</span> <span class="n">vrt_string_real_or_complex</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">data_packet_payload_format</span><span class="p">.</span><span class="n">real_or_complex</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Data item format&quot;</span><span class="p">,</span>
+                  <span class="n">vrt_string_data_item_format</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">data_packet_payload_format</span><span class="p">.</span><span class="n">data_item_format</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Sample component repeat&quot;</span><span class="p">,</span> <span class="n">BoolToStr</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">data_packet_payload_format</span><span class="p">.</span><span class="n">sample_component_repeat</span><span class="p">),</span>
+                  <span class="mi">1</span><span class="p">);</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Event tag size&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">data_packet_payload_format</span><span class="p">.</span><span class="n">event_tag_size</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Channel tag size&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">data_packet_payload_format</span><span class="p">.</span><span class="n">channel_tag_size</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Item packing field size&quot;</span><span class="p">,</span>
+                  <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">data_packet_payload_format</span><span class="p">.</span><span class="n">item_packing_field_size</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Data item size&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">data_packet_payload_format</span><span class="p">.</span><span class="n">data_item_size</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Repeat count&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">data_packet_payload_format</span><span class="p">.</span><span class="n">repeat_count</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Vector size&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">data_packet_payload_format</span><span class="p">.</span><span class="n">vector_size</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">formatted_gps_geolocation</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">print_formatted_geolocation</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">formatted_gps_geolocation</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">formatted_ins_geolocation</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">print_formatted_geolocation</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">formatted_ins_geolocation</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">ecef_ephemeris</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">print_ephemeris</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">ecef_ephemeris</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">relative_ephemeris</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">print_ephemeris</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">relative_ephemeris</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">ephemeris_reference_identifier</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Ephemeris reference identifier&quot;</span><span class="p">,</span> <span class="n">Uint32ToHexStr</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">ephemeris_reference_identifier</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">gps_ascii</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;GPS ASCII</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;OUI&quot;</span><span class="p">,</span> <span class="n">Uint32ToHexStr</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">gps_ascii</span><span class="p">.</span><span class="n">oui</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Number of words&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">gps_ascii</span><span class="p">.</span><span class="n">number_of_words</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="c1">// Get full string and print, even if it may look a bit weird. Useful for debugging.</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">ascii_str</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">gps_ascii</span><span class="p">.</span><span class="n">ascii</span><span class="p">,</span> <span class="n">if_context</span><span class="p">.</span><span class="n">gps_ascii</span><span class="p">.</span><span class="n">ascii</span> <span class="o">+</span>
+                                                              <span class="k">sizeof</span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">)</span> <span class="o">*</span> <span class="n">if_context</span><span class="p">.</span><span class="n">gps_ascii</span><span class="p">.</span><span class="n">number_of_words</span> <span class="o">-</span>
+                                                              <span class="n">if_context</span><span class="p">.</span><span class="n">gps_ascii</span><span class="p">.</span><span class="n">ascii</span><span class="p">);</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;ASCII&quot;</span><span class="p">,</span> <span class="n">ascii_str</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">context_association_lists</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Context association lists</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Source list size&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">context_association_lists</span><span class="p">.</span><span class="n">source_list_size</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;System list size&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">context_association_lists</span><span class="p">.</span><span class="n">system_list_size</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Vector component list size&quot;</span><span class="p">,</span>
+                  <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">context_association_lists</span><span class="p">.</span><span class="n">vector_component_list_size</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Asynchronous channel list size&quot;</span><span class="p">,</span>
+                  <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">context_association_lists</span><span class="p">.</span><span class="n">asynchronous_channel_list_size</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">context_association_lists</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">asynchronous_channel_tag_list</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Asynchronous channel tag list size&quot;</span><span class="p">,</span>
+                      <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">context_association_lists</span><span class="p">.</span><span class="n">asynchronous_channel_list_size</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Source list</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">uint16_t</span> <span class="n">j</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">if_context</span><span class="p">.</span><span class="n">context_association_lists</span><span class="p">.</span><span class="n">source_list_size</span><span class="p">;</span> <span class="o">++</span><span class="n">j</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">Uint32ToHexStr</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">context_association_lists</span><span class="p">.</span><span class="n">source_context_association_list</span><span class="p">[</span><span class="n">j</span><span class="p">]),</span> <span class="mi">2</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;System list</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">uint16_t</span> <span class="n">j</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">if_context</span><span class="p">.</span><span class="n">context_association_lists</span><span class="p">.</span><span class="n">system_list_size</span><span class="p">;</span> <span class="o">++</span><span class="n">j</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">Uint32ToHexStr</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">context_association_lists</span><span class="p">.</span><span class="n">system_context_association_list</span><span class="p">[</span><span class="n">j</span><span class="p">]),</span> <span class="mi">2</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Vector component list</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">uint16_t</span> <span class="n">j</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">if_context</span><span class="p">.</span><span class="n">context_association_lists</span><span class="p">.</span><span class="n">vector_component_list_size</span><span class="p">;</span> <span class="o">++</span><span class="n">j</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">,</span>
+                      <span class="n">Uint32ToHexStr</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">context_association_lists</span><span class="p">.</span><span class="n">vector_component_context_association_list</span><span class="p">[</span><span class="n">j</span><span class="p">]),</span>
+                      <span class="mi">2</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Asynchronous channel list</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">uint16_t</span> <span class="n">j</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">if_context</span><span class="p">.</span><span class="n">context_association_lists</span><span class="p">.</span><span class="n">asynchronous_channel_list_size</span><span class="p">;</span> <span class="o">++</span><span class="n">j</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">WriteCols</span><span class="p">(</span>
+                <span class="s">&quot;&quot;</span><span class="p">,</span>
+                <span class="n">Uint32ToHexStr</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">context_association_lists</span><span class="p">.</span><span class="n">asynchronous_channel_context_association_list</span><span class="p">[</span><span class="n">j</span><span class="p">]),</span>
+                <span class="mi">2</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">context_association_lists</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">asynchronous_channel_tag_list</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Asynchronous channel tag list</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+            <span class="k">for</span> <span class="p">(</span><span class="kt">uint16_t</span> <span class="n">j</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">if_context</span><span class="p">.</span><span class="n">context_association_lists</span><span class="p">.</span><span class="n">asynchronous_channel_list_size</span><span class="p">;</span> <span class="o">++</span><span class="n">j</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">Uint32ToHexStr</span><span class="p">(</span><span class="n">if_context</span><span class="p">.</span><span class="n">context_association_lists</span><span class="p">.</span><span class="n">asynchronous_channel_tag_list</span><span class="p">[</span><span class="n">j</span><span class="p">]),</span> <span class="mi">2</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">print_trailer</span><span class="p">(</span><span class="k">const</span> <span class="n">vrt_trailer</span><span class="o">&amp;</span> <span class="n">trailer</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">trailer</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">calibrated_time</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Calibrated time&quot;</span><span class="p">,</span> <span class="n">BoolToStr</span><span class="p">(</span><span class="n">trailer</span><span class="p">.</span><span class="n">calibrated_time</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">trailer</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">valid_data</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Valid data&quot;</span><span class="p">,</span> <span class="n">BoolToStr</span><span class="p">(</span><span class="n">trailer</span><span class="p">.</span><span class="n">valid_data</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">trailer</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">reference_lock</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Reference lock&quot;</span><span class="p">,</span> <span class="n">BoolToStr</span><span class="p">(</span><span class="n">trailer</span><span class="p">.</span><span class="n">reference_lock</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">trailer</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">agc_or_mgc</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;AGC/MGC&quot;</span><span class="p">,</span> <span class="n">vrt_string_agc_or_mgc</span><span class="p">(</span><span class="n">trailer</span><span class="p">.</span><span class="n">agc_or_mgc</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">trailer</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">detected_signal</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Detected signal&quot;</span><span class="p">,</span> <span class="n">BoolToStr</span><span class="p">(</span><span class="n">trailer</span><span class="p">.</span><span class="n">detected_signal</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">trailer</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">spectral_inversion</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Spectral inversion&quot;</span><span class="p">,</span> <span class="n">BoolToStr</span><span class="p">(</span><span class="n">trailer</span><span class="p">.</span><span class="n">spectral_inversion</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">trailer</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">over_range</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Over range&quot;</span><span class="p">,</span> <span class="n">BoolToStr</span><span class="p">(</span><span class="n">trailer</span><span class="p">.</span><span class="n">over_range</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">trailer</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">sample_loss</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Sample loss&quot;</span><span class="p">,</span> <span class="n">BoolToStr</span><span class="p">(</span><span class="n">trailer</span><span class="p">.</span><span class="n">sample_loss</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">trailer</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">user_defined11</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;User defined 11&quot;</span><span class="p">,</span> <span class="n">BoolToStr</span><span class="p">(</span><span class="n">trailer</span><span class="p">.</span><span class="n">user_defined11</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">trailer</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">user_defined10</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;User defined 10&quot;</span><span class="p">,</span> <span class="n">BoolToStr</span><span class="p">(</span><span class="n">trailer</span><span class="p">.</span><span class="n">user_defined10</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">trailer</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">user_defined9</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;User defined 9&quot;</span><span class="p">,</span> <span class="n">BoolToStr</span><span class="p">(</span><span class="n">trailer</span><span class="p">.</span><span class="n">user_defined9</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">trailer</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">user_defined8</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;User defined 8&quot;</span><span class="p">,</span> <span class="n">BoolToStr</span><span class="p">(</span><span class="n">trailer</span><span class="p">.</span><span class="n">user_defined8</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">trailer</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">associated_context_packet_count</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;Associated context packet count&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">trailer</span><span class="p">.</span><span class="n">associated_context_packet_count</span><span class="p">));</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="p">}</span>  <span class="c1">// namespace vrt::print</span>
+</pre></div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Emil Berg
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

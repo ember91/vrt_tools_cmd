@@ -1,0 +1,473 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Program Listing for File process.cpp &mdash; VRT command line tools  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> VRT command line tools
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="library_root.html">Library API</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">VRT command line tools</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Program Listing for File process.cpp</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/api/program_listing_file__home_emil_vrt_tools_cmd_print_src_process.cpp.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="program-listing-for-file-process-cpp">
+<span id="program-listing-file-home-emil-vrt-tools-cmd-print-src-process-cpp"></span><h1>Program Listing for File process.cpp<a class="headerlink" href="#program-listing-for-file-process-cpp" title="Permalink to this headline">¶</a></h1>
+<p>↰ <a class="reference internal" href="file__home_emil_vrt_tools_cmd_print_src_process.cpp.html#file-home-emil-vrt-tools-cmd-print-src-process-cpp"><span class="std std-ref">Return to documentation for file</span></a> (<code class="docutils literal notranslate"><span class="pre">/home/emil/vrt_tools_cmd/print/src/process.cpp</span></code>)</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&quot;process.h&quot;</span><span class="cp"></span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;cstddef&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;cstdint&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;fstream&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;sstream&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdexcept&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;vrt/vrt_read.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;vrt/vrt_string.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;vrt/vrt_types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;vrt/vrt_words.h&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span> <span class="cpf">&quot;byte_swap.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;program_arguments.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;stringify.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;type_printer.h&quot;</span><span class="cp"></span>
+
+<span class="k">namespace</span> <span class="n">vrt</span><span class="o">::</span><span class="n">print</span> <span class="p">{</span>
+
+<span class="k">static</span> <span class="kt">int32_t</span> <span class="n">parse_header</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;*</span> <span class="n">buf</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">i</span><span class="p">,</span> <span class="n">vrt_header</span><span class="o">*</span> <span class="n">header</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int32_t</span> <span class="n">words</span><span class="p">{</span><span class="n">vrt_read_header</span><span class="p">(</span><span class="n">buf</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">(),</span> <span class="n">buf</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">(),</span> <span class="n">header</span><span class="p">,</span> <span class="nb">true</span><span class="p">)};</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">words</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// Try again, but without validation</span>
+        <span class="n">words</span> <span class="o">=</span> <span class="n">vrt_read_header</span><span class="p">(</span><span class="n">buf</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">(),</span> <span class="n">buf</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">(),</span> <span class="n">header</span><span class="p">,</span> <span class="nb">false</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">words</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="c1">// Should never end up here, since buffer size is sufficient</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
+            <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Packet #&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;: Unknown header parse error: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">vrt_string_error</span><span class="p">(</span><span class="n">words</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+            <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+        <span class="p">}</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Warning: Failed to validate header: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">vrt_string_error</span><span class="p">(</span><span class="n">words</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="sc">&#39;\n&#39;</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">words</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kt">int32_t</span> <span class="n">parse_fields</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;*</span> <span class="n">buf</span><span class="p">,</span>
+                            <span class="kt">size_t</span>                 <span class="n">i</span><span class="p">,</span>
+                            <span class="k">const</span> <span class="n">vrt_header</span><span class="o">&amp;</span>      <span class="n">header</span><span class="p">,</span>
+                            <span class="kt">int32_t</span>                <span class="n">words_header</span><span class="p">,</span>
+                            <span class="n">vrt_fields</span><span class="o">*</span>            <span class="n">fields</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int32_t</span> <span class="n">words</span><span class="p">{</span>
+        <span class="n">vrt_read_fields</span><span class="p">(</span><span class="o">&amp;</span><span class="n">header</span><span class="p">,</span> <span class="n">buf</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">()</span> <span class="o">+</span> <span class="n">words_header</span><span class="p">,</span> <span class="n">header</span><span class="p">.</span><span class="n">packet_size</span> <span class="o">-</span> <span class="n">words_header</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="nb">true</span><span class="p">)};</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">words</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// Try again, but without validation</span>
+        <span class="n">words</span> <span class="o">=</span> <span class="n">vrt_read_fields</span><span class="p">(</span><span class="o">&amp;</span><span class="n">header</span><span class="p">,</span> <span class="n">buf</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">()</span> <span class="o">+</span> <span class="n">words_header</span><span class="p">,</span> <span class="n">header</span><span class="p">.</span><span class="n">packet_size</span> <span class="o">-</span> <span class="n">words_header</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="nb">false</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">words</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="c1">// Should never end up here, since buffer size is sufficient</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
+            <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Packet #&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;: Unknown fields section parse error: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">vrt_string_error</span><span class="p">(</span><span class="n">words</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+            <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+        <span class="p">}</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Warning: Failed to validate fields section: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">vrt_string_error</span><span class="p">(</span><span class="n">words</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="sc">&#39;\n&#39;</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">words</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kt">int32_t</span> <span class="n">parse_body</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span><span class="p">,</span> <span class="k">const</span> <span class="n">vrt_header</span><span class="o">&amp;</span> <span class="n">header</span><span class="p">,</span> <span class="kt">int32_t</span> <span class="n">words_header_fields_if_context</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">uint32_t</span> <span class="n">words_non_body</span><span class="p">{</span><span class="n">words_header_fields_if_context</span> <span class="o">+</span> <span class="n">vrt_words_trailer</span><span class="p">(</span><span class="o">&amp;</span><span class="n">header</span><span class="p">)};</span>
+    <span class="k">switch</span> <span class="p">(</span><span class="n">header</span><span class="p">.</span><span class="n">packet_type</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="nl">VRT_PT_IF_DATA_WITHOUT_STREAM_ID</span><span class="p">:</span>
+        <span class="k">case</span> <span class="nl">VRT_PT_IF_DATA_WITH_STREAM_ID</span><span class="p">:</span>
+        <span class="k">case</span> <span class="nl">VRT_PT_EXT_DATA_WITHOUT_STREAM_ID</span><span class="p">:</span>
+        <span class="k">case</span> <span class="nl">VRT_PT_EXT_DATA_WITH_STREAM_ID</span><span class="p">:</span> <span class="p">{</span>
+            <span class="c1">// Sanity check</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">words_non_body</span> <span class="o">&gt;</span> <span class="n">header</span><span class="p">.</span><span class="n">packet_size</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">std</span><span class="o">::</span><span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
+                <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Packet #&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;: Packet size &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">header</span><span class="p">.</span><span class="n">packet_size</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; but &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">words_non_body</span>
+                   <span class="o">&lt;&lt;</span> <span class="s">&quot; words required for header, fields section, and trailer&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+                <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+            <span class="p">}</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="nl">VRT_PT_IF_CONTEXT</span><span class="p">:</span> <span class="p">{</span>
+            <span class="c1">// Sanity check. Exact match here.</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">words_non_body</span> <span class="o">!=</span> <span class="n">header</span><span class="p">.</span><span class="n">packet_size</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">std</span><span class="o">::</span><span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
+                <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Packet #&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;: Packet size &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">header</span><span class="p">.</span><span class="n">packet_size</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; but &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">words_non_body</span>
+                   <span class="o">&lt;&lt;</span> <span class="s">&quot; words required for header, fields section, and context&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+                <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+            <span class="p">}</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="nl">VRT_PT_EXT_CONTEXT</span><span class="p">:</span> <span class="p">{</span>
+            <span class="c1">// Sanity check</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">words_non_body</span> <span class="o">&gt;</span> <span class="n">header</span><span class="p">.</span><span class="n">packet_size</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">std</span><span class="o">::</span><span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
+                <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Packet #&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;: Packet size &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">header</span><span class="p">.</span><span class="n">packet_size</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; but &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">words_non_body</span>
+                   <span class="o">&lt;&lt;</span> <span class="s">&quot; words required for header and fields section&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+                <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+            <span class="p">}</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">default</span><span class="o">:</span> <span class="p">{</span>
+            <span class="n">words_non_body</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">header</span><span class="p">.</span><span class="n">packet_size</span> <span class="o">-</span> <span class="n">words_non_body</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kt">int32_t</span> <span class="n">parse_trailer</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;*</span> <span class="n">buf</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">i</span><span class="p">,</span> <span class="k">const</span> <span class="n">vrt_header</span><span class="o">&amp;</span> <span class="n">header</span><span class="p">,</span> <span class="n">vrt_trailer</span><span class="o">*</span> <span class="n">trailer</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int32_t</span> <span class="n">words</span><span class="p">{</span>
+        <span class="n">vrt_read_trailer</span><span class="p">(</span><span class="n">buf</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">()</span> <span class="o">+</span> <span class="n">header</span><span class="p">.</span><span class="n">packet_size</span> <span class="o">-</span> <span class="n">VRT_WORDS_MAX_TRAILER</span><span class="p">,</span> <span class="n">VRT_WORDS_MAX_TRAILER</span><span class="p">,</span> <span class="n">trailer</span><span class="p">)};</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">words</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
+        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Packet #&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;: Unknown trailer parse error: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">vrt_string_error</span><span class="p">(</span><span class="n">words</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">words</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kt">int32_t</span> <span class="n">parse_if_context</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;*</span> <span class="n">buf</span><span class="p">,</span>
+                                <span class="kt">size_t</span>                 <span class="n">i</span><span class="p">,</span>
+                                <span class="k">const</span> <span class="n">vrt_header</span><span class="o">&amp;</span>      <span class="n">header</span><span class="p">,</span>
+                                <span class="kt">int32_t</span>                <span class="n">words_header_fields</span><span class="p">,</span>
+                                <span class="n">vrt_if_context</span><span class="o">*</span>        <span class="n">if_context</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int32_t</span> <span class="n">words</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">header</span><span class="p">.</span><span class="n">packet_type</span> <span class="o">==</span> <span class="n">VRT_PT_IF_CONTEXT</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">words</span> <span class="o">=</span> <span class="n">vrt_read_if_context</span><span class="p">(</span><span class="n">buf</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">()</span> <span class="o">+</span> <span class="n">words_header_fields</span><span class="p">,</span> <span class="n">header</span><span class="p">.</span><span class="n">packet_size</span> <span class="o">-</span> <span class="p">(</span><span class="n">words_header_fields</span><span class="p">),</span>
+                                    <span class="n">if_context</span><span class="p">,</span> <span class="nb">true</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">words</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="c1">// Try again, but without validation</span>
+            <span class="n">words</span> <span class="o">=</span> <span class="n">vrt_read_if_context</span><span class="p">(</span><span class="n">buf</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">()</span> <span class="o">+</span> <span class="n">words_header_fields</span><span class="p">,</span> <span class="n">header</span><span class="p">.</span><span class="n">packet_size</span> <span class="o">-</span> <span class="p">(</span><span class="n">words_header_fields</span><span class="p">),</span>
+                                        <span class="n">if_context</span><span class="p">,</span> <span class="nb">false</span><span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">words</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                <span class="c1">// Should never end up here, since buffer size is sufficient</span>
+                <span class="n">std</span><span class="o">::</span><span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
+                <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Packet #&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;: Unknown IF context parse error: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">vrt_string_error</span><span class="p">(</span><span class="n">words</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+                <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+            <span class="p">}</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Warning: Failed to validate IF context: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">vrt_string_error</span><span class="p">(</span><span class="n">words</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="sc">&#39;\n&#39;</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">words</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">process</span><span class="p">(</span><span class="k">const</span> <span class="n">ProgramArguments</span><span class="o">&amp;</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Preallocate so it has room for header</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span> <span class="n">buf</span><span class="p">(</span><span class="n">VRT_WORDS_HEADER</span><span class="p">);</span>
+
+    <span class="c1">// Note that the stream is closed implicitly at destruction</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">ifstream</span> <span class="n">file</span><span class="p">(</span><span class="n">args</span><span class="p">.</span><span class="n">file_path</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">ios</span><span class="o">::</span><span class="n">in</span> <span class="o">|</span> <span class="n">std</span><span class="o">::</span><span class="n">ios</span><span class="o">::</span><span class="n">binary</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">file</span><span class="p">.</span><span class="n">fail</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
+        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Failed to open file &#39;&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">args</span><span class="p">.</span><span class="n">file_path</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;&#39;&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Number of printed packets</span>
+    <span class="kt">size_t</span> <span class="n">n_printed_packets</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+
+    <span class="c1">// Current packet index</span>
+    <span class="kt">size_t</span> <span class="n">i</span><span class="p">;</span>
+
+    <span class="c1">// Note that we must go through all packets, since we don&#39;t know the size of a packet in the middle of the stream</span>
+    <span class="c1">// is.</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">n_printed_packets</span> <span class="o">&lt;</span> <span class="n">args</span><span class="p">.</span><span class="n">packet_count</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// No need to increase buffer size here, since buf preallocated VRT_SIZE_HEADER words and never shrinks</span>
+        <span class="n">file</span><span class="p">.</span><span class="n">read</span><span class="p">(</span><span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">buf</span><span class="p">.</span><span class="n">data</span><span class="p">()),</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">)</span> <span class="o">*</span> <span class="n">VRT_WORDS_HEADER</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">file</span><span class="p">.</span><span class="n">gcount</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">file</span><span class="p">.</span><span class="n">gcount</span><span class="p">()</span> <span class="o">!=</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">)</span> <span class="o">*</span> <span class="n">VRT_WORDS_HEADER</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
+            <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Packet #&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;: Failed to read header&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+            <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">file</span><span class="p">.</span><span class="n">eof</span><span class="p">())</span> <span class="p">{</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="c1">// Byte swap if necessary</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">args</span><span class="p">.</span><span class="n">do_byte_swap</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">buf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">bswap_32</span><span class="p">(</span><span class="n">buf</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+        <span class="p">}</span>
+
+        <span class="c1">// Check this after checking EOF</span>
+        <span class="kt">bool</span> <span class="n">do_print_packet</span><span class="p">{</span><span class="n">i</span> <span class="o">&gt;=</span> <span class="n">args</span><span class="p">.</span><span class="n">packet_skip</span><span class="p">};</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">do_print_packet</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">n_printed_packets</span><span class="o">++</span><span class="p">;</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="sc">&#39;-&#39;</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="sc">&#39;\n&#39;</span><span class="p">;</span>
+            <span class="n">WriteCols</span><span class="p">(</span><span class="s">&quot;#&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">i</span><span class="p">));</span>
+        <span class="p">}</span>
+
+        <span class="c1">// Parse, print, and validate header</span>
+        <span class="n">vrt_header</span> <span class="n">header</span><span class="p">;</span>
+        <span class="kt">int32_t</span>    <span class="n">words_header</span><span class="p">{</span><span class="n">parse_header</span><span class="p">(</span><span class="o">&amp;</span><span class="n">buf</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">header</span><span class="p">)};</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">do_print_packet</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">print_header</span><span class="p">(</span><span class="n">header</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">header</span><span class="p">.</span><span class="n">packet_size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
+            <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Packet #&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;: Header has packet_size 0 words&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+            <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+        <span class="p">}</span>
+
+        <span class="c1">// No need to actually read packet. Just skip ahead to the next.</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">do_print_packet</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">file</span><span class="p">.</span><span class="n">ignore</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">header</span><span class="p">.</span><span class="n">packet_size</span> <span class="o">-</span> <span class="n">words_header</span><span class="p">));</span>
+            <span class="k">continue</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="c1">// Enlarge read buffer for the next section if needed</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">buf</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">header</span><span class="p">.</span><span class="n">packet_size</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">buf</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">header</span><span class="p">.</span><span class="n">packet_size</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="n">file</span><span class="p">.</span><span class="n">read</span><span class="p">(</span><span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">buf</span><span class="p">.</span><span class="n">data</span><span class="p">()</span> <span class="o">+</span> <span class="n">words_header</span><span class="p">),</span>
+                  <span class="k">sizeof</span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">header</span><span class="p">.</span><span class="n">packet_size</span> <span class="o">-</span> <span class="n">words_header</span><span class="p">));</span>
+        <span class="c1">// Do not handle EOF here</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">file</span><span class="p">.</span><span class="n">gcount</span><span class="p">()</span> <span class="o">!=</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">header</span><span class="p">.</span><span class="n">packet_size</span> <span class="o">-</span> <span class="n">words_header</span><span class="p">))</span> <span class="p">{</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
+            <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Packet #&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;: Failed to read remainder of packet&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+            <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">args</span><span class="p">.</span><span class="n">do_byte_swap</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="p">{</span><span class="mi">1</span><span class="p">};</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">header</span><span class="p">.</span><span class="n">packet_size</span><span class="p">;</span> <span class="o">++</span><span class="n">j</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">buf</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">bswap_32</span><span class="p">(</span><span class="n">buf</span><span class="p">[</span><span class="n">j</span><span class="p">]);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="c1">// Parse, print, and validate fields</span>
+        <span class="n">vrt_fields</span> <span class="n">fields</span><span class="p">;</span>
+        <span class="kt">int32_t</span>    <span class="n">words_fields</span><span class="p">{</span><span class="n">parse_fields</span><span class="p">(</span><span class="o">&amp;</span><span class="n">buf</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">header</span><span class="p">,</span> <span class="n">words_header</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">fields</span><span class="p">)};</span>
+        <span class="n">print_fields</span><span class="p">(</span><span class="n">header</span><span class="p">,</span> <span class="n">fields</span><span class="p">);</span>
+        <span class="kt">int32_t</span>        <span class="n">words_if_context</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+        <span class="n">vrt_if_context</span> <span class="n">if_context</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">header</span><span class="p">.</span><span class="n">packet_type</span> <span class="o">==</span> <span class="n">VRT_PT_IF_CONTEXT</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">words_if_context</span> <span class="o">=</span> <span class="n">parse_if_context</span><span class="p">(</span><span class="o">&amp;</span><span class="n">buf</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">header</span><span class="p">,</span> <span class="n">words_header</span> <span class="o">+</span> <span class="n">words_fields</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">if_context</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="c1">// Parse, print, and validate body</span>
+        <span class="kt">int32_t</span> <span class="n">words_body</span><span class="p">{</span><span class="n">parse_body</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">header</span><span class="p">,</span> <span class="n">words_header</span> <span class="o">+</span> <span class="n">words_fields</span> <span class="o">+</span> <span class="n">words_if_context</span><span class="p">)};</span>
+        <span class="n">print_body</span><span class="p">(</span><span class="n">header</span><span class="p">,</span> <span class="n">words_body</span><span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">header</span><span class="p">.</span><span class="n">packet_type</span> <span class="o">==</span> <span class="n">VRT_PT_IF_CONTEXT</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">print_if_context</span><span class="p">(</span><span class="n">if_context</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="c1">// Read trailer if available. This may backfire sometimes when a context type packet has the trailer bit set,</span>
+        <span class="c1">// but that&#39;s nonstandard anyway.</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">header</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">trailer</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">vrt_trailer</span> <span class="n">trailer</span><span class="p">;</span>
+            <span class="n">parse_trailer</span><span class="p">(</span><span class="o">&amp;</span><span class="n">buf</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">header</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">trailer</span><span class="p">);</span>
+            <span class="n">print_trailer</span><span class="p">(</span><span class="n">trailer</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Print some warnings if not all packets were printed</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">n_printed_packets</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Warning: Skipped over all &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; packet(s)</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">n_printed_packets</span> <span class="o">&lt;</span> <span class="n">args</span><span class="p">.</span><span class="n">packet_count</span> <span class="o">&amp;&amp;</span> <span class="n">args</span><span class="p">.</span><span class="n">packet_count</span> <span class="o">!=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">size_t</span><span class="o">&gt;</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="p">{</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Warning: Printed only &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">n_printed_packets</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; out of &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">args</span><span class="p">.</span><span class="n">packet_count</span>
+                      <span class="o">&lt;&lt;</span> <span class="s">&quot; packet(s) due to end of file</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Ensure test is output</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">flush</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="p">}</span>  <span class="c1">// namespace vrt::print</span>
+</pre></div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Emil Berg
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

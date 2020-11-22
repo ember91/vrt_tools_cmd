@@ -1,0 +1,299 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Program Listing for File print_header_test.cpp &mdash; VRT command line tools  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> VRT command line tools
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="library_root.html">Library API</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">VRT command line tools</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Program Listing for File print_header_test.cpp</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/api/program_listing_file__home_emil_vrt_tools_cmd_print_test_src_print_header_test.cpp.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="program-listing-for-file-print-header-test-cpp">
+<span id="program-listing-file-home-emil-vrt-tools-cmd-print-test-src-print-header-test-cpp"></span><h1>Program Listing for File print_header_test.cpp<a class="headerlink" href="#program-listing-for-file-print-header-test-cpp" title="Permalink to this headline">¶</a></h1>
+<p>↰ <a class="reference internal" href="file__home_emil_vrt_tools_cmd_print_test_src_print_header_test.cpp.html#file-home-emil-vrt-tools-cmd-print-test-src-print-header-test-cpp"><span class="std std-ref">Return to documentation for file</span></a> (<code class="docutils literal notranslate"><span class="pre">/home/emil/vrt_tools_cmd/print/test/src/print_header_test.cpp</span></code>)</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;gtest/gtest.h&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;vrt/vrt_init.h&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span> <span class="cpf">&quot;../../src/type_printer.h&quot;</span><span class="cp"></span>
+
+<span class="k">class</span> <span class="nc">PrintHeaderTest</span> <span class="o">:</span> <span class="k">public</span> <span class="o">::</span><span class="n">testing</span><span class="o">::</span><span class="n">Test</span> <span class="p">{</span>
+   <span class="k">protected</span><span class="o">:</span>
+    <span class="n">PrintHeaderTest</span><span class="p">()</span> <span class="o">:</span> <span class="n">h_</span><span class="p">()</span> <span class="p">{}</span>
+
+    <span class="kt">void</span> <span class="n">SetUp</span><span class="p">()</span> <span class="k">override</span> <span class="p">{</span> <span class="n">vrt_init_header</span><span class="p">(</span><span class="o">&amp;</span><span class="n">h_</span><span class="p">);</span> <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">TearDown</span><span class="p">()</span> <span class="k">override</span> <span class="p">{</span> <span class="n">vrt</span><span class="o">::</span><span class="n">print</span><span class="o">::</span><span class="n">print_header</span><span class="p">(</span><span class="n">h_</span><span class="p">);</span> <span class="p">}</span>
+
+    <span class="n">vrt_header</span> <span class="n">h_</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintHeaderTest</span><span class="p">,</span> <span class="n">None</span><span class="p">)</span> <span class="p">{}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintHeaderTest</span><span class="p">,</span> <span class="n">PacketType1</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">h_</span><span class="p">.</span><span class="n">packet_type</span> <span class="o">=</span> <span class="n">VRT_PT_EXT_CONTEXT</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintHeaderTest</span><span class="p">,</span> <span class="n">PacketType2</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">h_</span><span class="p">.</span><span class="n">packet_type</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="n">vrt_packet_type</span><span class="o">&gt;</span><span class="p">(</span><span class="mh">0xFFFFFFFF</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintHeaderTest</span><span class="p">,</span> <span class="n">HasClassId</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">h_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">class_id</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintHeaderTest</span><span class="p">,</span> <span class="n">HasTrailer</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">h_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">trailer</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintHeaderTest</span><span class="p">,</span> <span class="n">Tsm</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">h_</span><span class="p">.</span><span class="n">tsm</span> <span class="o">=</span> <span class="n">VRT_TSM_COARSE</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintHeaderTest</span><span class="p">,</span> <span class="n">Tsi1</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">h_</span><span class="p">.</span><span class="n">tsi</span> <span class="o">=</span> <span class="n">VRT_TSI_OTHER</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintHeaderTest</span><span class="p">,</span> <span class="n">Tsi2</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">h_</span><span class="p">.</span><span class="n">tsi</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="n">vrt_tsi</span><span class="o">&gt;</span><span class="p">(</span><span class="mh">0xFFFFFFFF</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintHeaderTest</span><span class="p">,</span> <span class="n">Tsf1</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">h_</span><span class="p">.</span><span class="n">tsf</span> <span class="o">=</span> <span class="n">VRT_TSF_FREE_RUNNING_COUNT</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintHeaderTest</span><span class="p">,</span> <span class="n">Tsf2</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">h_</span><span class="p">.</span><span class="n">tsf</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="n">vrt_tsf</span><span class="o">&gt;</span><span class="p">(</span><span class="mh">0xFFFFFFFF</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintHeaderTest</span><span class="p">,</span> <span class="n">PacketCount</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">h_</span><span class="p">.</span><span class="n">packet_count</span> <span class="o">=</span> <span class="mh">0xFF</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintHeaderTest</span><span class="p">,</span> <span class="n">PacketSize</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">h_</span><span class="p">.</span><span class="n">packet_size</span> <span class="o">=</span> <span class="mh">0xFEDC</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintHeaderTest</span><span class="p">,</span> <span class="n">EveryOther1</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">h_</span><span class="p">.</span><span class="n">packet_type</span>  <span class="o">=</span> <span class="n">VRT_PT_IF_CONTEXT</span><span class="p">;</span>
+    <span class="n">h_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">class_id</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="n">h_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">trailer</span>  <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">h_</span><span class="p">.</span><span class="n">tsm</span>          <span class="o">=</span> <span class="n">VRT_TSM_FINE</span><span class="p">;</span>
+    <span class="n">h_</span><span class="p">.</span><span class="n">tsi</span>          <span class="o">=</span> <span class="n">VRT_TSI_UTC</span><span class="p">;</span>
+    <span class="n">h_</span><span class="p">.</span><span class="n">tsf</span>          <span class="o">=</span> <span class="n">VRT_TSF_NONE</span><span class="p">;</span>
+    <span class="n">h_</span><span class="p">.</span><span class="n">packet_count</span> <span class="o">=</span> <span class="mh">0xF</span><span class="p">;</span>
+    <span class="n">h_</span><span class="p">.</span><span class="n">packet_size</span>  <span class="o">=</span> <span class="mh">0x0000</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintHeaderTest</span><span class="p">,</span> <span class="n">EveryOther2</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">h_</span><span class="p">.</span><span class="n">packet_type</span>  <span class="o">=</span> <span class="n">VRT_PT_IF_DATA_WITHOUT_STREAM_ID</span><span class="p">;</span>
+    <span class="n">h_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">class_id</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">h_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">trailer</span>  <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">h_</span><span class="p">.</span><span class="n">tsm</span>          <span class="o">=</span> <span class="n">VRT_TSM_FINE</span><span class="p">;</span>
+    <span class="n">h_</span><span class="p">.</span><span class="n">tsi</span>          <span class="o">=</span> <span class="n">VRT_TSI_NONE</span><span class="p">;</span>
+    <span class="n">h_</span><span class="p">.</span><span class="n">tsf</span>          <span class="o">=</span> <span class="n">VRT_TSF_SAMPLE_COUNT</span><span class="p">;</span>
+    <span class="n">h_</span><span class="p">.</span><span class="n">packet_count</span> <span class="o">=</span> <span class="mh">0x0</span><span class="p">;</span>
+    <span class="n">h_</span><span class="p">.</span><span class="n">packet_size</span>  <span class="o">=</span> <span class="mh">0xFFFF</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="n">PrintHeaderTest</span><span class="p">,</span> <span class="n">All</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">h_</span><span class="p">.</span><span class="n">packet_type</span>  <span class="o">=</span> <span class="n">VRT_PT_EXT_DATA_WITH_STREAM_ID</span><span class="p">;</span>
+    <span class="n">h_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">class_id</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">h_</span><span class="p">.</span><span class="n">has</span><span class="p">.</span><span class="n">trailer</span>  <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">h_</span><span class="p">.</span><span class="n">tsm</span>          <span class="o">=</span> <span class="n">VRT_TSM_FINE</span><span class="p">;</span>
+    <span class="n">h_</span><span class="p">.</span><span class="n">tsi</span>          <span class="o">=</span> <span class="n">VRT_TSI_OTHER</span><span class="p">;</span>
+    <span class="n">h_</span><span class="p">.</span><span class="n">tsf</span>          <span class="o">=</span> <span class="n">VRT_TSF_SAMPLE_COUNT</span><span class="p">;</span>
+    <span class="n">h_</span><span class="p">.</span><span class="n">packet_count</span> <span class="o">=</span> <span class="mh">0xC</span><span class="p">;</span>
+    <span class="n">h_</span><span class="p">.</span><span class="n">packet_size</span>  <span class="o">=</span> <span class="mh">0xBA98</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Emil Berg
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

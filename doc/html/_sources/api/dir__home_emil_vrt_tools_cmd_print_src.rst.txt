@@ -1,0 +1,28 @@
+.. _dir__home_emil_vrt_tools_cmd_print_src:
+
+
+Directory src
+=============
+
+
+|exhale_lsh| :ref:`Parent directory <dir__home_emil_vrt_tools_cmd_print>` (``/home/emil/vrt_tools_cmd/print``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+*Directory path:* ``/home/emil/vrt_tools_cmd/print/src``
+
+
+Files
+-----
+
+- :ref:`file__home_emil_vrt_tools_cmd_print_src_byte_swap.h`
+- :ref:`file__home_emil_vrt_tools_cmd_print_src_main.cpp`
+- :ref:`file__home_emil_vrt_tools_cmd_print_src_process.cpp`
+- :ref:`file__home_emil_vrt_tools_cmd_print_src_process.h`
+- :ref:`file__home_emil_vrt_tools_cmd_print_src_program_arguments.h`
+- :ref:`file__home_emil_vrt_tools_cmd_print_src_stringify.cpp`
+- :ref:`file__home_emil_vrt_tools_cmd_print_src_stringify.h`
+- :ref:`file__home_emil_vrt_tools_cmd_print_src_type_printer.cpp`
+- :ref:`file__home_emil_vrt_tools_cmd_print_src_type_printer.h`
+
+

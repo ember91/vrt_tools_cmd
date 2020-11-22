@@ -1,0 +1,13 @@
+.. _exhale_function_namespacevrt_1_1print_1a5bb0be2841a275f6f58ec54654c27df8:
+
+Function vrt::print::BoolToStr
+==============================
+
+- Defined in :ref:`file__home_emil_vrt_tools_cmd_print_src_stringify.h`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: vrt::print::BoolToStr(bool)

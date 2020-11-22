@@ -1,0 +1,63 @@
+
+.. _file__home_emil_vrt_tools_cmd_print_src_program_arguments.h:
+
+File program_arguments.h
+========================
+
+|exhale_lsh| :ref:`Parent directory <dir__home_emil_vrt_tools_cmd_print_src>` (``/home/emil/vrt_tools_cmd/print/src``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+Definition (``/home/emil/vrt_tools_cmd/print/src/program_arguments.h``)
+-----------------------------------------------------------------------
+
+
+.. toctree::
+   :maxdepth: 1
+
+   program_listing_file__home_emil_vrt_tools_cmd_print_src_program_arguments.h.rst
+
+
+
+
+
+Includes
+--------
+
+
+- ``string`` (:ref:`file__home_emil_vrt_tools_cmd_print_src_stringify.cpp`)
+
+
+
+Included By
+-----------
+
+
+- :ref:`file__home_emil_vrt_tools_cmd_print_src_process.h`
+
+- :ref:`file__home_emil_vrt_tools_cmd_print_src_main.cpp`
+
+- :ref:`file__home_emil_vrt_tools_cmd_print_src_process.cpp`
+
+
+
+
+Namespaces
+----------
+
+
+- :ref:`namespace_vrt`
+
+- :ref:`namespace_vrt__print`
+
+
+Classes
+-------
+
+
+- :ref:`exhale_struct_structvrt_1_1print_1_1ProgramArguments`
+

@@ -1,0 +1,57 @@
+
+.. _namespace_vrt__print:
+
+Namespace vrt::print
+====================
+
+
+.. contents:: Contents
+   :local:
+   :backlinks: none
+
+
+
+
+
+Classes
+-------
+
+
+- :ref:`exhale_struct_structvrt_1_1print_1_1ProgramArguments`
+
+
+Functions
+---------
+
+
+- :ref:`exhale_function_namespacevrt_1_1print_1a5bb0be2841a275f6f58ec54654c27df8`
+
+- :ref:`exhale_function_namespacevrt_1_1print_1a65580619504397aed5bd416cc75687a3`
+
+- :ref:`exhale_function_namespacevrt_1_1print_1af3766fbb9e8ad2a77f7e357759b5f5ab`
+
+- :ref:`exhale_function_namespacevrt_1_1print_1ab147dcd69b8d1c599f7d7ab793f866c2`
+
+- :ref:`exhale_function_namespacevrt_1_1print_1aa6d331b9ba540f1991ee16878cf28b3e`
+
+- :ref:`exhale_function_namespacevrt_1_1print_1afb3ccdb017bebaecf2af5645dea05e57`
+
+- :ref:`exhale_function_namespacevrt_1_1print_1ac753b78dee19942bcba784029ac4833e`
+
+- :ref:`exhale_function_namespacevrt_1_1print_1a904b2f1923743dd034f1480f0ac3f95c`
+
+- :ref:`exhale_function_namespacevrt_1_1print_1a049e4b1bdf3e1148cd61ae0a874881d1`
+
+- :ref:`exhale_function_namespacevrt_1_1print_1a549cf87dba4c2debea0f665d8f722a0f`
+
+- :ref:`exhale_function_namespacevrt_1_1print_1a681f9ed0a8d013e5472aa163c5963014`
+
+- :ref:`exhale_function_namespacevrt_1_1print_1a42bb5a8cf2dde88ebd69408660019361`
+
+- :ref:`exhale_function_namespacevrt_1_1print_1ab78bcc95694957d952a32c357c40723a`
+
+- :ref:`exhale_function_namespacevrt_1_1print_1a4c5be734afe8f188849ed7990a45e21d`
+
+- :ref:`exhale_function_namespacevrt_1_1print_1a3a568ba70af267eb2b4bb44db15001af`
+
+- :ref:`exhale_function_namespacevrt_1_1print_1ace7f98f1c7905bd7e5c9d9adce5a5138`

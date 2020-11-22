@@ -1,0 +1,13 @@
+.. _exhale_function_print__if__context__test_8cpp_1a44005fec4f42658e63a52b2ad8c51f57:
+
+Function TEST_F(PrintIfContextTest, GpsAsciiOui)
+================================================
+
+- Defined in :ref:`file__home_emil_vrt_tools_cmd_print_test_src_print_if_context_test.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: TEST_F(PrintIfContextTest, GpsAsciiOui)

@@ -1,0 +1,13 @@
+.. _exhale_function_namespacevrt_1_1print_1a049e4b1bdf3e1148cd61ae0a874881d1:
+
+Function vrt::print::print_fields
+=================================
+
+- Defined in :ref:`file__home_emil_vrt_tools_cmd_print_src_type_printer.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: vrt::print::print_fields(const vrt_header&, const vrt_fields&)

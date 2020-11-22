@@ -1,0 +1,13 @@
+.. _exhale_function_print__trailer__test_8cpp_1ae891132321653270d7382e9d319c0aee:
+
+Function TEST_F(PrintTrailerTest, EveryOther2)
+==============================================
+
+- Defined in :ref:`file__home_emil_vrt_tools_cmd_print_test_src_print_trailer_test.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: TEST_F(PrintTrailerTest, EveryOther2)

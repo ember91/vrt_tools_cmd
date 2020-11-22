@@ -1,0 +1,20 @@
+.. _dir__home_emil_vrt_tools_cmd_print_test:
+
+
+Directory test
+==============
+
+
+|exhale_lsh| :ref:`Parent directory <dir__home_emil_vrt_tools_cmd_print>` (``/home/emil/vrt_tools_cmd/print``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+*Directory path:* ``/home/emil/vrt_tools_cmd/print/test``
+
+Subdirectories
+--------------
+
+- :ref:`dir__home_emil_vrt_tools_cmd_print_test_src`
+
+
+

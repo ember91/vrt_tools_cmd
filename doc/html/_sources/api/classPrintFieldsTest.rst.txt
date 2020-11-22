@@ -1,0 +1,25 @@
+.. _exhale_class_classPrintFieldsTest:
+
+Class PrintFieldsTest
+=====================
+
+- Defined in :ref:`file__home_emil_vrt_tools_cmd_print_test_src_print_fields_test.cpp`
+
+
+Inheritance Relationships
+-------------------------
+
+Base Type
+*********
+
+- ``public Test``
+
+
+Class Documentation
+-------------------
+
+
+.. doxygenclass:: PrintFieldsTest
+   :members:
+   :protected-members:
+   :undoc-members:
