@@ -1,6 +1,3 @@
-# Now
-* Writing vrt_print -h doesn't work
-
 # Future
 * Capitalize letters in strings more consistently
 * C++-ify file generation scripts
