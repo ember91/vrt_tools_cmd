@@ -60,6 +60,9 @@ int main(int argc, const char** argv) {
     // Overall design: Print information directly when it's available. This makes debugging broken packet streams
     // easier. Flush only when exiting program for performance.
 
+    // Speed up output
+    std::ios_base::sync_with_stdio(false);
+
     CLI::App app(
         "Prints information in vita49 VRT format files in a human readable format. Only prints, does not "
         "validate packets.",
