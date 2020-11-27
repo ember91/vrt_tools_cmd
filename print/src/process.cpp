@@ -269,7 +269,7 @@ void process(const ProgramArguments& args) {
 
         // No need to actually read packet. Just skip ahead to the next.
         if (!do_print_packet) {
-            file.ignore(sizeof(uint32_t) * (header.packet_size - words_header));
+            file.seekg(sizeof(uint32_t) * (header.packet_size - words_header), std::ios_base::cur);
             continue;
         }
 
