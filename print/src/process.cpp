@@ -296,6 +296,8 @@ void process(const ProgramArguments& args) {
         vrt_fields fields;
         int32_t    words_fields{parse_fields(&buf, i, header, words_header, &fields)};
         print_fields(header, fields);
+
+        // Parse, print, and validate IF context
         int32_t        words_if_context{0};
         vrt_if_context if_context;
         if (header.packet_type == VRT_PT_IF_CONTEXT) {
@@ -329,7 +331,7 @@ void process(const ProgramArguments& args) {
         }
     }
 
-    // Ensure test is output
+    // Ensure text is output
     std::cout << std::flush;
 }
 
