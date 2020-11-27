@@ -41,6 +41,7 @@ Reference lock                                                              true
 * C++17 compiler, such as GCC
 * CMake
 * Build system such as GNU Make
+* [libvrt](https://github.com/ember91/libvrt)
 * (Google test framework, for the tests)
 
 ## Running tests
