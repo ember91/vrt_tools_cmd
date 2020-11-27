@@ -1,30 +1,30 @@
-#include <math.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <fstream>
+#include <iostream>
 
 #include <vrt/vrt_init.h>
 #include <vrt/vrt_string.h>
 #include <vrt/vrt_write.h>
 
 /* Size of packet in 32-bit words */
-#define SIZE 515
+static const size_t SIZE{515};
 /* Sample rate [Hz] */
-#define SAMPLE_RATE 44100.0F
+static const float SAMPLE_RATE{44100.0F};
 /* Center frequency [Hz] */
-#define CENTER_FREQUENCY 10000.0F
-/* M_PI in math.h is nonstandard :( */
-#define PI 3.1415926F
+static const float CENTER_FREQUENCY{10000.0F};
+/* M_PI in cmath is nonstandard :( */
+static const float PI{3.1415926F};
 
 int main() {
     /* Packet data buffer */
-    uint32_t b[SIZE];
+    std::array<uint32_t, SIZE> b;
 
     /* Generate signal data */
-    float s[SIZE - 3];
-    for (int i{0}; i < SIZE - 3; ++i) {
-        s[i] = sinf(2.0F * PI * CENTER_FREQUENCY * i / SAMPLE_RATE);
+    std::array<float, SIZE - 3> s;
+    for (int i{0}; i < s.size(); ++i) {
+        s[i] = std::sin(2.0F * PI * CENTER_FREQUENCY * i / SAMPLE_RATE);
     }
 
     /* Initialize to reasonable values */
@@ -45,48 +45,49 @@ int main() {
 
     /* Write header */
     int32_t offset{0};
-    int32_t rv{vrt_write_header(&h, b + offset, SIZE - offset, true)};
+    int32_t rv{vrt_write_header(&h, b.data() + offset, SIZE - offset, true)};
     if (rv < 0) {
-        fprintf(stderr, "Failed to write header: %s\n", vrt_string_error(rv));
+        std::cerr << "Failed to write header: " << vrt_string_error(rv) << std::endl;
         return EXIT_FAILURE;
     }
     offset += rv;
 
     /* Write fields, which in this case is Stream ID */
-    rv = vrt_write_fields(&h, &f, b + offset, SIZE - offset, true);
+    rv = vrt_write_fields(&h, &f, b.data() + offset, SIZE - offset, true);
     if (rv < 0) {
-        fprintf(stderr, "Failed to write fields section: %s\n", vrt_string_error(rv));
+        std::cerr << "Failed to write fields section: " << vrt_string_error(rv) << std::endl;
         return EXIT_FAILURE;
     }
     offset += rv;
 
     /* Copy signal data from signal to packet buffer.
      * This could also have been written directly into the buffer. */
-    memcpy(b + offset, s, sizeof(float) * (SIZE - 3));
+    std::copy_n(s.data(), (SIZE - 3), b.data() + offset);
     offset += SIZE - 3;
 
     /* Write trailer */
-    rv = vrt_write_trailer(&t, b + offset, SIZE - offset, true);
+    rv = vrt_write_trailer(&t, b.data() + offset, SIZE - offset, true);
     if (rv < 0) {
-        fprintf(stderr, "Failed to write trailer: %s\n", vrt_string_error(rv));
+        std::cerr << "Failed to write trailer: " << vrt_string_error(rv) << std::endl;
         return EXIT_FAILURE;
     }
 
     /* Write generated packet to file */
-    FILE* fp{fopen("data_100.vrt", "wb")};
-    if (fp == NULL) {
-        fprintf(stderr, "Failed to open file\n");
+    std::string   file_path("data_100.vrt");
+    std::ofstream fs(file_path, std::ios::out | std::ios::binary | std::ios::trunc);
+    if (!fs) {
+        std::cerr << "Failed to open file '" << file_path << "'" << std::endl;
         return EXIT_FAILURE;
     }
     for (int i{0}; i < 100; ++i) {
-        if (fwrite(b, sizeof(uint32_t) * SIZE, 1, fp) != 1) {
-            fprintf(stderr, "Failed to write to file\n");
-            fclose(fp);
+        fs.write(reinterpret_cast<char*>(b.data()), sizeof(uint32_t) * SIZE);
+        if (!fs) {
+            std::cerr << "Failed to write to file '" << file_path << "'" << std::endl;
             return EXIT_FAILURE;
         }
     }
 
-    fclose(fp);
+    fs.close();
 
     return EXIT_SUCCESS;
 }

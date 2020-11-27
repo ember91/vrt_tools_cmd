@@ -1,6 +1,5 @@
 # Future
 * Capitalize letters in strings more consistently
-* C++-ify file generation scripts
 * Format integer and fractional second timestamps in both fields and context section nicely
 * Format timestamp adjustment more nicely
 * Format calibration time more nicely

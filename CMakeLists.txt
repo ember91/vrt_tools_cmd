@@ -136,3 +136,4 @@ endif()
 find_package(Libvrt REQUIRED)
 
 add_subdirectory(print)
+add_subdirectory(gen)

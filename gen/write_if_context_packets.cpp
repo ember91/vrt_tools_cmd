@@ -1,8 +1,8 @@
-#include <math.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <fstream>
+#include <iostream>
 
 #include <vrt/vrt_init.h>
 #include <vrt/vrt_string.h>
@@ -10,11 +10,11 @@
 #include <vrt/vrt_write.h>
 
 /* Buffer size in 32-bit words */
-#define SIZE 515
+static const size_t SIZE{515};
 
 int main() {
     /* Packet data buffer */
-    uint32_t b[SIZE];
+    std::array<uint32_t, SIZE> b;
 
     /* Initialize to reasonable values */
     vrt_header     h;
@@ -36,45 +36,46 @@ int main() {
 
     /* Write header */
     int32_t offset{0};
-    int32_t rv{vrt_write_header(&h, b + offset, SIZE - offset, true)};
+    int32_t rv{vrt_write_header(&h, b.data() + offset, SIZE - offset, true)};
     if (rv < 0) {
-        fprintf(stderr, "Failed to write header: %s\n", vrt_string_error(rv));
+        std::cerr << "Failed to write header: " << vrt_string_error(rv) << std::endl;
         return EXIT_FAILURE;
     }
     offset += rv;
 
     /* Write fields */
-    rv = vrt_write_fields(&h, &f, b + offset, SIZE - offset, true);
+    rv = vrt_write_fields(&h, &f, b.data() + offset, SIZE - offset, true);
     if (rv < 0) {
-        fprintf(stderr, "Failed to write fields section: %s\n", vrt_string_error(rv));
+        std::cerr << "Failed to write fields section: " << vrt_string_error(rv) << std::endl;
         return EXIT_FAILURE;
     }
     offset += rv;
 
     /* Write context */
-    rv = vrt_write_if_context(&c, b + offset, SIZE - offset, true);
+    rv = vrt_write_if_context(&c, b.data() + offset, SIZE - offset, true);
     if (rv < 0) {
-        fprintf(stderr, "Failed to write context: %s\n", vrt_string_error(rv));
+        std::cerr << "Failed to write context: " << vrt_string_error(rv) << std::endl;
         return EXIT_FAILURE;
     }
     offset += rv;
     int32_t size{offset};
 
     /* Write generated packet to file */
-    FILE* fp{fopen("if_context_100.vrt", "wb")};
-    if (fp == NULL) {
-        fprintf(stderr, "Failed to open file\n");
+    std::string   file_path("if_context_100.vrt");
+    std::ofstream fs(file_path, std::ios::out | std::ios::binary | std::ios::trunc);
+    if (!fs) {
+        std::cerr << "Failed to open file '" << file_path << "'" << std::endl;
         return EXIT_FAILURE;
     }
     for (int i{0}; i < 100; ++i) {
-        if (fwrite(b, sizeof(uint32_t) * size, 1, fp) != 1) {
-            fprintf(stderr, "Failed to write to file\n");
-            fclose(fp);
+        fs.write(reinterpret_cast<char*>(b.data()), sizeof(uint32_t) * size);
+        if (!fs) {
+            std::cerr << "Failed to write to file '" << file_path << "'" << std::endl;
             return EXIT_FAILURE;
         }
     }
 
-    fclose(fp);
+    fs.close();
 
     return EXIT_SUCCESS;
 }
