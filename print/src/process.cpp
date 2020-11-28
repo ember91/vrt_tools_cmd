@@ -96,7 +96,7 @@ static int32_t parse_fields(std::vector<uint32_t>* buf,
  * \throw std::runtime_error If packet size reported by header doesn't match calculated size.
  */
 static int32_t parse_body(size_t i, const vrt_header& header, int32_t words_header_fields_if_context) {
-    uint32_t words_non_body{words_header_fields_if_context + vrt_words_trailer(&header)};
+    int32_t words_non_body{words_header_fields_if_context + vrt_words_trailer(&header)};
     switch (header.packet_type) {
         case VRT_PT_IF_DATA_WITHOUT_STREAM_ID:
         case VRT_PT_IF_DATA_WITH_STREAM_ID:
@@ -153,8 +153,7 @@ static int32_t parse_body(size_t i, const vrt_header& header, int32_t words_head
  * \throw std::runtime_error If there is an unknown error.
  */
 static int32_t parse_trailer(std::vector<uint32_t>* buf, size_t i, const vrt_header& header, vrt_trailer* trailer) {
-    int32_t words{
-        vrt_read_trailer(buf->data() + header.packet_size - VRT_WORDS_MAX_TRAILER, VRT_WORDS_MAX_TRAILER, trailer)};
+    int32_t words{vrt_read_trailer(buf->data() + header.packet_size - VRT_WORDS_TRAILER, VRT_WORDS_TRAILER, trailer)};
     if (words < 0) {
         std::stringstream ss;
         ss << "Packet #" << i << ": Unknown trailer parse error: " << vrt_string_error(words) << std::endl;

@@ -118,7 +118,7 @@ void print_header(const vrt_header& header) {
  * \param fields Fields.
  */
 void print_fields(const vrt_header& header, const vrt_fields& fields) {
-    if (vrt_has_stream_id(header.packet_type)) {
+    if (vrt_has_stream_id(&header)) {
         WriteCols("Stream ID", Uint32ToHexStr(fields.stream_id));
     }
     if (header.has.class_id) {
