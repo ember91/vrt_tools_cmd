@@ -17,48 +17,23 @@ int main() {
     std::array<uint32_t, SIZE> b;
 
     /* Initialize to reasonable values */
-    vrt_header     h;
-    vrt_fields     f;
-    vrt_if_context c;
-    vrt_init_header(&h);
-    vrt_init_fields(&f);
-    vrt_init_if_context(&c);
+    vrt_packet p;
+    vrt_init_packet(&p);
 
     /* Configure */
-    h.packet_type     = VRT_PT_IF_CONTEXT;
-    f.stream_id       = 0xDEADBEEF;
-    c.has.bandwidth   = true;
-    c.bandwidth       = 45.0;
-    c.has.sample_rate = true;
-    c.sample_rate     = 236.0;
+    p.header.packet_type         = VRT_PT_IF_CONTEXT;
+    p.fields.stream_id           = 0xDEADBEEF;
+    p.if_context.has.bandwidth   = true;
+    p.if_context.bandwidth       = 45.0;
+    p.if_context.has.sample_rate = true;
+    p.if_context.sample_rate     = 236.0;
 
-    h.packet_size = VRT_WORDS_HEADER + vrt_words_fields(&h) + vrt_words_if_context(&c);
-
-    /* Write header */
-    int32_t offset{0};
-    int32_t rv{vrt_write_header(&h, b.data() + offset, SIZE - offset, true)};
-    if (rv < 0) {
-        std::cerr << "Failed to write header: " << vrt_string_error(rv) << std::endl;
+    /* Write packet */
+    int32_t size{vrt_write_packet(&p, b.data(), SIZE, true)};
+    if (size < 0) {
+        std::cerr << "Failed to write packet: " << vrt_string_error(size) << std::endl;
         return EXIT_FAILURE;
     }
-    offset += rv;
-
-    /* Write fields */
-    rv = vrt_write_fields(&h, &f, b.data() + offset, SIZE - offset, true);
-    if (rv < 0) {
-        std::cerr << "Failed to write fields section: " << vrt_string_error(rv) << std::endl;
-        return EXIT_FAILURE;
-    }
-    offset += rv;
-
-    /* Write context */
-    rv = vrt_write_if_context(&c, b.data() + offset, SIZE - offset, true);
-    if (rv < 0) {
-        std::cerr << "Failed to write context: " << vrt_string_error(rv) << std::endl;
-        return EXIT_FAILURE;
-    }
-    offset += rv;
-    int32_t size{offset};
 
     /* Write generated packet to file */
     std::string   file_path("if_context_100.vrt");
@@ -75,6 +50,7 @@ int main() {
         }
     }
 
+    /* Cleanup */
     fs.close();
 
     return EXIT_SUCCESS;
