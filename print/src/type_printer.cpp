@@ -242,14 +242,7 @@ void print_if_context(const vrt_if_context& if_context) {
         if (if_context.state_and_event_indicators.has.sample_loss) {
             WriteCols("Sample loss", BoolToStr(if_context.state_and_event_indicators.sample_loss), 1);
         }
-        WriteCols("User defined 7", BoolToStr(if_context.state_and_event_indicators.user_defined7), 1);
-        WriteCols("User defined 6", BoolToStr(if_context.state_and_event_indicators.user_defined6), 1);
-        WriteCols("User defined 5", BoolToStr(if_context.state_and_event_indicators.user_defined5), 1);
-        WriteCols("User defined 4", BoolToStr(if_context.state_and_event_indicators.user_defined4), 1);
-        WriteCols("User defined 3", BoolToStr(if_context.state_and_event_indicators.user_defined3), 1);
-        WriteCols("User defined 2", BoolToStr(if_context.state_and_event_indicators.user_defined2), 1);
-        WriteCols("User defined 1", BoolToStr(if_context.state_and_event_indicators.user_defined1), 1);
-        WriteCols("User defined 0", BoolToStr(if_context.state_and_event_indicators.user_defined0), 1);
+        WriteCols("User defined", Uint32ToHexStr(if_context.state_and_event_indicators.user_defined, 2), 1);
     }
     if (if_context.has.data_packet_payload_format) {
         std::cout << "Data packet payload format\n";

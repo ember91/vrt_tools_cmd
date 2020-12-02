@@ -222,44 +222,9 @@ TEST_F(PrintIfContextTest, StateAndEventIndicatorsBothSampleLoss) {
     c_.state_and_event_indicators.sample_loss     = true;
 }
 
-TEST_F(PrintIfContextTest, StateAndEventIndicatorsBothUserDefined7) {
-    c_.has.state_and_event_indicators           = true;
-    c_.state_and_event_indicators.user_defined7 = true;
-}
-
-TEST_F(PrintIfContextTest, StateAndEventIndicatorsBothUserDefined6) {
-    c_.has.state_and_event_indicators           = true;
-    c_.state_and_event_indicators.user_defined6 = true;
-}
-
-TEST_F(PrintIfContextTest, StateAndEventIndicatorsBothUserDefined5) {
-    c_.has.state_and_event_indicators           = true;
-    c_.state_and_event_indicators.user_defined5 = true;
-}
-
-TEST_F(PrintIfContextTest, StateAndEventIndicatorsBothUserDefined4) {
-    c_.has.state_and_event_indicators           = true;
-    c_.state_and_event_indicators.user_defined4 = true;
-}
-
-TEST_F(PrintIfContextTest, StateAndEventIndicatorsBothUserDefined3) {
-    c_.has.state_and_event_indicators           = true;
-    c_.state_and_event_indicators.user_defined3 = true;
-}
-
-TEST_F(PrintIfContextTest, StateAndEventIndicatorsBothUserDefined2) {
-    c_.has.state_and_event_indicators           = true;
-    c_.state_and_event_indicators.user_defined2 = true;
-}
-
-TEST_F(PrintIfContextTest, StateAndEventIndicatorsBothUserDefined1) {
-    c_.has.state_and_event_indicators           = true;
-    c_.state_and_event_indicators.user_defined1 = true;
-}
-
-TEST_F(PrintIfContextTest, StateAndEventIndicatorsBothUserDefined0) {
-    c_.has.state_and_event_indicators           = true;
-    c_.state_and_event_indicators.user_defined0 = true;
+TEST_F(PrintIfContextTest, StateAndEventIndicatorsBothUserDefined) {
+    c_.has.state_and_event_indicators          = true;
+    c_.state_and_event_indicators.user_defined = 0xFF;
 }
 
 TEST_F(PrintIfContextTest, DataPacketPayloadFormatPackingMethod) {
@@ -772,14 +737,7 @@ TEST_F(PrintIfContextTest, EveryOther2) {
     c_.state_and_event_indicators.spectral_inversion     = true;
     c_.state_and_event_indicators.over_range             = true;
     c_.state_and_event_indicators.sample_loss            = true;
-    c_.state_and_event_indicators.user_defined7          = true;
-    c_.state_and_event_indicators.user_defined6          = true;
-    c_.state_and_event_indicators.user_defined5          = true;
-    c_.state_and_event_indicators.user_defined4          = true;
-    c_.state_and_event_indicators.user_defined3          = true;
-    c_.state_and_event_indicators.user_defined2          = true;
-    c_.state_and_event_indicators.user_defined1          = true;
-    c_.state_and_event_indicators.user_defined0          = true;
+    c_.state_and_event_indicators.user_defined           = 0xFF;
 
     c_.formatted_gps_geolocation.tsi                         = VRT_TSI_OTHER;
     c_.formatted_gps_geolocation.tsf                         = VRT_TSF_FREE_RUNNING_COUNT;
@@ -887,14 +845,7 @@ TEST_F(PrintIfContextTest, All) {
     c_.state_and_event_indicators.spectral_inversion     = true;
     c_.state_and_event_indicators.over_range             = true;
     c_.state_and_event_indicators.sample_loss            = true;
-    c_.state_and_event_indicators.user_defined7          = true;
-    c_.state_and_event_indicators.user_defined6          = true;
-    c_.state_and_event_indicators.user_defined5          = true;
-    c_.state_and_event_indicators.user_defined4          = true;
-    c_.state_and_event_indicators.user_defined3          = true;
-    c_.state_and_event_indicators.user_defined2          = true;
-    c_.state_and_event_indicators.user_defined1          = true;
-    c_.state_and_event_indicators.user_defined0          = true;
+    c_.state_and_event_indicators.user_defined           = 0xFF;
 
     c_.data_packet_payload_format.packing_method          = VRT_PM_LINK_EFFICIENT;
     c_.data_packet_payload_format.real_or_complex         = VRT_ROC_COMPLEX_POLAR;
