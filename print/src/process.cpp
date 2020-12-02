@@ -40,7 +40,7 @@ static int32_t parse_header(std::vector<uint32_t>* buf, size_t i, vrt_header* he
         if (words < 0) {
             // Should never end up here, since buffer size is sufficient
             std::stringstream ss;
-            ss << "Packet #" << i << ": Unknown header parse error: " << vrt_string_error(words) << std::endl;
+            ss << "Packet #" << i << ": Unknown header parse error: " << vrt_string_error(words);
             throw std::runtime_error(ss.str());
         }
         std::cerr << "Warning: Failed to validate header: " << vrt_string_error(words) << '\n';
@@ -75,7 +75,7 @@ static int32_t parse_fields(std::vector<uint32_t>* buf,
         if (words < 0) {
             // Should never end up here, since buffer size is sufficient
             std::stringstream ss;
-            ss << "Packet #" << i << ": Unknown fields section parse error: " << vrt_string_error(words) << std::endl;
+            ss << "Packet #" << i << ": Unknown fields section parse error: " << vrt_string_error(words);
             throw std::runtime_error(ss.str());
         }
         std::cerr << "Warning: Failed to validate fields section: " << vrt_string_error(words) << '\n';
@@ -106,7 +106,7 @@ static int32_t parse_body(size_t i, const vrt_header& header, int32_t words_head
             if (words_non_body > header.packet_size) {
                 std::stringstream ss;
                 ss << "Packet #" << i << ": Packet size " << header.packet_size << " but " << words_non_body
-                   << " words required for header, fields section, and trailer" << std::endl;
+                   << " words required for header, fields section, and trailer";
                 throw std::runtime_error(ss.str());
             }
             break;
@@ -116,7 +116,7 @@ static int32_t parse_body(size_t i, const vrt_header& header, int32_t words_head
             if (words_non_body != header.packet_size) {
                 std::stringstream ss;
                 ss << "Packet #" << i << ": Packet size " << header.packet_size << " but " << words_non_body
-                   << " words required for header, fields section, and context" << std::endl;
+                   << " words required for header, fields section, and context";
                 throw std::runtime_error(ss.str());
             }
             break;
@@ -126,7 +126,7 @@ static int32_t parse_body(size_t i, const vrt_header& header, int32_t words_head
             if (words_non_body > header.packet_size) {
                 std::stringstream ss;
                 ss << "Packet #" << i << ": Packet size " << header.packet_size << " but " << words_non_body
-                   << " words required for header and fields section" << std::endl;
+                   << " words required for header and fields section";
                 throw std::runtime_error(ss.str());
             }
             break;
@@ -156,7 +156,7 @@ static int32_t parse_trailer(std::vector<uint32_t>* buf, size_t i, const vrt_hea
     int32_t words{vrt_read_trailer(buf->data() + header.packet_size - VRT_WORDS_TRAILER, VRT_WORDS_TRAILER, trailer)};
     if (words < 0) {
         std::stringstream ss;
-        ss << "Packet #" << i << ": Unknown trailer parse error: " << vrt_string_error(words) << std::endl;
+        ss << "Packet #" << i << ": Unknown trailer parse error: " << vrt_string_error(words);
         throw std::runtime_error(ss.str());
     }
 
@@ -192,7 +192,7 @@ static int32_t parse_if_context(std::vector<uint32_t>* buf,
             if (words < 0) {
                 // Should never end up here, since buffer size is sufficient
                 std::stringstream ss;
-                ss << "Packet #" << i << ": Unknown IF context parse error: " << vrt_string_error(words) << std::endl;
+                ss << "Packet #" << i << ": Unknown IF context parse error: " << vrt_string_error(words);
                 throw std::runtime_error(ss.str());
             }
             std::cerr << "Warning: Failed to validate IF context: " << vrt_string_error(words) << '\n';
@@ -217,7 +217,7 @@ void process(const ProgramArguments& args) {
     std::ifstream file(args.file_path, std::ios::in | std::ios::binary);
     if (file.fail()) {
         std::stringstream ss;
-        ss << "Failed to open file '" << args.file_path << "'" << std::endl;
+        ss << "Failed to open file '" << args.file_path << "'";
         throw std::runtime_error(ss.str());
     }
 
@@ -234,7 +234,7 @@ void process(const ProgramArguments& args) {
         file.read(reinterpret_cast<char*>(buf.data()), sizeof(uint32_t) * VRT_WORDS_HEADER);
         if (file.gcount() != 0 && file.gcount() != sizeof(uint32_t) * VRT_WORDS_HEADER) {
             std::stringstream ss;
-            ss << "Packet #" << i << ": Failed to read header" << std::endl;
+            ss << "Packet #" << i << ": Failed to read header";
             throw std::runtime_error(ss.str());
         }
         if (file.eof()) {
@@ -262,7 +262,7 @@ void process(const ProgramArguments& args) {
         }
         if (header.packet_size == 0) {
             std::stringstream ss;
-            ss << "Packet #" << i << ": Header has packet_size 0 words" << std::endl;
+            ss << "Packet #" << i << ": Header has packet_size 0 words";
             throw std::runtime_error(ss.str());
         }
 
@@ -282,7 +282,7 @@ void process(const ProgramArguments& args) {
         // Do not handle EOF here
         if (file.gcount() != sizeof(uint32_t) * (header.packet_size - words_header)) {
             std::stringstream ss;
-            ss << "Packet #" << i << ": Failed to read remainder of packet" << std::endl;
+            ss << "Packet #" << i << ": Failed to read remainder of packet";
             throw std::runtime_error(ss.str());
         }
         if (args.do_byte_swap) {
