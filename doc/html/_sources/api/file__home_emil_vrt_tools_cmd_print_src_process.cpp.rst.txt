@@ -29,7 +29,7 @@ Includes
 --------
 
 
-- ``byte_swap.h`` (:ref:`file__home_emil_vrt_tools_cmd_print_src_byte_swap.h`)
+- ``byte_swap.h``
 
 - ``cstddef``
 

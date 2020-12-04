@@ -15,7 +15,6 @@ Directory src
 Files
 -----
 
-- :ref:`file__home_emil_vrt_tools_cmd_print_src_byte_swap.h`
 - :ref:`file__home_emil_vrt_tools_cmd_print_src_main.cpp`
 - :ref:`file__home_emil_vrt_tools_cmd_print_src_process.cpp`
 - :ref:`file__home_emil_vrt_tools_cmd_print_src_process.h`

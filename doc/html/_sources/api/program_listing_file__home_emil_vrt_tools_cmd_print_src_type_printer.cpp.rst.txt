@@ -16,14 +16,15 @@ Program Listing for File type_printer.cpp
    #include <string>
    
    #include <vrt/vrt_string.h>
+   #include <vrt/vrt_types.h>
    #include <vrt/vrt_util.h>
    
    #include "stringify.h"
    
    namespace vrt::print {
    
-   static void print_formatted_geolocation(const vrt_formatted_geolocation& g) {
-       std::cout << "Formatted GPS geolocation\n";
+   static void print_formatted_geolocation(const vrt_formatted_geolocation& g, bool gps) {
+       std::cout << "Formatted " << (gps ? "GPS" : "INS") << " geolocation\n";
        WriteCols("TSI", vrt_string_tsi(g.tsi), 1);
        WriteCols("TSF", vrt_string_tsf(g.tsf), 1);
        WriteCols("OUI", Uint32ToHexStr(g.oui, 6), 1);
@@ -56,8 +57,8 @@ Program Listing for File type_printer.cpp
        }
    }
    
-   static void print_ephemeris(const vrt_ephemeris& e) {
-       std::cout << "ECEF ephemeris\n";
+   static void print_ephemeris(const vrt_ephemeris& e, bool ecef) {
+       std::cout << (ecef ? "ECEF" : "Relative") << " ephemeris\n";
        WriteCols("TSI", vrt_string_tsi(e.tsi), 1);
        WriteCols("TSF", vrt_string_tsf(e.tsf), 1);
        WriteCols("OUI", Uint32ToHexStr(e.oui, 6), 1);
@@ -107,7 +108,7 @@ Program Listing for File type_printer.cpp
    }
    
    void print_fields(const vrt_header& header, const vrt_fields& fields) {
-       if (vrt_has_stream_id(header.packet_type)) {
+       if (vrt_has_stream_id(&header)) {
            WriteCols("Stream ID", Uint32ToHexStr(fields.stream_id));
        }
        if (header.has.class_id) {
@@ -220,14 +221,7 @@ Program Listing for File type_printer.cpp
            if (if_context.state_and_event_indicators.has.sample_loss) {
                WriteCols("Sample loss", BoolToStr(if_context.state_and_event_indicators.sample_loss), 1);
            }
-           WriteCols("User defined 7", BoolToStr(if_context.state_and_event_indicators.user_defined7), 1);
-           WriteCols("User defined 6", BoolToStr(if_context.state_and_event_indicators.user_defined6), 1);
-           WriteCols("User defined 5", BoolToStr(if_context.state_and_event_indicators.user_defined5), 1);
-           WriteCols("User defined 4", BoolToStr(if_context.state_and_event_indicators.user_defined4), 1);
-           WriteCols("User defined 3", BoolToStr(if_context.state_and_event_indicators.user_defined3), 1);
-           WriteCols("User defined 2", BoolToStr(if_context.state_and_event_indicators.user_defined2), 1);
-           WriteCols("User defined 1", BoolToStr(if_context.state_and_event_indicators.user_defined1), 1);
-           WriteCols("User defined 0", BoolToStr(if_context.state_and_event_indicators.user_defined0), 1);
+           WriteCols("User defined", Uint32ToHexStr(if_context.state_and_event_indicators.user_defined, 2), 1);
        }
        if (if_context.has.data_packet_payload_format) {
            std::cout << "Data packet payload format\n";
@@ -246,16 +240,16 @@ Program Listing for File type_printer.cpp
            WriteCols("Vector size", std::to_string(if_context.data_packet_payload_format.vector_size), 1);
        }
        if (if_context.has.formatted_gps_geolocation) {
-           print_formatted_geolocation(if_context.formatted_gps_geolocation);
+           print_formatted_geolocation(if_context.formatted_gps_geolocation, true);
        }
        if (if_context.has.formatted_ins_geolocation) {
-           print_formatted_geolocation(if_context.formatted_ins_geolocation);
+           print_formatted_geolocation(if_context.formatted_ins_geolocation, false);
        }
        if (if_context.has.ecef_ephemeris) {
-           print_ephemeris(if_context.ecef_ephemeris);
+           print_ephemeris(if_context.ecef_ephemeris, true);
        }
        if (if_context.has.relative_ephemeris) {
-           print_ephemeris(if_context.relative_ephemeris);
+           print_ephemeris(if_context.relative_ephemeris, false);
        }
        if (if_context.has.ephemeris_reference_identifier) {
            WriteCols("Ephemeris reference identifier", Uint32ToHexStr(if_context.ephemeris_reference_identifier));

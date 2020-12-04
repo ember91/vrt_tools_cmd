@@ -1,0 +1,13 @@
+.. _exhale_function_namespacevrt_1_1print_1a4a5abcd41d878056803031f4a762d51f:
+
+Function vrt::print::print_formatted_geolocation
+================================================
+
+- Defined in :ref:`file__home_emil_vrt_tools_cmd_print_src_type_printer.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: vrt::print::print_formatted_geolocation(const vrt_formatted_geolocation&, bool)

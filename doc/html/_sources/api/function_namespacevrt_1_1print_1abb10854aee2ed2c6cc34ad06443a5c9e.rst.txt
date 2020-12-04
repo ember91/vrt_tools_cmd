@@ -1,0 +1,13 @@
+.. _exhale_function_namespacevrt_1_1print_1abb10854aee2ed2c6cc34ad06443a5c9e:
+
+Function vrt::print::print_ephemeris
+====================================
+
+- Defined in :ref:`file__home_emil_vrt_tools_cmd_print_src_type_printer.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: vrt::print::print_ephemeris(const vrt_ephemeris&, bool)

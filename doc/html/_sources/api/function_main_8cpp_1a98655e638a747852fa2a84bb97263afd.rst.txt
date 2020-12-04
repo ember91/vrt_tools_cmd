@@ -1,0 +1,13 @@
+.. _exhale_function_main_8cpp_1a98655e638a747852fa2a84bb97263afd:
+
+Function setup_arg_parse
+========================
+
+- Defined in :ref:`file__home_emil_vrt_tools_cmd_print_src_main.cpp`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: setup_arg_parse(CLI::App *)
