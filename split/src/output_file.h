@@ -16,13 +16,13 @@ class OutputFile {
     OutputFile(const std::filesystem::path& file_path_in, std::shared_ptr<vrt_packet> packet);
     virtual ~OutputFile();
 
-    std::filesystem::path generate_temporary_file_path(const std::filesystem::path& file_path_in);
+    std::filesystem::path generate_temporary_file_path(const std::filesystem::path& file_path_in) const;
 
     void write(const vrt_header& header, std::vector<uint32_t>* buf);
     void rename(const std::filesystem::path& p);
 
-    void remove_temporary();
-    void remove_new();
+    void remove_temporary() const;
+    void remove_new() const;
 
    private:
     std::shared_ptr<vrt_packet> packet_;

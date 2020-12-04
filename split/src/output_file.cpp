@@ -55,7 +55,7 @@ OutputFile::~OutputFile() {
  * \param file_path_in Input file path.
  * \return Temporary file path.
  */
-fs::path OutputFile::generate_temporary_file_path(const fs::path& file_path_in) {
+fs::path OutputFile::generate_temporary_file_path(const fs::path& file_path_in) const {
     // Separate path into parts
     fs::path dir{file_path_in.parent_path()};
     fs::path stem{file_path_in.stem()};
@@ -113,7 +113,7 @@ void OutputFile::rename(const fs::path& p) {
  *
  * \throw std::filesystem::filesystem_error On I/O error.
  */
-void OutputFile::remove_temporary() {
+void OutputFile::remove_temporary() const {
     if (!file_path_tmp_.empty()) {
         fs::remove(file_path_tmp_);
     }
@@ -124,7 +124,7 @@ void OutputFile::remove_temporary() {
  *
  * \throw std::filesystem::filesystem_error On I/O error.
  */
-void OutputFile::remove_new() {
+void OutputFile::remove_new() const {
     if (!file_path_new_.empty()) {
         fs::remove(file_path_new_);
     }
