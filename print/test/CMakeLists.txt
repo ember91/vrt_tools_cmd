@@ -38,6 +38,9 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
   endif()
 endif()
 
+# Set C++ standard
+set_target_properties(${TARGET_NAME} PROPERTIES CXX_STANDARD 17)
+
 # Add include directory
 target_include_directories(${TARGET_NAME}
                            PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../include/)

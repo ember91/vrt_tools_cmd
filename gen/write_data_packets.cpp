@@ -1,11 +1,14 @@
-#include <algorithm>
 #include <array>
 #include <cmath>
+#include <cstdint>
+#include <cstdlib>
 #include <fstream>
 #include <iostream>
+#include <string>
 
 #include <vrt/vrt_init.h>
 #include <vrt/vrt_string.h>
+#include <vrt/vrt_types.h>
 #include <vrt/vrt_write.h>
 
 /* Size of packet in 32-bit words */
@@ -24,7 +27,7 @@ int main() {
     /* Generate signal data */
     std::array<float, SIZE - 3> s;
     for (int i{0}; i < s.size(); ++i) {
-        s[i] = std::sin(2.0F * PI * CENTER_FREQUENCY * i / SAMPLE_RATE);
+        s[i] = std::sin(2.0F * PI * CENTER_FREQUENCY * static_cast<float>(i) / SAMPLE_RATE);
     }
 
     /* Initialize to reasonable values */

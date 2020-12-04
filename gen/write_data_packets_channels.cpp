@@ -1,14 +1,17 @@
-#include <algorithm>
 #include <array>
 #include <cmath>
+#include <cstdint>
+#include <cstdlib>
 #include <fstream>
 #include <functional>
 #include <iostream>
 #include <sstream>
 #include <stdexcept>
+#include <string>
 
 #include <vrt/vrt_init.h>
 #include <vrt/vrt_string.h>
+#include <vrt/vrt_types.h>
 #include <vrt/vrt_write.h>
 
 /* Size of packet in 32-bit words */
@@ -20,7 +23,10 @@ static const float CENTER_FREQUENCY{10000.0F};
 /* M_PI in cmath is nonstandard :( */
 static const float PI{3.1415926F};
 
-void write(const std::string& file_path, vrt_packet* p, uint32_t* b, std::function<void(int i, vrt_packet*)> change) {
+void write(const std::string&                             file_path,
+           vrt_packet*                                    p,
+           uint32_t*                                      b,
+           const std::function<void(int i, vrt_packet*)>& change) {
     /* Open file */
     std::ofstream fs(file_path, std::ios::out | std::ios::binary | std::ios::trunc);
     if (!fs) {
@@ -60,7 +66,7 @@ int main() {
     /* Generate signal data */
     std::array<float, SIZE - 10> s;
     for (int i{0}; i < s.size(); ++i) {
-        s[i] = std::sin(2.0F * PI * CENTER_FREQUENCY * i / SAMPLE_RATE);
+        s[i] = std::sin(2.0F * PI * CENTER_FREQUENCY * static_cast<float>(i) / SAMPLE_RATE);
     }
 
     /* Initialize to reasonable values */

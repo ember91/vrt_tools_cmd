@@ -1,12 +1,13 @@
-#include <algorithm>
 #include <array>
-#include <cmath>
+#include <cstdint>
+#include <cstdlib>
 #include <fstream>
 #include <iostream>
+#include <string>
 
 #include <vrt/vrt_init.h>
 #include <vrt/vrt_string.h>
-#include <vrt/vrt_words.h>
+#include <vrt/vrt_types.h>
 #include <vrt/vrt_write.h>
 
 /* Buffer size in 32-bit words */

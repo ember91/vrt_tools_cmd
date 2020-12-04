@@ -69,7 +69,7 @@ int main(int argc, const char** argv) {
         "vrt_print");
 
     vrt::print::ProgramArguments program_args{setup_arg_parse(&app)};
-    CLI11_PARSE(app, argc, argv);
+    CLI11_PARSE(app, argc, argv)
 
     // Check that endianness of platform compared to byte swap parameter makes sense
     if (vrt_is_platform_little_endian() && !program_args.do_byte_swap) {

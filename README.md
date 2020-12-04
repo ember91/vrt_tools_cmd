@@ -15,7 +15,7 @@ sudo make install
 
 This installs a bunch of VRT command line tools.
 
-### VRT print
+### VRT Print
 
 Prints VRT packet information. For example: 
 ```bash
@@ -35,6 +35,14 @@ Stream ID                                                             0xDEADBEEF
 Body size [words]                                                            512
 Reference lock                                                              true
 ```
+
+### VRT Split
+
+Splits a VRT file into multiple depending on class ID and stream ID. For example, splitting a file `signal.vrt` containing a VRT packet stream with two different stream IDs *0xABABABAB* and *0x12345678*:
+```bash
+vrt_split signal.vrt
+```
+Results in output files `signal_ABABABAB.vrt` and `signal_12345678.vrt` with all packets from the original file with stream ID *0xABABABAB* in the first and all packets with stream ID *0x12345678* in the second output file.
 
 ### Prerequisites
 

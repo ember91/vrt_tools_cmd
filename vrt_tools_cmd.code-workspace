@@ -59,7 +59,8 @@
 			"ratio": "cpp",
 			"codecvt": "cpp",
 			"map": "cpp",
-			"set": "cpp"
+			"set": "cpp",
+			"csignal": "cpp"
 		},
 		"files.insertFinalNewline": true,
 		"doxdocgen.cpp.tparamTemplate": "\\tparam {param} ",
