@@ -34,6 +34,19 @@ Packet size [words]                                                          515
 Stream ID                                                             0xDEADBEEF
 Body size [words]                                                            512
 Reference lock                                                              true
+--------------------------------------------------------------------------------
+#                                                                              1
+Packet type                                IF Data packet with Stream Identifier
+tsm                                                                         Fine
+TSI                                                               None/Undefined
+TSF                                                               None/Undefined
+Packet count                                                                   0
+Packet size [words]                                                          515
+Stream ID                                                             0xDEADBEEF
+Body size [words]                                                            512
+Reference lock                                                              true
+--------------------------------------------------------------------------------
+...
 ```
 
 ### VRT Split
