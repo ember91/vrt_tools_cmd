@@ -1,1 +1,1 @@
-* Break out code to input stream as well
+* Comment code after restructuring

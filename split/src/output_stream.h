@@ -21,7 +21,7 @@ class OutputStream {
 
     std::filesystem::path generate_temporary_file_path(const std::filesystem::path& file_path_in) const;
 
-    void write(const vrt_header& header, std::vector<uint32_t>* buf);
+    void write(const vrt_header& header, const std::vector<uint32_t>& buf);
     void rename(const std::filesystem::path& p);
 
     void remove_temporary() const;

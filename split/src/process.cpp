@@ -22,6 +22,7 @@
 
 #include "Progress-CPP/ProgressBar.hpp"
 #include "byte_swap.h"
+#include "input_stream.h"
 #include "output_stream.h"
 #include "program_arguments.h"
 
@@ -295,117 +296,33 @@ void process(const ProgramArguments& args) {
     std::signal(SIGINT, signal_handler);
     std::signal(SIGTERM, signal_handler);
 
-    // Preallocate so it has room for header
-    std::vector<uint32_t> buf(VRT_WORDS_HEADER);
-
     // Preallocate room for, perhaps byte swapped, header and fields
     std::array<uint32_t, VRT_WORDS_HEADER + VRT_WORDS_MAX_FIELDS> buf_header_fields{};
 
-    // Note that stream is closed implicitly at destruction
-    // Start at end so file size is available
-    std::ifstream file_in(args.file_path_in, std::ios::in | std::ios::binary | std::ios::ate);
-    if (file_in.fail()) {
-        std::stringstream ss;
-        ss << "Failed to open file '" << args.file_path_in << "'";
-        throw std::runtime_error(ss.str());
-    }
-
-    // Get file size
-    std::streampos file_size_bytes{file_in.tellg()};
-    if (!file_in) {
-        // Note that destructor is not run if this fails
-        std::stringstream ss;
-        ss << "Failed to get file size of file '" << args.file_path_in << "'";
-        std::runtime_error(ss.str());
-    }
-
-    // Go to start
-    file_in.seekg(0);
-    if (!file_in) {
-        // Note that destructor is not run if this fails
-        std::stringstream ss;
-        ss << "Failed to seek in file '" << args.file_path_in << "'";
-        std::runtime_error(ss.str());
-    }
+    InputStream input_stream(args.file_path_in, args.do_byte_swap);
 
     // Clear, since it's static
     files_out.clear();
 
     // Progress bar
-    progresscpp::ProgressBar progress(file_size_bytes, 70);
+    progresscpp::ProgressBar progress(input_stream.get_file_size(), 70);
 
     // Go over all packets in input file
     for (int i{0};; ++i) {
-        // No need to increase buffer size here, since buf preallocated VRT_SIZE_HEADER words and never shrinks
-        file_in.read(reinterpret_cast<char*>(buf.data()), sizeof(uint32_t) * VRT_WORDS_HEADER);
-        if (file_in.gcount() != 0 && file_in.gcount() != sizeof(uint32_t) * VRT_WORDS_HEADER) {
-            std::stringstream ss;
-            ss << "Packet #" << i << ": Failed to read header";
-            throw std::runtime_error(ss.str());
-        }
-        if (file_in.eof()) {
+        if (!input_stream.read_next()) {
             break;
         }
 
-        // Byte swap header section if necessary
-        if (args.do_byte_swap) {
-            buf_header_fields[0] = bswap_32(buf[0]);
-        } else {
-            buf_header_fields[0] = buf[0];
-        }
-
-        // Parse header
-        PacketPtr packet{std::make_shared<vrt_packet>()};
-        int32_t   words_header{
-            vrt_read_header(buf_header_fields.data(), buf_header_fields.size(), &packet->header, true)};
-        if (words_header < 0) {
-            std::stringstream ss;
-            ss << "Packet #" << i << ": Failed to read header: " << vrt_string_error(words_header);
-            throw std::runtime_error(ss.str());
-        }
-
-        // Enlarge read buffer for the next section if needed
-        if (buf.size() < packet->header.packet_size) {
-            buf.resize(packet->header.packet_size);
-        }
-
-        file_in.read(reinterpret_cast<char*>(buf.data() + words_header),
-                     sizeof(uint32_t) * (packet->header.packet_size - words_header));
-        // Do not handle EOF here
-        if (file_in.gcount() != sizeof(uint32_t) * (packet->header.packet_size - words_header)) {
-            std::stringstream ss;
-            ss << "Packet #" << i << ": Failed to read remainder of packet";
-            throw std::runtime_error(ss.str());
-        }
-
-        // Byte swap fields section if necessary
-        int32_t words_fields = vrt_words_fields(&packet->header);
-        if (args.do_byte_swap) {
-            for (int j{1}; j < words_fields + 1; ++j) {
-                buf_header_fields[j] = bswap_32(buf[j]);
-            }
-        } else {
-            std::copy_n(buf.data() + 1, words_fields, buf_header_fields.data() + 1);
-        }
-
-        // Parse, print, and validate fields
-        words_fields = vrt_read_fields(&packet->header, buf_header_fields.data() + words_header,
-                                       buf_header_fields.size() - words_header, &packet->fields, true);
-        if (words_fields < 0) {
-            std::stringstream ss;
-            ss << "Packet #" << i << ": Failed to read fields section: " << vrt_string_error(words_fields);
-            throw std::runtime_error(ss.str());
-        }
-
         // Find Class ID, Stream ID combination in map, or construct new output file if needed
-        auto it{files_out.find(packet)};
+        PacketPtr packet{input_stream.get_packet()};
+        auto      it{files_out.find(packet)};
         if (it == files_out.end()) {
             auto pair{files_out.emplace(packet, std::make_unique<OutputStream>(args.file_path_in, packet))};
 
             it = pair.first;
         }
 
-        it->second->write(packet->header, &buf);
+        it->second->write(packet->header, input_stream.get_data_buffer());
 
         // Handle progress bar
         progress += sizeof(uint32_t) * packet->header.packet_size;
