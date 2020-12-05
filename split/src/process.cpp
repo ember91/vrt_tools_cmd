@@ -370,8 +370,7 @@ void process(const ProgramArguments& args) {
         // Find Class ID, Stream ID combination in map, or construct new output file if needed
         auto it{files_out.find(packet)};
         if (it == files_out.end()) {
-            auto pair{
-                files_out.insert(std::make_pair(packet, std::make_unique<OutputFile>(args.file_path_in, packet)))};
+            auto pair{files_out.emplace(packet, std::make_unique<OutputFile>(args.file_path_in, packet))};
 
             it = pair.first;
         }
