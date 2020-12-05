@@ -1,6 +1,7 @@
 #ifndef VRT_MERGE_INPUT_STREAM_H_
 #define VRT_MERGE_INPUT_STREAM_H_
 
+#include <cstdint>
 #include <filesystem>
 #include <fstream>
 #include <vector>

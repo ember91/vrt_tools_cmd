@@ -1,7 +1,13 @@
 #include "input_stream.h"
 
 #include <algorithm>
+#include <array>
+#include <cstdint>
 #include <iostream>
+#include <sstream>
+#include <stdexcept>
+#include <string>
+#include <utility>
 
 #include <vrt/vrt_init.h>
 #include <vrt/vrt_read.h>

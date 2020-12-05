@@ -2,24 +2,17 @@
 
 #include <algorithm>
 #include <csignal>
-#include <cstdint>
-#include <cstdio>
+#include <cstdlib>
 #include <filesystem>
-#include <fstream>
-#include <iostream>
-#include <map>
 #include <memory>
 #include <queue>
 #include <sstream>
 #include <stdexcept>
 #include <string>
-#include <utility>
 #include <vector>
 
-#include <vrt/vrt_read.h>
 #include <vrt/vrt_string.h>
 #include <vrt/vrt_types.h>
-#include <vrt/vrt_words.h>
 
 #include "byte_swap.h"
 #include "input_stream.h"
