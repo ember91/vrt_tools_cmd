@@ -13,6 +13,14 @@
 
 namespace vrt::split {
 
+/**
+ * Constructor.
+ *
+ * \param file_path    Path to file.
+ * \param do_byte_swap True if byte swap before parsing.
+ *
+ * \throw std::runtime_error On read or parse error.
+ */
 InputStream::InputStream(const std::filesystem::path& file_path, bool do_byte_swap) : do_byte_swap_{do_byte_swap} {
     // Start at end so file size is available
     file_in_.open(file_path, std::ios::in | std::ios::binary | std::ios::ate);
@@ -44,6 +52,13 @@ InputStream::InputStream(const std::filesystem::path& file_path, bool do_byte_sw
     buf_.resize(VRT_WORDS_HEADER);
 }
 
+/**
+ * Read next packet in stream.
+ *
+ * \return False if End Of File.
+ *
+ * \throw std::runtime_error On read or parse error.
+ */
 bool InputStream::read_next() {
     std::array<uint32_t, VRT_WORDS_HEADER + VRT_WORDS_MAX_FIELDS> buf_header_fields{};
 
