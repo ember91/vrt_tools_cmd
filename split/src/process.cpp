@@ -250,6 +250,13 @@ static fs::path final_file_path(const fs::path& file_path_in, vrt_packet* packet
 static void finish(const std::string& file_path_in) {
     // Check if all Class and Stream IDs are the same
     if (files_out.size() <= 1) {
+        for (auto& el : files_out) {
+            try {
+                el.second->remove_temporary();
+            } catch (const fs::filesystem_error&) {
+                // Do nothing. Just keep removing.
+            }
+        }
         std::cerr << "Warning: All packets have the same Class and Stream ID (if any). Use the existing '"
                   << file_path_in << "'." << std::endl;
         return;
