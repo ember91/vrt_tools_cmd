@@ -70,6 +70,9 @@
 		"doxdocgen.generic.briefTemplate": "",
 		"doxdocgen.generic.dateTemplate": "\\date {date}",
 		"doxdocgen.generic.paramTemplate": "\\param {param} ",
-		"doxdocgen.generic.returnTemplate": "\\return "
+		"doxdocgen.generic.returnTemplate": "\\return ",
+		"files.exclude": {
+			"doc/html/*": true
+		}
 	}
 }
