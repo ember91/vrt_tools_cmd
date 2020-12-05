@@ -19,10 +19,12 @@
 static vrt::split::ProgramArguments setup_arg_parse(CLI::App* app) {
     vrt::split::ProgramArguments args;
 
+    // Input file
     CLI::Option* opt_file_in{app->add_option("-f,--file,file", args.file_path_in, "Input file path")};
     opt_file_in->required(true);
     opt_file_in->check(CLI::ExistingFile);
 
+    // Byte swap
     app->add_flag("-b,--byte_swap", args.do_byte_swap, "Apply byte swap before parsing file");
 
     return args;
@@ -37,11 +39,8 @@ static vrt::split::ProgramArguments setup_arg_parse(CLI::App* app) {
  * \return EXIT_SUCCESS if success, and EXIT_FAILURE otherwise.
  */
 int main(int argc, const char** argv) {
-    // Speed up output
-    std::ios_base::sync_with_stdio(false);
-
+    // Parse arguments
     CLI::App app("Split a vita49 VRT format files into multiple files depending on class and stream ID", "vrt_split");
-
     vrt::split::ProgramArguments program_args{setup_arg_parse(&app)};
     CLI11_PARSE(app, argc, argv)
 
@@ -56,6 +55,7 @@ int main(int argc, const char** argv) {
                   << std::endl;
     }
 
+    // Process
     try {
         vrt::split::process(program_args);
     } catch (const std::exception& exc) {

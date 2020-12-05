@@ -11,6 +11,9 @@
 
 namespace vrt::split {
 
+/**
+ * Output file.
+ */
 class OutputFile {
    public:
     OutputFile(const std::filesystem::path& file_path_in, std::shared_ptr<vrt_packet> packet);
@@ -25,10 +28,11 @@ class OutputFile {
     void remove_new() const;
 
    private:
-    std::shared_ptr<vrt_packet> packet_;
-    std::filesystem::path       file_path_tmp_;
-    std::filesystem::path       file_path_new_;
-    std::ofstream               fp_;
+    const std::shared_ptr<vrt_packet> packet_;
+
+    std::filesystem::path file_path_tmp_;
+    std::filesystem::path file_path_new_;
+    std::ofstream         fp_;
 };
 
 }  // namespace vrt::split

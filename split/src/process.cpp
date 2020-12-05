@@ -290,7 +290,7 @@ void process(const ProgramArguments& args) {
     // Preallocate so it has room for header
     std::vector<uint32_t> buf(VRT_WORDS_HEADER);
 
-    // Preallocate room for header and fields
+    // Preallocate room for, perhaps byte swapped, header and fields
     std::array<uint32_t, VRT_WORDS_HEADER + VRT_WORDS_MAX_FIELDS> buf_header_fields{};
 
     // Note that stream is closed implicitly at destruction
@@ -317,7 +317,7 @@ void process(const ProgramArguments& args) {
             break;
         }
 
-        // Byte swap if necessary
+        // Byte swap header section if necessary
         if (args.do_byte_swap) {
             buf_header_fields[0] = bswap_32(buf[0]);
         } else {
@@ -348,7 +348,7 @@ void process(const ProgramArguments& args) {
             throw std::runtime_error(ss.str());
         }
 
-        // Parse fields section
+        // Byte swap fields section if necessary
         int32_t words_fields = vrt_words_fields(&packet->header);
         if (args.do_byte_swap) {
             for (int j{1}; j < words_fields + 1; ++j) {
@@ -359,8 +359,8 @@ void process(const ProgramArguments& args) {
         }
 
         // Parse, print, and validate fields
-        words_fields = vrt_read_fields(&packet->header, buf.data() + words_header,
-                                       packet->header.packet_size - words_header, &packet->fields, true);
+        words_fields = vrt_read_fields(&packet->header, buf_header_fields.data() + words_header,
+                                       buf_header_fields.size() - words_header, &packet->fields, true);
         if (words_fields < 0) {
             std::stringstream ss;
             ss << "Packet #" << i << ": Failed to read fields section: " << vrt_string_error(words_fields);
