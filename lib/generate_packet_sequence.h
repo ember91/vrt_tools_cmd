@@ -14,6 +14,8 @@
 #include <vrt/vrt_words.h>
 #include <vrt/vrt_write.h>
 
+#include "byte_swap.h"
+
 namespace vrt {
 
 /**
@@ -28,7 +30,8 @@ void generate_packet_sequence(
     const std::string&                             file_path,
     vrt_packet*                                    p,
     size_t                                         n,
-    const std::function<void(int i, vrt_packet*)>& change = [](int i, vrt_packet*) {}) {
+    const std::function<void(int i, vrt_packet*)>& change       = [](int i, vrt_packet*) {},
+    bool                                           do_byte_swap = false) {
     // Open file
     std::ofstream file(file_path, std::ios::out | std::ios::binary | std::ios::trunc);
     if (!file) {
@@ -54,6 +57,14 @@ void generate_packet_sequence(
             std::stringstream ss;
             ss << "Failed to write VRT packet to buffer: " << vrt_string_error(size);
             throw std::runtime_error(ss.str());
+        }
+
+        // Byte swap if enabled
+        if (do_byte_swap) {
+            for (size_t j{0}; j < size; ++j) {
+                // Don't care about how to byte swap data...
+                b[j] = bswap_32(b[j]);
+            }
         }
 
         // Write buffer to file

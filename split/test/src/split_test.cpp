@@ -6,6 +6,7 @@
 #include <vrt/vrt_types.h>
 
 #include "../../src/process.h"
+#include "byte_swap.h"
 #include "generate_packet_sequence.h"
 
 namespace fs = std::filesystem;
@@ -40,14 +41,14 @@ class SplitTest : public ::testing::Test {
     vrt_packet p_;
 };
 
-static void process() {
+static void process(bool do_byte_swap = false) {
     vrt::split::ProgramArguments args;
     args.file_path_in = TMP_FILE_PATH;
-    args.do_byte_swap = false;
+    args.do_byte_swap = do_byte_swap;
     vrt::split::process(args);
 }
 
-static void compare(std::vector<std::string> file_names) {
+static void compare(std::vector<std::string> file_names, bool do_byte_swap = false) {
     std::vector<uint32_t> buf;
 
     size_t total_packets{0};
@@ -80,6 +81,10 @@ static void compare(std::vector<std::string> file_names) {
                 break;
             }
 
+            if (do_byte_swap) {
+                buf[0] = bswap_32(buf[0]);
+            }
+
             // Parse and validate header
             vrt_header header;
             int32_t    words_header{vrt_read_header(buf.data(), buf.size(), &header, true)};
@@ -95,6 +100,13 @@ static void compare(std::vector<std::string> file_names) {
                       sizeof(uint32_t) * (header.packet_size - words_header));
             if (file.gcount() != sizeof(uint32_t) * (header.packet_size - words_header)) {
                 break;
+            }
+
+            // Byte swap remainder of packet
+            if (do_byte_swap) {
+                for (uint16_t j{1}; j < header.packet_size; ++j) {
+                    buf[j] = bswap_32(buf[j]);
+                }
             }
 
             // Parse and validate fields section
@@ -307,4 +319,29 @@ TEST_F(SplitTest, HexNaming) {
     process();
     SCOPED_TRACE(::testing::UnitTest::GetInstance()->current_test_info()->name());
     compare({"split_BAAAAD_4B1D_DEAD_DEADBEEF.vrt", "split_ABABAB_BEBE_DEDE_FEFEFEFE.vrt"});
+}
+
+TEST_F(SplitTest, ByteSwap) {
+    p_.header.packet_type  = VRT_PT_IF_DATA_WITH_STREAM_ID;
+    p_.header.has.class_id = true;
+    vrt::generate_packet_sequence(
+        TMP_FILE_PATH, &p_, N_PACKETS,
+        [](int i, vrt_packet* p) {
+            if (i % 2 == 0) {
+                p->fields.class_id.oui                    = 0xBAAAAD;
+                p->fields.class_id.information_class_code = 0x4B1D;
+                p->fields.class_id.packet_class_code      = 0xDEAD;
+                p->fields.stream_id                       = 0xDEADBEEF;
+            } else {
+                p->fields.class_id.oui                    = 0xABABAB;
+                p->fields.class_id.information_class_code = 0xBEBE;
+                p->fields.class_id.packet_class_code      = 0xDEDE;
+                p->fields.stream_id                       = 0xFEFEFEFE;
+            }
+        },
+        true);
+
+    process(true);
+    SCOPED_TRACE(::testing::UnitTest::GetInstance()->current_test_info()->name());
+    compare({"split_BAAAAD_4B1D_DEAD_DEADBEEF.vrt", "split_ABABAB_BEBE_DEDE_FEFEFEFE.vrt"}, true);
 }
