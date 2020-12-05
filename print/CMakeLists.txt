@@ -11,12 +11,11 @@ project(
 set(TARGET_NAME ${PROJECT_NAME})
 
 # Add source files
-file(GLOB FILES_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
+file(GLOB FILES_SRC CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 add_executable(${TARGET_NAME} ${FILES_SRC})
 
 # Set warning levels
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-  # TODO: Should it
   if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     target_compile_options(
       ${TARGET_NAME} PRIVATE -Weverything -Wno-padded -Wno-newline-eof
