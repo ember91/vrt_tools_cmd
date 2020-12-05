@@ -1,15 +1,14 @@
 cmake_minimum_required(VERSION 3.0)
 
 # Name target
-set(TARGET_NAME run_print_tests)
+set(TARGET_NAME run_split_tests)
 
 # Add test source files
 file(GLOB SRC_FILES CONFIGURE_DEPENDS
      ${CMAKE_CURRENT_SOURCE_DIR}/../test/src/*.cpp)
 add_executable(
-  ${TARGET_NAME}
-  ${SRC_FILES} ${CMAKE_CURRENT_SOURCE_DIR}/../src/type_printer.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/../src/stringify.cpp)
+  ${TARGET_NAME} ${SRC_FILES} ${CMAKE_CURRENT_SOURCE_DIR}/../src/process.cpp
+                 ${CMAKE_CURRENT_SOURCE_DIR}/../src/output_file.cpp)
 
 # Setup testing
 enable_testing()
@@ -44,6 +43,8 @@ set_target_properties(${TARGET_NAME} PROPERTIES CXX_STANDARD 17)
 # Add include directory
 target_include_directories(${TARGET_NAME}
                            PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../include/)
+target_include_directories(${TARGET_NAME} SYSTEM
+                           PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../../lib)
 
 # Link executable
 target_link_libraries(${TARGET_NAME} vrt ${GTEST_LIBRARIES} pthread)

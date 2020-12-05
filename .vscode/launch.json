@@ -27,7 +27,26 @@
             "name": "vrt_print test",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/Debug/print/test/run_unit_tests",
+            "program": "${workspaceFolder}/Debug/print/test/run_print_tests",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
+            "name": "vrt_split test",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/Debug/split/test/run_split_tests",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
