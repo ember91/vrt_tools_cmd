@@ -1,2 +1,1 @@
 * Globbing
-* Byte swap
