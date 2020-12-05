@@ -1,1 +1,1 @@
-* Add tests for byte swap
+* Break out code to input stream as well

@@ -26,6 +26,13 @@ class InputStream {
 
     void write(std::ofstream& of);
 
+    /**
+     * Get file size.
+     *
+     * \return File size [B].
+     */
+    std::streampos const get_file_size() { return file_size_bytes_; }
+
    private:
     const std::filesystem::path file_path_;
     const bool                  do_byte_swap_;
@@ -33,6 +40,7 @@ class InputStream {
     vrt_header header_;
     vrt_fields fields_;
 
+    std::streampos        file_size_bytes_;
     std::ifstream         file_in_;
     uint64_t              pkt_idx_;
     std::vector<uint32_t> buf_;

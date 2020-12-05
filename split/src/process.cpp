@@ -20,6 +20,7 @@
 #include <vrt/vrt_types.h>
 #include <vrt/vrt_words.h>
 
+#include "Progress-CPP/ProgressBar.hpp"
 #include "byte_swap.h"
 #include "output_file.h"
 #include "program_arguments.h"
@@ -139,7 +140,7 @@ struct PacketDiffs {
 /**
  * Get differences between packets.
  *
- * \return bools describing packet differences.
+ * \return booleans describing packet differences.
  */
 static PacketDiffs packet_differences() {
     // Pointers to previous packets
@@ -301,15 +302,37 @@ void process(const ProgramArguments& args) {
     std::array<uint32_t, VRT_WORDS_HEADER + VRT_WORDS_MAX_FIELDS> buf_header_fields{};
 
     // Note that stream is closed implicitly at destruction
-    std::ifstream file_in(args.file_path_in, std::ios::in | std::ios::binary);
+    // Start at end so file size is available
+    std::ifstream file_in(args.file_path_in, std::ios::in | std::ios::binary | std::ios::ate);
     if (file_in.fail()) {
         std::stringstream ss;
         ss << "Failed to open file '" << args.file_path_in << "'";
         throw std::runtime_error(ss.str());
     }
 
+    // Get file size
+    std::streampos file_size_bytes{file_in.tellg()};
+    if (!file_in) {
+        // Note that destructor is not run if this fails
+        std::stringstream ss;
+        ss << "Failed to get file size of file '" << args.file_path_in << "'";
+        std::runtime_error(ss.str());
+    }
+
+    // Go to start
+    file_in.seekg(0);
+    if (!file_in) {
+        // Note that destructor is not run if this fails
+        std::stringstream ss;
+        ss << "Failed to seek in file '" << args.file_path_in << "'";
+        std::runtime_error(ss.str());
+    }
+
     // Clear, since it's static
     files_out.clear();
+
+    // Progress bar
+    progresscpp::ProgressBar progress(file_size_bytes, 70);
 
     // Go over all packets in input file
     for (int i{0};; ++i) {
@@ -383,7 +406,15 @@ void process(const ProgramArguments& args) {
         }
 
         it->second->write(packet->header, &buf);
+
+        // Handle progress bar
+        progress += sizeof(uint32_t) * packet->header.packet_size;
+        if (progress.get_ticks() % 65536 == 0) {
+            progress.display();
+        }
     }
+
+    progress.done();
 
     finish(args.file_path_in);
 }

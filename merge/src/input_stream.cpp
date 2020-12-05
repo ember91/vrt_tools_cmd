@@ -35,11 +35,30 @@ InputStream::InputStream(fs::path file_path, bool do_byte_swap)
     vrt_init_fields(&fields_);
 
     // Open file for reading
-    file_in_.open(file_path_, std::ios::in | std::ios::binary);
+    // Start at end so file size is available
+    file_in_.open(file_path_, std::ios::in | std::ios::binary | std::ios::ate);
     if (!file_in_) {
         // Note that destructor is not run if this fails
         std::stringstream ss;
         ss << "Failed to open input file '" << file_path_ << "'";
+        std::runtime_error(ss.str());
+    }
+
+    // Get file size
+    file_size_bytes_ = file_in_.tellg();
+    if (!file_in_) {
+        // Note that destructor is not run if this fails
+        std::stringstream ss;
+        ss << "Failed to get file size of file '" << file_path_ << "'";
+        std::runtime_error(ss.str());
+    }
+
+    // Go to start
+    file_in_.seekg(0);
+    if (!file_in_) {
+        // Note that destructor is not run if this fails
+        std::stringstream ss;
+        ss << "Failed to seek in file '" << file_path_ << "'";
         std::runtime_error(ss.str());
     }
 

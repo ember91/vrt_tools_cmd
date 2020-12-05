@@ -14,6 +14,7 @@
 #include <vrt/vrt_string.h>
 #include <vrt/vrt_types.h>
 
+#include "Progress-CPP/ProgressBar.hpp"
 #include "byte_swap.h"
 #include "input_stream.h"
 #include "program_arguments.h"
@@ -139,12 +140,16 @@ void process(const ProgramArguments& args) {
     std::priority_queue<InputStreamPtr, std::vector<InputStreamPtr>, ComparatorTime> input_stream_queue;
 
     // Start by filling queue
+    std::streampos total_file_size_bytes{0};
     for (const auto& file_path_in : args.file_paths_in) {
         InputStreamPtr stream{std::make_shared<InputStream>(file_path_in, args.do_byte_swap)};
         if (stream->read_next_packet()) {
             input_stream_queue.push(stream);
         }
+        total_file_size_bytes += stream->get_file_size();
     }
+
+    progresscpp::ProgressBar progress(total_file_size_bytes, 70);
 
     try {
         // Loop until there are no more packets left in any input file
@@ -160,7 +165,15 @@ void process(const ProgramArguments& args) {
             if (stream->read_next_packet()) {
                 input_stream_queue.push(stream);
             }
+
+            // Handle progress bar
+            progress += sizeof(uint32_t) * stream->get_header().packet_size;
+            if (progress.get_ticks() % 65536 == 0) {
+                progress.display();
+            }
         }
+
+        progress.done();
     } catch (...) {
         // Cleanup and rethrow
         remove_output_file();
