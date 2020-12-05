@@ -46,7 +46,6 @@ int main() {
 
     try {
         auto func = [&](int i, vrt_packet* p) {
-            std::cout << p->fields.stream_id << std::endl;
             p->fields.fractional_seconds_timestamp += distrib(gen);
             if (p->fields.fractional_seconds_timestamp >= ps_in_s) {
                 uint64_t n{p->fields.fractional_seconds_timestamp / ps_in_s};
