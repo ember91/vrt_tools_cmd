@@ -125,7 +125,7 @@ void process(const ProgramArguments& args) {
     std::signal(SIGINT, signal_handler);
     std::signal(SIGTERM, signal_handler);
 
-    // Open output file fir writing
+    // Open output file for writing
     // Note that stream is closed implicitly at destruction
     file_path_out = args.file_path_out;
     file_out.open(args.file_path_out, std::ios::out | std::ios::binary | std::ios::trunc);
