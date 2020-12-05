@@ -69,17 +69,6 @@ Merges multiple VRT files into a single file and sorts them by time. Assumes pac
 * [libvrt](https://github.com/ember91/libvrt)
 * (Google test framework, for the tests)
 
-## Running tests
-
-Compile and run the test suite:
-```
-mkdir Debug
-cd Debug
-cmake -DCMAKE_BUILD_TYPE=Debug -DTEST=On ..
-make -j4
-./test/print/run_unit_tests
-```
-
 ## Author
 
 **Emil Berg**
