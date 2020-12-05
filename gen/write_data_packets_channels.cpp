@@ -14,6 +14,8 @@
 #include <vrt/vrt_types.h>
 #include <vrt/vrt_write.h>
 
+#include "generate_packet_sequence.h"
+
 /* Size of packet in 32-bit words */
 static const size_t SIZE{515};
 /* Sample rate [Hz] */
@@ -22,42 +24,6 @@ static const float SAMPLE_RATE{44100.0F};
 static const float CENTER_FREQUENCY{10000.0F};
 /* M_PI in cmath is nonstandard :( */
 static const float PI{3.1415926F};
-
-void write(const std::string&                             file_path,
-           vrt_packet*                                    p,
-           uint32_t*                                      b,
-           const std::function<void(int i, vrt_packet*)>& change) {
-    /* Open file */
-    std::ofstream fs(file_path, std::ios::out | std::ios::binary | std::ios::trunc);
-    if (!fs) {
-        std::stringstream ss;
-        ss << "Failed to open file '" << file_path << "'";
-        throw std::runtime_error(ss.str());
-    }
-    for (int i{0}; i < 100; ++i) {
-        /* Change fields depending on index */
-        change(i, p);
-
-        /* Write packet */
-        int32_t size{vrt_write_packet(p, b, SIZE, true)};
-        if (size < 0) {
-            std::stringstream ss;
-            ss << "Failed to write packet: " << vrt_string_error(size);
-            throw std::runtime_error(ss.str());
-        }
-
-        /* Write generated packet to file */
-        fs.write(reinterpret_cast<char*>(b), sizeof(uint32_t) * size);
-        if (!fs) {
-            std::stringstream ss;
-            ss << "Failed to write to file '" << file_path << "'";
-            throw std::runtime_error(ss.str());
-        }
-    }
-
-    /* Cleanup */
-    fs.close();
-}
 
 int main() {
     /* Packet data buffer */
@@ -80,13 +46,15 @@ int main() {
     p.words_body         = s.size();
     p.body               = s.data();
 
+    const size_t N_PACKETS{100};
+
     try {
-        write("var_stream_id.vrt", &p, b.data(), [](int i, vrt_packet* p) {
+        vrt::generate_packet_sequence("var_stream_id.vrt", &p, N_PACKETS, [](int i, vrt_packet* p) {
             p->header.packet_type  = VRT_PT_IF_DATA_WITH_STREAM_ID;
             p->header.has.class_id = false;
             p->fields.stream_id    = i % 4;
         });
-        write("var_def_stream_id.vrt", &p, b.data(), [](int i, vrt_packet* p) {
+        vrt::generate_packet_sequence("var_def_stream_id.vrt", &p, N_PACKETS, [](int i, vrt_packet* p) {
             p->header.has.class_id = false;
             if (i % 4 == 0) {
                 p->header.packet_type = VRT_PT_IF_DATA_WITHOUT_STREAM_ID;
@@ -95,36 +63,36 @@ int main() {
                 p->fields.stream_id   = i % 4;
             }
         });
-        write("var_oui.vrt", &p, b.data(), [](int i, vrt_packet* p) {
+        vrt::generate_packet_sequence("var_oui.vrt", &p, N_PACKETS, [](int i, vrt_packet* p) {
             p->header.has.class_id = true;
             p->header.packet_type  = VRT_PT_IF_DATA_WITHOUT_STREAM_ID;
             p->fields.class_id.oui = i % 4;
         });
-        write("var_icc.vrt", &p, b.data(), [](int i, vrt_packet* p) {
+        vrt::generate_packet_sequence("var_icc.vrt", &p, N_PACKETS, [](int i, vrt_packet* p) {
             p->header.has.class_id                    = true;
             p->header.packet_type                     = VRT_PT_IF_DATA_WITHOUT_STREAM_ID;
             p->fields.class_id.information_class_code = i % 4;
         });
-        write("var_pcc.vrt", &p, b.data(), [](int i, vrt_packet* p) {
+        vrt::generate_packet_sequence("var_pcc.vrt", &p, N_PACKETS, [](int i, vrt_packet* p) {
             p->header.has.class_id               = true;
             p->header.packet_type                = VRT_PT_IF_DATA_WITHOUT_STREAM_ID;
             p->fields.class_id.packet_class_code = i % 4;
         });
-        write("var_class_id.vrt", &p, b.data(), [](int i, vrt_packet* p) {
+        vrt::generate_packet_sequence("var_class_id.vrt", &p, N_PACKETS, [](int i, vrt_packet* p) {
             p->header.has.class_id                    = true;
             p->header.packet_type                     = VRT_PT_IF_DATA_WITHOUT_STREAM_ID;
             p->fields.class_id.oui                    = i % 2;
             p->fields.class_id.information_class_code = i % 2;
             p->fields.class_id.packet_class_code      = i % 2;
         });
-        write("var_def_class_id.vrt", &p, b.data(), [](int i, vrt_packet* p) {
+        vrt::generate_packet_sequence("var_def_class_id.vrt", &p, N_PACKETS, [](int i, vrt_packet* p) {
             p->header.has.class_id                    = i % 4 != 0;
             p->header.packet_type                     = VRT_PT_IF_DATA_WITHOUT_STREAM_ID;
             p->fields.class_id.oui                    = i % 2;
             p->fields.class_id.information_class_code = i % 2;
             p->fields.class_id.packet_class_code      = i % 2;
         });
-        write("var_class_stream_id.vrt", &p, b.data(), [](int i, vrt_packet* p) {
+        vrt::generate_packet_sequence("var_class_stream_id.vrt", &p, N_PACKETS, [](int i, vrt_packet* p) {
             p->header.has.class_id                    = true;
             p->header.packet_type                     = VRT_PT_IF_DATA_WITH_STREAM_ID;
             p->fields.class_id.oui                    = i % 2;
@@ -132,7 +100,7 @@ int main() {
             p->fields.class_id.packet_class_code      = i % 2;
             p->fields.stream_id                       = i % 4;
         });
-        write("var_def_class_stream_id.vrt", &p, b.data(), [](int i, vrt_packet* p) {
+        vrt::generate_packet_sequence("var_def_class_stream_id.vrt", &p, N_PACKETS, [](int i, vrt_packet* p) {
             if (i % 3 == 0) {
                 p->header.packet_type = VRT_PT_IF_DATA_WITHOUT_STREAM_ID;
                 p->fields.stream_id   = i % 4;
@@ -148,7 +116,7 @@ int main() {
                 p->fields.class_id.packet_class_code      = i % 2;
             }
         });
-        write("var_hex.vrt", &p, b.data(), [](int i, vrt_packet* p) {
+        vrt::generate_packet_sequence("var_hex.vrt", &p, N_PACKETS, [](int i, vrt_packet* p) {
             p->header.has.class_id = true;
             p->header.packet_type  = VRT_PT_IF_DATA_WITH_STREAM_ID;
             if (i % 2 == 0) {

@@ -15,6 +15,8 @@
 #include <vrt/vrt_types.h>
 #include <vrt/vrt_write.h>
 
+#include "generate_packet_sequence.h"
+
 /* Size of packet in 32-bit words */
 static const size_t SIZE{515};
 /* Sample rate [Hz] */
@@ -24,46 +26,7 @@ static const float CENTER_FREQUENCY{10000.0F};
 /* M_PI in cmath is nonstandard :( */
 static const float PI{3.1415926F};
 
-void write(const std::string&                             file_path,
-           vrt_packet*                                    p,
-           uint32_t*                                      b,
-           const std::function<void(int i, vrt_packet*)>& change) {
-    /* Open file */
-    std::ofstream fs(file_path, std::ios::out | std::ios::binary | std::ios::trunc);
-    if (!fs) {
-        std::stringstream ss;
-        ss << "Failed to open file '" << file_path << "'";
-        throw std::runtime_error(ss.str());
-    }
-    for (int i{0}; i < 100; ++i) {
-        /* Change fields depending on index */
-        change(i, p);
-
-        /* Write packet */
-        int32_t size{vrt_write_packet(p, b, SIZE, true)};
-        if (size < 0) {
-            std::stringstream ss;
-            ss << "Failed to write packet: " << vrt_string_error(size);
-            throw std::runtime_error(ss.str());
-        }
-
-        /* Write generated packet to file */
-        fs.write(reinterpret_cast<char*>(b), sizeof(uint32_t) * size);
-        if (!fs) {
-            std::stringstream ss;
-            ss << "Failed to write to file '" << file_path << "'";
-            throw std::runtime_error(ss.str());
-        }
-    }
-
-    /* Cleanup */
-    fs.close();
-}
-
 int main() {
-    /* Packet data buffer */
-    std::array<uint32_t, SIZE> b;
-
     /* Generate signal data */
     std::array<float, SIZE - 10> s;
     for (int i{0}; i < s.size(); ++i) {
@@ -87,6 +50,8 @@ int main() {
     std::mt19937                            gen(rd());
     std::uniform_int_distribution<uint64_t> distrib(1, ps_in_s / 10);
 
+    const size_t N_PACKETS{100};
+
     try {
         auto func = [&](int i, vrt_packet* p) {
             std::cout << p->fields.stream_id << std::endl;
@@ -98,19 +63,19 @@ int main() {
             }
         };
         p.fields.stream_id = 0;
-        write("time_0.vrt", &p, b.data(), func);
+        vrt::generate_packet_sequence("time_0.vrt", &p, N_PACKETS, func);
         p.fields.stream_id                    = 1;
         p.fields.integer_seconds_timestamp    = 0;
         p.fields.fractional_seconds_timestamp = 0;
-        write("time_1.vrt", &p, b.data(), func);
+        vrt::generate_packet_sequence("time_1.vrt", &p, N_PACKETS, func);
         p.fields.stream_id                    = 2;
         p.fields.integer_seconds_timestamp    = 0;
         p.fields.fractional_seconds_timestamp = 0;
-        write("time_2.vrt", &p, b.data(), func);
+        vrt::generate_packet_sequence("time_2.vrt", &p, N_PACKETS, func);
         p.fields.stream_id                    = 3;
         p.fields.integer_seconds_timestamp    = 0;
         p.fields.fractional_seconds_timestamp = 0;
-        write("time_3.vrt", &p, b.data(), func);
+        vrt::generate_packet_sequence("time_3.vrt", &p, N_PACKETS, func);
     } catch (const std::runtime_error& exc) {
         std::cerr << exc.what() << std::endl;
     }
