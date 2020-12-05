@@ -1,1 +1,2 @@
-* Add tests that generate files, split them and checks if Class or Stream IDs differ 
+* Add tests
+* There's a function in write_data_packets_time and write_data_packets_channels that's used in multiple generators
