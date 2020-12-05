@@ -11,24 +11,17 @@
 #include <vrt/vrt_types.h>
 #include <vrt/vrt_write.h>
 
+#include "generate_tone.h"
+
 /* Size of packet in 32-bit words */
 static const size_t SIZE{515};
-/* Sample rate [Hz] */
-static const float SAMPLE_RATE{44100.0F};
-/* Center frequency [Hz] */
-static const float CENTER_FREQUENCY{10000.0F};
-/* M_PI in cmath is nonstandard :( */
-static const float PI{3.1415926F};
 
 int main() {
     /* Packet data buffer */
     std::array<uint32_t, SIZE> b;
 
     /* Generate signal data */
-    std::array<float, SIZE - 3> s;
-    for (int i{0}; i < s.size(); ++i) {
-        s[i] = std::sin(2.0F * PI * CENTER_FREQUENCY * static_cast<float>(i) / SAMPLE_RATE);
-    }
+    std::vector<float> s{vrt::generate_tone(SIZE - 3)};
 
     /* Initialize to reasonable values */
     vrt_packet p;
