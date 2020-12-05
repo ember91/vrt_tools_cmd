@@ -36,7 +36,7 @@ static void remove_output_file() {
     file_out.close();
     try {
         fs::remove(file_path_out);
-    } catch (fs::filesystem_error) {
+    } catch (const fs::filesystem_error&) {
         // Do nothing
     }
 }
