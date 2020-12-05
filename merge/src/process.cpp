@@ -17,6 +17,7 @@
 #include "Progress-CPP/ProgressBar.hpp"
 #include "byte_swap.h"
 #include "input_stream.h"
+#include "output_stream.h"
 #include "program_arguments.h"
 
 namespace fs = std::filesystem;
@@ -126,15 +127,7 @@ void process(const ProgramArguments& args) {
     std::signal(SIGINT, signal_handler);
     std::signal(SIGTERM, signal_handler);
 
-    // Open output file for writing
-    // Note that stream is closed implicitly at destruction
-    file_path_out = args.file_path_out;
-    file_out.open(args.file_path_out, std::ios::out | std::ios::binary | std::ios::trunc);
-    if (file_out.fail()) {
-        std::stringstream ss;
-        ss << "Failed to open output file '" << args.file_path_out << "'";
-        throw std::runtime_error(ss.str());
-    }
+    OutputStream output_stream(args.file_path_out);
 
     // Earliest element is on top
     std::priority_queue<InputStreamPtr, std::vector<InputStreamPtr>, ComparatorTime> input_stream_queue;
@@ -155,19 +148,19 @@ void process(const ProgramArguments& args) {
         // Loop until there are no more packets left in any input file
         while (!input_stream_queue.empty()) {
             // Get earliest input packet from queue
-            InputStreamPtr stream{input_stream_queue.top()};
+            InputStreamPtr input_stream{input_stream_queue.top()};
             input_stream_queue.pop();
 
             // Write input packet to output
-            stream->write(file_out);
+            input_stream->write(output_stream.get_file());
 
             // Read next packet and insert at the right place into queue if any left
-            if (stream->read_next_packet()) {
-                input_stream_queue.push(stream);
+            if (input_stream->read_next_packet()) {
+                input_stream_queue.push(input_stream);
             }
 
             // Handle progress bar
-            progress += sizeof(uint32_t) * stream->get_header().packet_size;
+            progress += sizeof(uint32_t) * input_stream->get_header().packet_size;
             if (progress.get_ticks() % 65536 == 0) {
                 progress.display();
             }
