@@ -22,7 +22,7 @@
 
 #include "Progress-CPP/ProgressBar.hpp"
 #include "byte_swap.h"
-#include "output_file.h"
+#include "output_stream.h"
 #include "program_arguments.h"
 
 namespace fs = std::filesystem;
@@ -31,7 +31,7 @@ namespace vrt::split {
 
 // For convenience
 using PacketPtr     = std::shared_ptr<vrt_packet>;
-using OutputFilePtr = std::unique_ptr<OutputFile>;
+using OutputFilePtr = std::unique_ptr<OutputStream>;
 
 /**
  * Comparator to compare packets by Class and Stream ID.
@@ -400,7 +400,7 @@ void process(const ProgramArguments& args) {
         // Find Class ID, Stream ID combination in map, or construct new output file if needed
         auto it{files_out.find(packet)};
         if (it == files_out.end()) {
-            auto pair{files_out.emplace(packet, std::make_unique<OutputFile>(args.file_path_in, packet))};
+            auto pair{files_out.emplace(packet, std::make_unique<OutputStream>(args.file_path_in, packet))};
 
             it = pair.first;
         }

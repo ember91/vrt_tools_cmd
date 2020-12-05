@@ -1,5 +1,5 @@
-#ifndef VRT_SPLIT_SRC_OUTPUT_FILE_H_
-#define VRT_SPLIT_SRC_OUTPUT_FILE_H_
+#ifndef VRT_SPLIT_SRC_OUTPUT_STREAM_H_
+#define VRT_SPLIT_SRC_OUTPUT_STREAM_H_
 
 #include <cstdint>
 #include <filesystem>
@@ -14,10 +14,10 @@ namespace vrt::split {
 /**
  * Output file.
  */
-class OutputFile {
+class OutputStream {
    public:
-    OutputFile(const std::filesystem::path& file_path_in, std::shared_ptr<vrt_packet> packet);
-    virtual ~OutputFile();
+    OutputStream(const std::filesystem::path& file_path_in, std::shared_ptr<vrt_packet> packet);
+    virtual ~OutputStream();
 
     std::filesystem::path generate_temporary_file_path(const std::filesystem::path& file_path_in) const;
 

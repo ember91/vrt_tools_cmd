@@ -1,5 +1,5 @@
 
-#include "output_file.h"
+#include "output_stream.h"
 
 #include <cstdint>
 #include <filesystem>
@@ -24,7 +24,7 @@ namespace fs = std::filesystem;
  *
  * \throw std::runtime_error On temporary file creating error.
  */
-OutputFile::OutputFile(const std::filesystem::path& file_path_in, std::shared_ptr<vrt_packet> packet)
+OutputStream::OutputStream(const std::filesystem::path& file_path_in, std::shared_ptr<vrt_packet> packet)
     : packet_{std::move(packet)} {
     file_path_tmp_ = generate_temporary_file_path(file_path_in);
 
@@ -41,7 +41,7 @@ OutputFile::OutputFile(const std::filesystem::path& file_path_in, std::shared_pt
 /**
  * Destructor. Remove any temporary file.
  */
-OutputFile::~OutputFile() {
+OutputStream::~OutputStream() {
     try {
         remove_temporary();
     } catch (const fs::filesystem_error&) {
@@ -55,7 +55,7 @@ OutputFile::~OutputFile() {
  * \param file_path_in Input file path.
  * \return Temporary file path.
  */
-fs::path OutputFile::generate_temporary_file_path(const fs::path& file_path_in) const {
+fs::path OutputStream::generate_temporary_file_path(const fs::path& file_path_in) const {
     // Separate path into parts
     fs::path dir{file_path_in.parent_path()};
     fs::path stem{file_path_in.stem()};
@@ -86,7 +86,7 @@ fs::path OutputFile::generate_temporary_file_path(const fs::path& file_path_in) 
  *
  * \throw std::runtime_error On write failure.
  */
-void OutputFile::write(const vrt_header& header, std::vector<uint32_t>* buf) {
+void OutputStream::write(const vrt_header& header, std::vector<uint32_t>* buf) {
     fp_.write(reinterpret_cast<char*>(buf->data()), sizeof(uint32_t) * header.packet_size);
     if (!fp_) {
         std::stringstream ss;
@@ -102,7 +102,7 @@ void OutputFile::write(const vrt_header& header, std::vector<uint32_t>* buf) {
  *
  * \throw std::filesystem::filesystem_error On I/O or renaming error.
  */
-void OutputFile::rename(const fs::path& p) {
+void OutputStream::rename(const fs::path& p) {
     fp_.close();
     fs::rename(file_path_tmp_, p);
     file_path_new_ = p;
@@ -113,7 +113,7 @@ void OutputFile::rename(const fs::path& p) {
  *
  * \throw std::filesystem::filesystem_error On I/O error.
  */
-void OutputFile::remove_temporary() const {
+void OutputStream::remove_temporary() const {
     if (!file_path_tmp_.empty()) {
         fs::remove(file_path_tmp_);
     }
@@ -124,7 +124,7 @@ void OutputFile::remove_temporary() const {
  *
  * \throw std::filesystem::filesystem_error On I/O error.
  */
-void OutputFile::remove_new() const {
+void OutputStream::remove_new() const {
     if (!file_path_new_.empty()) {
         fs::remove(file_path_new_);
     }
