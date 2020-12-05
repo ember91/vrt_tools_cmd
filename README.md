@@ -17,7 +17,7 @@ This installs a bunch of VRT command line tools.
 
 ### VRT Print
 
-Prints VRT packet information. For example: 
+Prints VRT packet information. For example:
 ```bash
 vrt_print signal.vrt
 ```
@@ -56,6 +56,10 @@ Splits a VRT file into multiple depending on class ID and stream ID. For example
 vrt_split signal.vrt
 ```
 Results in output files `signal_ABABABAB.vrt` and `signal_12345678.vrt` with all packets from the original file with stream ID *0xABABABAB* in the first and all packets with stream ID *0x12345678* in the second output file.
+
+### VRT Merge
+
+Merges multiple VRT files into a single file and sorts them by time. Assumes packets in input files are ordered by time stamps.
 
 ### Prerequisites
 
