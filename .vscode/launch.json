@@ -5,10 +5,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "vrt_print",
+            "name": "vrt_merge test",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/Debug/print/vrt_print",
+            "program": "${workspaceFolder}/Debug/merge/test/run_merge_tests",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
@@ -47,25 +47,6 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/Debug/split/test/run_split_tests",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
-            "environment": [],
-            "externalConsole": false,
-            "MIMode": "gdb",
-            "setupCommands": [
-                {
-                    "description": "Enable pretty-printing for gdb",
-                    "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
-                }
-            ]
-        },
-        {
-            "name": "vrt_merge test",
-            "type": "cppdbg",
-            "request": "launch",
-            "program": "${workspaceFolder}/Debug/merge/test/run_merge_tests",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
