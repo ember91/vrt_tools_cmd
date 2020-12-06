@@ -190,14 +190,16 @@ static int32_t parse_if_context(std::vector<uint32_t>* buf,
                                     if_context, true);
         if (words < 0) {
             // Try again, but without validation
-            if (vrt_read_if_context(buf->data() + words_header_fields, header.packet_size - (words_header_fields),
-                                    if_context, false) < 0) {
+            int32_t words_no_val{vrt_read_if_context(buf->data() + words_header_fields,
+                                                     header.packet_size - (words_header_fields), if_context, false)};
+            if (words_no_val < 0) {
                 // Should never end up here, since buffer size is sufficient
                 std::stringstream ss;
                 ss << "Packet #" << i << ": Unknown IF context parse error: " << vrt_string_error(words);
                 throw std::runtime_error(ss.str());
             }
             std::cerr << "Warning: Failed to validate IF context: " << vrt_string_error(words) << '\n';
+            words = words_no_val;
         }
     }
 
