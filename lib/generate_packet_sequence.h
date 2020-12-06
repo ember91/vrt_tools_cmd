@@ -27,11 +27,11 @@ namespace vrt {
  * \param change    Function to run before each write, which may change the written packet.
  */
 void generate_packet_sequence(
-    const std::string&                             file_path,
-    vrt_packet*                                    p,
-    size_t                                         n,
-    const std::function<void(int i, vrt_packet*)>& change       = [](int i, vrt_packet*) {},
-    bool                                           do_byte_swap = false) {
+    const std::string&                                  file_path,
+    vrt_packet*                                         p,
+    size_t                                              n,
+    const std::function<void(uint64_t i, vrt_packet*)>& change       = [](uint64_t i, vrt_packet*) {},
+    bool                                                do_byte_swap = false) {
     std::ofstream file;
     file.exceptions(std::ios::badbit | std::ios::failbit | std::ios::eofbit);
 
@@ -47,7 +47,7 @@ void generate_packet_sequence(
     // Create data buffer
     std::vector<uint32_t> b;
 
-    for (int i{0}; i < n; ++i) {
+    for (uint64_t i{0}; i < n; ++i) {
         /* Change fields depending on index */
         change(i, p);
 
@@ -74,7 +74,6 @@ void generate_packet_sequence(
         // Write buffer to file
         try {
             file.write(reinterpret_cast<char*>(b.data()), sizeof(uint32_t) * size);
-
         } catch (const std::ios::failure&) {
             std::stringstream ss;
             ss << "Failed to write VRT packet to file '" << file_path << "'";

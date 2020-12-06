@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <csignal>
+#include <cstdint>
 #include <cstdlib>
 #include <filesystem>
 #include <memory>
@@ -15,12 +16,9 @@
 #include <vrt/vrt_types.h>
 
 #include "Progress-CPP/ProgressBar.hpp"
-#include "byte_swap.h"
 #include "input_stream.h"
 #include "output_stream.h"
 #include "program_arguments.h"
-
-namespace fs = std::filesystem;
 
 namespace vrt::merge {
 
@@ -124,7 +122,7 @@ void process(const ProgramArguments& args) {
         total_file_size_bytes += stream->get_file_size();
     }
 
-    progresscpp::ProgressBar progress(total_file_size_bytes, 70);
+    progresscpp::ProgressBar progress(static_cast<size_t>(total_file_size_bytes), 70);
 
     try {
         // Loop until there are no more packets left in any input file

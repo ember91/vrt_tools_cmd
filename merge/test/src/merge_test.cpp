@@ -1,12 +1,19 @@
 #include <gtest/gtest.h>
+#include <cstddef>
+#include <cstdint>
 #include <filesystem>
 #include <random>
+#include <stdexcept>
+#include <string>
+#include <vector>
 
 #include <vrt/vrt_init.h>
 #include <vrt/vrt_read.h>
 #include <vrt/vrt_types.h>
+#include <vrt/vrt_words.h>
 
 #include "../../src/process.h"
+#include "../../src/program_arguments.h"
 #include "byte_swap.h"
 #include "generate_packet_sequence.h"
 
@@ -35,7 +42,7 @@ class MergeTest : public ::testing::Test {
         } catch (const fs::filesystem_error&) {
             // Do nothing
         }
-    };
+    }
 
     vrt_packet p_;
 };
@@ -55,7 +62,7 @@ static std::vector<std::string> generate_input_file_paths(size_t n) {
     return paths;
 }
 
-static void process(const std::vector<std::string> file_paths_in, bool do_byte_swap = false) {
+static void process(const std::vector<std::string>& file_paths_in, bool do_byte_swap = false) {
     vrt::merge::ProgramArguments args;
     args.file_paths_in = file_paths_in;
     args.file_path_out = TMP_FILE_OUT_PATH;
@@ -77,7 +84,7 @@ static void check(bool do_byte_swap = false) {
     } catch (const std::ios::failure&) {
         std::stringstream ss;
         ss << "Failed to open input file '" << file_path << "'";
-        std::runtime_error(ss.str());
+        throw std::runtime_error(ss.str());
     }
 
     vrt_header prev_header;
@@ -172,8 +179,8 @@ TEST_F(MergeTest, Sorted) {
     std::vector<std::string> file_paths_in{generate_input_file_paths(n)};
 
     for (const auto& file_path : file_paths_in) {
-        vrt::generate_packet_sequence(file_path, &p_, N_PACKETS / n, [&](int i, vrt_packet* p) {
-            p->fields.stream_id = i;
+        vrt::generate_packet_sequence(file_path, &p_, N_PACKETS / n, [&](uint64_t i, vrt_packet* p) {
+            p->fields.stream_id = static_cast<uint32_t>(i);
             p->fields.fractional_seconds_timestamp += distrib(gen);
             if (p->fields.fractional_seconds_timestamp >= ps_in_s) {
                 uint64_t t{p->fields.fractional_seconds_timestamp / ps_in_s};
@@ -205,8 +212,8 @@ TEST_F(MergeTest, ByteSwap) {
     for (const auto& file_path : file_paths_in) {
         vrt::generate_packet_sequence(
             file_path, &p_, N_PACKETS / n,
-            [&](int i, vrt_packet* p) {
-                p->fields.stream_id = i;
+            [&](uint64_t i, vrt_packet* p) {
+                p->fields.stream_id = static_cast<uint32_t>(i);
                 p->fields.fractional_seconds_timestamp += distrib(gen);
                 if (p->fields.fractional_seconds_timestamp >= ps_in_s) {
                     uint64_t t{p->fields.fractional_seconds_timestamp / ps_in_s};

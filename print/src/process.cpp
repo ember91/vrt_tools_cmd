@@ -298,7 +298,7 @@ void process(const ProgramArguments& args) {
             throw std::runtime_error(ss.str());
         }
         if (args.do_byte_swap) {
-            for (int j{1}; j < header.packet_size; ++j) {
+            for (size_t j{1}; j < header.packet_size; ++j) {
                 buf[j] = bswap_32(buf[j]);
             }
         }

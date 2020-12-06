@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <array>
+#include <cstddef>
 #include <cstdint>
 #include <iostream>
 #include <sstream>
@@ -43,7 +44,7 @@ InputStream::InputStream(fs::path file_path, bool do_byte_swap)
     } catch (const std::ios::failure&) {
         std::stringstream ss;
         ss << "Failed to open input file '" << file_path_ << "'";
-        std::runtime_error(ss.str());
+        throw std::runtime_error(ss.str());
     }
 
     // Get file size
@@ -52,7 +53,7 @@ InputStream::InputStream(fs::path file_path, bool do_byte_swap)
     } catch (const std::ios::failure&) {
         std::stringstream ss;
         ss << "Failed to get size of file '" << file_path_ << "'";
-        std::runtime_error(ss.str());
+        throw std::runtime_error(ss.str());
     }
 
     // Go to start
@@ -61,7 +62,7 @@ InputStream::InputStream(fs::path file_path, bool do_byte_swap)
     } catch (const std::ios::failure&) {
         std::stringstream ss;
         ss << "Failed to seek in file '" << file_path_ << "'";
-        std::runtime_error(ss.str());
+        throw std::runtime_error(ss.str());
     }
 
     // Make space for header at least
@@ -131,7 +132,7 @@ bool InputStream::read_next_packet() {
     // Byte swap fields section if necessary
     int32_t words_fields = vrt_words_fields(&header_);
     if (do_byte_swap_) {
-        for (int j{1}; j < words_fields + 1; ++j) {
+        for (size_t j{1}; j < static_cast<size_t>(words_fields) + 1; ++j) {
             buf_header_fields[j] = bswap_32(buf_[j]);
         }
     } else {

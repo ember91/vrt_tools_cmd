@@ -7,6 +7,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include <vrt/vrt_types.h>
@@ -36,7 +37,7 @@ OutputStream::OutputStream(const std::filesystem::path& file_path_in, std::share
     } catch (const std::ios::failure&) {
         std::stringstream ss;
         ss << "Failed to open temporary output file '" << file_path_tmp_ << "'";
-        std::runtime_error(ss.str());
+        throw std::runtime_error(ss.str());
     }
 }
 

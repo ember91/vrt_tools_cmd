@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <filesystem>
 #include <fstream>
+#include <memory>
 #include <vector>
 
 #include <vrt/vrt_types.h>
@@ -24,14 +25,14 @@ class InputStream {
      *
      * \return Packet.
      */
-    std::shared_ptr<vrt_packet> get_packet() const { return packet_; };
+    std::shared_ptr<vrt_packet> get_packet() const { return packet_; }
 
     /**
      * Get data buffer.
      *
      * \return Data buffer.
      */
-    const std::vector<uint32_t>& get_data_buffer() const { return buf_; };
+    const std::vector<uint32_t>& get_data_buffer() const { return buf_; }
 
     /**
      * Get input file size.

@@ -1,12 +1,19 @@
 #include "input_stream.h"
 
 #include <algorithm>
+#include <array>
+#include <cstddef>
 #include <filesystem>
 #include <fstream>
+#include <sstream>
+#include <stdexcept>
+#include <string>
+#include <utility>
 #include <vector>
 
 #include <vrt/vrt_read.h>
 #include <vrt/vrt_string.h>
+#include <vrt/vrt_types.h>
 #include <vrt/vrt_words.h>
 
 #include "byte_swap.h"
@@ -39,7 +46,7 @@ InputStream::InputStream(const std::filesystem::path& file_path, bool do_byte_sw
     } catch (const std::ios::failure&) {
         std::stringstream ss;
         ss << "Failed to get file size of file '" << file_path << "'";
-        std::runtime_error(ss.str());
+        throw std::runtime_error(ss.str());
     }
 
     // Go to start
@@ -48,7 +55,7 @@ InputStream::InputStream(const std::filesystem::path& file_path, bool do_byte_sw
     } catch (const std::ios::failure&) {
         std::stringstream ss;
         ss << "Failed to seek in file '" << file_path << "'";
-        std::runtime_error(ss.str());
+        throw std::runtime_error(ss.str());
     }
 
     // Preallocate so it has room for header
@@ -111,7 +118,7 @@ bool InputStream::read_next() {
     // Byte swap fields section if necessary
     int32_t words_fields = vrt_words_fields(&packet_->header);
     if (do_byte_swap_) {
-        for (int j{1}; j < words_fields + 1; ++j) {
+        for (size_t j{1}; j < static_cast<size_t>(words_fields) + 1; ++j) {
             buf_header_fields[j] = bswap_32(buf_[j]);
         }
     } else {

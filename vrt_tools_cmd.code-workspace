@@ -60,7 +60,8 @@
 			"codecvt": "cpp",
 			"map": "cpp",
 			"set": "cpp",
-			"csignal": "cpp"
+			"csignal": "cpp",
+			"filesystem": "cpp"
 		},
 		"files.insertFinalNewline": true,
 		"doxdocgen.cpp.tparamTemplate": "\\tparam {param} ",

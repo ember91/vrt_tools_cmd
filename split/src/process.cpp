@@ -1,27 +1,20 @@
 #include "process.h"
 
-#include <algorithm>
 #include <csignal>
 #include <cstdint>
 #include <cstdio>
+#include <cstdlib>
 #include <filesystem>
-#include <fstream>
 #include <iostream>
 #include <map>
 #include <memory>
-#include <sstream>
-#include <stdexcept>
 #include <string>
 #include <utility>
-#include <vector>
 
-#include <vrt/vrt_read.h>
-#include <vrt/vrt_string.h>
 #include <vrt/vrt_types.h>
-#include <vrt/vrt_words.h>
+#include <vrt/vrt_util.h>
 
 #include "Progress-CPP/ProgressBar.hpp"
-#include "byte_swap.h"
 #include "input_stream.h"
 #include "output_stream.h"
 #include "program_arguments.h"
@@ -302,7 +295,7 @@ void process(const ProgramArguments& args) {
     files_out.clear();
 
     // Progress bar
-    progresscpp::ProgressBar progress(input_stream.get_file_size(), 70);
+    progresscpp::ProgressBar progress(static_cast<size_t>(input_stream.get_file_size()), 70);
 
     // Go over all packets in input file
     for (int i{0};; ++i) {

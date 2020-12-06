@@ -1,19 +1,12 @@
-#include <array>
-#include <cmath>
 #include <cstdint>
 #include <cstdlib>
-#include <fstream>
-#include <functional>
 #include <iostream>
 #include <random>
-#include <sstream>
 #include <stdexcept>
-#include <string>
+#include <vector>
 
 #include <vrt/vrt_init.h>
-#include <vrt/vrt_string.h>
 #include <vrt/vrt_types.h>
-#include <vrt/vrt_write.h>
 
 #include "generate_packet_sequence.h"
 #include "generate_tone.h"
@@ -45,7 +38,7 @@ int main() {
     const size_t N_PACKETS{100};
 
     try {
-        auto func = [&](int i, vrt_packet* p) {
+        auto func = [&](uint64_t, vrt_packet* p) {
             p->fields.fractional_seconds_timestamp += distrib(gen);
             if (p->fields.fractional_seconds_timestamp >= ps_in_s) {
                 uint64_t n{p->fields.fractional_seconds_timestamp / ps_in_s};

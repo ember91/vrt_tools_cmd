@@ -1,11 +1,21 @@
 #include <gtest/gtest.h>
+#include <algorithm>
+#include <cstddef>
+#include <cstdint>
 #include <filesystem>
+#include <istream>
+#include <stdexcept>
+#include <string>
+#include <vector>
 
 #include <vrt/vrt_init.h>
 #include <vrt/vrt_read.h>
 #include <vrt/vrt_types.h>
+#include <vrt/vrt_util.h>
+#include <vrt/vrt_words.h>
 
 #include "../../src/process.h"
+#include "../../src/program_arguments.h"
 #include "byte_swap.h"
 #include "generate_packet_sequence.h"
 
@@ -35,7 +45,7 @@ class SplitTest : public ::testing::Test {
         } catch (const fs::filesystem_error&) {
             // Do nothing
         }
-    };
+    }
 
     vrt_packet p_;
 };
@@ -47,7 +57,7 @@ static void process(bool do_byte_swap = false) {
     vrt::split::process(args);
 }
 
-static void compare(std::vector<std::string> file_names, bool do_byte_swap = false) {
+static void compare(const std::vector<std::string>& file_names, bool do_byte_swap = false) {
     std::vector<uint32_t> buf;
 
     size_t total_packets{0};
@@ -63,7 +73,7 @@ static void compare(std::vector<std::string> file_names, bool do_byte_swap = fal
         } catch (const std::ios::failure&) {
             std::stringstream ss;
             ss << "Failed to open input file '" << file_path << "'";
-            std::runtime_error(ss.str());
+            throw std::runtime_error(ss.str());
         }
 
         vrt_header prev_header;
@@ -204,7 +214,7 @@ TEST_F(SplitTest, SameAll) {
 TEST_F(SplitTest, Oui) {
     p_.header.has.class_id = true;
     vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS,
-                                  [](int i, vrt_packet* p) { p->fields.class_id.oui = i % 4; });
+                                  [](uint64_t i, vrt_packet* p) { p->fields.class_id.oui = i % 4; });
 
     process();
     SCOPED_TRACE(::testing::UnitTest::GetInstance()->current_test_info()->name());
@@ -214,7 +224,7 @@ TEST_F(SplitTest, Oui) {
 TEST_F(SplitTest, InformationClassCode) {
     p_.header.has.class_id = true;
     vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS,
-                                  [](int i, vrt_packet* p) { p->fields.class_id.information_class_code = i % 4; });
+                                  [](uint64_t i, vrt_packet* p) { p->fields.class_id.information_class_code = i % 4; });
 
     process();
     SCOPED_TRACE(::testing::UnitTest::GetInstance()->current_test_info()->name());
@@ -224,7 +234,7 @@ TEST_F(SplitTest, InformationClassCode) {
 TEST_F(SplitTest, PacketClassCode) {
     p_.header.has.class_id = true;
     vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS,
-                                  [](int i, vrt_packet* p) { p->fields.class_id.packet_class_code = i % 4; });
+                                  [](uint64_t i, vrt_packet* p) { p->fields.class_id.packet_class_code = i % 4; });
 
     process();
     SCOPED_TRACE(::testing::UnitTest::GetInstance()->current_test_info()->name());
@@ -234,7 +244,7 @@ TEST_F(SplitTest, PacketClassCode) {
 TEST_F(SplitTest, StreamId) {
     p_.header.packet_type = VRT_PT_IF_DATA_WITH_STREAM_ID;
     vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS,
-                                  [](int i, vrt_packet* p) { p->fields.stream_id = i % 4; });
+                                  [](uint64_t i, vrt_packet* p) { p->fields.stream_id = i % 4; });
 
     process();
     SCOPED_TRACE(::testing::UnitTest::GetInstance()->current_test_info()->name());
@@ -244,11 +254,11 @@ TEST_F(SplitTest, StreamId) {
 TEST_F(SplitTest, All) {
     p_.header.packet_type  = VRT_PT_IF_DATA_WITH_STREAM_ID;
     p_.header.has.class_id = true;
-    vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](int i, vrt_packet* p) {
+    vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
         p->fields.stream_id                       = i % 4;
         p->fields.class_id.oui                    = p->fields.stream_id;
-        p->fields.class_id.information_class_code = p->fields.stream_id;
-        p->fields.class_id.packet_class_code      = p->fields.stream_id;
+        p->fields.class_id.information_class_code = static_cast<uint16_t>(p->fields.stream_id);
+        p->fields.class_id.packet_class_code      = static_cast<uint16_t>(p->fields.stream_id);
     });
 
     process();
@@ -257,7 +267,7 @@ TEST_F(SplitTest, All) {
 }
 
 TEST_F(SplitTest, SomeClassIdDefault) {
-    vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](int i, vrt_packet* p) {
+    vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
         p->header.has.class_id                    = i % 4 != 0;
         p->fields.class_id.oui                    = i % 2;
         p->fields.class_id.information_class_code = i % 2;
@@ -270,7 +280,7 @@ TEST_F(SplitTest, SomeClassIdDefault) {
 }
 
 TEST_F(SplitTest, SomeStreamIdDefault) {
-    vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](int i, vrt_packet* p) {
+    vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
         if (i % 4 == 0) {
             p->header.packet_type = VRT_PT_IF_DATA_WITHOUT_STREAM_ID;
         } else {
@@ -285,7 +295,7 @@ TEST_F(SplitTest, SomeStreamIdDefault) {
 }
 
 TEST_F(SplitTest, SomeClassStreamIdDefault) {
-    vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](int i, vrt_packet* p) {
+    vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
         if (i % 3 == 0) {
             p->header.packet_type = VRT_PT_IF_DATA_WITHOUT_STREAM_ID;
         } else {
@@ -312,7 +322,7 @@ TEST_F(SplitTest, SomeClassStreamIdDefault) {
 TEST_F(SplitTest, HexNaming) {
     p_.header.packet_type  = VRT_PT_IF_DATA_WITH_STREAM_ID;
     p_.header.has.class_id = true;
-    vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](int i, vrt_packet* p) {
+    vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
         if (i % 2 == 0) {
             p->fields.class_id.oui                    = 0xBAAAAD;
             p->fields.class_id.information_class_code = 0x4B1D;
@@ -336,7 +346,7 @@ TEST_F(SplitTest, ByteSwap) {
     p_.header.has.class_id = true;
     vrt::generate_packet_sequence(
         TMP_FILE_PATH, &p_, N_PACKETS,
-        [](int i, vrt_packet* p) {
+        [](uint64_t i, vrt_packet* p) {
             if (i % 2 == 0) {
                 p->fields.class_id.oui                    = 0xBAAAAD;
                 p->fields.class_id.information_class_code = 0x4B1D;

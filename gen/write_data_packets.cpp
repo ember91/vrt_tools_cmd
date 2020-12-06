@@ -1,10 +1,9 @@
 #include <array>
-#include <cmath>
 #include <cstdint>
 #include <cstdlib>
-#include <fstream>
 #include <iostream>
 #include <string>
+#include <vector>
 
 #include <vrt/vrt_init.h>
 #include <vrt/vrt_string.h>

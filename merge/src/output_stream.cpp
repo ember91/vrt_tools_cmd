@@ -1,9 +1,8 @@
-#ifndef VRT_MERGE_OUTPUT_STREAM_H_
-#define VRT_MERGE_OUTPUT_STREAM_H_
-
 #include <filesystem>
 #include <fstream>
 #include <sstream>
+#include <stdexcept>
+#include <utility>
 
 #include "output_stream.h"
 
@@ -48,5 +47,3 @@ void OutputStream::remove_file() {
 }
 
 }  // namespace vrt::merge
-
-#endif
