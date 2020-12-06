@@ -36,13 +36,15 @@ static int32_t parse_header(std::vector<uint32_t>* buf, size_t i, vrt_header* he
     int32_t words{vrt_read_header(buf->data(), buf->size(), header, true)};
     if (words < 0) {
         // Try again, but without validation
-        if (vrt_read_header(buf->data(), buf->size(), header, false) < 0) {
+        int32_t words_no_val{vrt_read_header(buf->data(), buf->size(), header, false)};
+        if (words_no_val < 0) {
             // Should never end up here, since buffer size is sufficient
             std::stringstream ss;
             ss << "Packet #" << i << ": Unknown header parse error: " << vrt_string_error(words);
             throw std::runtime_error(ss.str());
         }
         std::cerr << "Warning: Failed to validate header: " << vrt_string_error(words) << '\n';
+        words = words_no_val;
     }
 
     return words;
@@ -70,14 +72,16 @@ static int32_t parse_fields(std::vector<uint32_t>* buf,
         vrt_read_fields(&header, buf->data() + words_header, header.packet_size - words_header, fields, true)};
     if (words < 0) {
         // Try again, but without validation
-        if (vrt_read_fields(&header, buf->data() + words_header, header.packet_size - words_header, fields, false) <
-            0) {
+        int32_t words_no_val{
+            vrt_read_fields(&header, buf->data() + words_header, header.packet_size - words_header, fields, false)};
+        if (words_no_val < 0) {
             // Should never end up here, since buffer size is sufficient
             std::stringstream ss;
             ss << "Packet #" << i << ": Unknown fields section parse error: " << vrt_string_error(words);
             throw std::runtime_error(ss.str());
         }
         std::cerr << "Warning: Failed to validate fields section: " << vrt_string_error(words) << '\n';
+        words = words_no_val;
     }
 
     return words;

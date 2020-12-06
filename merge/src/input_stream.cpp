@@ -99,15 +99,10 @@ bool InputStream::read_next_packet() {
     // Parse and validate header
     int32_t words_header{vrt_read_header(buf_header_fields.data(), buf_header_fields.size(), &header_, true)};
     if (words_header < 0) {
-        // Try again, but without validation
-        if (vrt_read_header(buf_header_fields.data(), buf_header_fields.size(), &header_, false) < 0) {
-            std::stringstream ss;
-            ss << "Error when validating packet #" << pkt_idx_ << " header in '" << file_path_
-               << "': " << vrt_string_error(words_header);
-            throw std::runtime_error(ss.str());
-        }
-        std::cerr << "Warning when validating packet #" << pkt_idx_ << " header in '" << file_path_
-                  << "': " << vrt_string_error(words_header) << '\n';
+        std::stringstream ss;
+        ss << "Error when validating packet #" << pkt_idx_ << " header in '" << file_path_
+           << "': " << vrt_string_error(words_header);
+        throw std::runtime_error(ss.str());
     }
 
     // Resize buffer if needed
@@ -143,16 +138,10 @@ bool InputStream::read_next_packet() {
     words_fields = vrt_read_fields(&header_, buf_header_fields.data() + words_header,
                                    buf_header_fields.size() - words_header, &fields_, true);
     if (words_fields < 0) {
-        // Try again, but without validation
-        if (vrt_read_fields(&header_, buf_header_fields.data() + words_header, buf_header_fields.size() - words_header,
-                            &fields_, true) < 0) {
-            std::stringstream ss;
-            ss << "Error when validating packet #" << pkt_idx_ << " fields section in '" << file_path_
-               << "': " << vrt_string_error(words_fields);
-            throw std::runtime_error(ss.str());
-        }
-        std::cerr << "Warning when validating packet #" << pkt_idx_ << " fields section in '" << file_path_
-                  << "': " << vrt_string_error(words_fields) << '\n';
+        std::stringstream ss;
+        ss << "Error when validating packet #" << pkt_idx_ << " fields section in '" << file_path_
+           << "': " << vrt_string_error(words_fields);
+        throw std::runtime_error(ss.str());
     }
 
     pkt_idx_++;
