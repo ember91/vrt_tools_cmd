@@ -32,9 +32,13 @@ void generate_packet_sequence(
     size_t                                         n,
     const std::function<void(int i, vrt_packet*)>& change       = [](int i, vrt_packet*) {},
     bool                                           do_byte_swap = false) {
+    std::ofstream file;
+    file.exceptions(std::ios::badbit | std::ios::failbit | std::ios::eofbit);
+
     // Open file
-    std::ofstream file(file_path, std::ios::out | std::ios::binary | std::ios::trunc);
-    if (!file) {
+    try {
+        file.open(file_path, std::ios::out | std::ios::binary | std::ios::trunc);
+    } catch (const std::ios::failure&) {
         std::stringstream ss;
         ss << "Failed to open file '" << file_path << "'";
         throw std::runtime_error(ss.str());
@@ -68,8 +72,10 @@ void generate_packet_sequence(
         }
 
         // Write buffer to file
-        file.write(reinterpret_cast<char*>(b.data()), sizeof(uint32_t) * size);
-        if (!file) {
+        try {
+            file.write(reinterpret_cast<char*>(b.data()), sizeof(uint32_t) * size);
+
+        } catch (const std::ios::failure&) {
             std::stringstream ss;
             ss << "Failed to write VRT packet to file '" << file_path << "'";
             throw std::runtime_error(ss.str());
@@ -78,7 +84,7 @@ void generate_packet_sequence(
 
     // Cleanup
     file.close();
-}
+}  // namespace vrt
 
 }  // namespace vrt
 

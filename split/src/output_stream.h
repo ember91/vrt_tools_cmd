@@ -32,7 +32,7 @@ class OutputStream {
 
     std::filesystem::path file_path_tmp_;
     std::filesystem::path file_path_new_;
-    std::ofstream         fp_;
+    std::ofstream         file_;
 };
 
 }  // namespace vrt::split

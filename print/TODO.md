@@ -1,3 +1,5 @@
+* Break out some code from process to new class InputStream
+
 # Future
 * No idea to byte swap all words in a packet, just header, fields, body, context
 * Capitalize letters in strings more consistently

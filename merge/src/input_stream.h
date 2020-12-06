@@ -19,13 +19,35 @@ class InputStream {
 
     bool read_next_packet();
 
-    const vrt_header&     get_header() const { return header_; }
-    const vrt_fields&     get_fields() const { return fields_; }
-    uint64_t              get_packet_index() const { return pkt_idx_; }
-    std::filesystem::path get_file_path() const { return file_path_; }
-
     void write(std::ofstream& of);
 
+    /**
+     * Get last read packet header.
+     *
+     * \return Packet header.
+     */
+    const vrt_header& get_header() const { return header_; }
+
+    /**
+     * Get last read fields section.
+     *
+     * \return Fields section.
+     */
+    const vrt_fields& get_fields() const { return fields_; }
+
+    /**
+     * Get current packet index in file.
+     *
+     * \return Packet index.
+     */
+    uint64_t get_packet_index() const { return pkt_idx_; }
+
+    /**
+     * Get output file path.
+     *
+     * \return Output file path.
+     */
+    std::filesystem::path get_file_path() const { return file_path_; }
     /**
      * Get file size.
      *
@@ -41,7 +63,7 @@ class InputStream {
     vrt_fields fields_;
 
     std::streampos        file_size_bytes_;
-    std::ifstream         file_in_;
+    std::ifstream         file_;
     uint64_t              pkt_idx_{0};
     std::vector<uint32_t> buf_;
 };

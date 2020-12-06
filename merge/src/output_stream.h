@@ -3,14 +3,26 @@
 
 namespace vrt::merge {
 
+/**
+ * Output stream.
+ */
 class OutputStream {
    public:
-    OutputStream(const std::string& file_path);
+    OutputStream(std::string file_path);
 
-    std::ofstream& get_file() { return file_out_; }
+    /**
+     * Get reference to file.
+     *
+     * \return Output file.
+     */
+    std::ofstream& get_file() { return file_; }
+
+    void remove_file();
 
    private:
-    std::ofstream file_out_;
+    const std::string file_path_;
+
+    std::ofstream file_;
 };
 
 }  // namespace vrt::merge

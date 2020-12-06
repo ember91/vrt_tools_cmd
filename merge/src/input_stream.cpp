@@ -34,29 +34,31 @@ InputStream::InputStream(fs::path file_path, bool do_byte_swap)
     vrt_init_header(&header_);
     vrt_init_fields(&fields_);
 
+    file_.exceptions(std::ios::badbit | std::ios::failbit | std::ios::eofbit);
+
     // Open file for reading
     // Start at end so file size is available
-    file_in_.open(file_path_, std::ios::in | std::ios::binary | std::ios::ate);
-    if (!file_in_) {
-        // Note that destructor is not run if this fails
+    try {
+        file_.open(file_path_, std::ios::in | std::ios::binary | std::ios::ate);
+    } catch (const std::ios::failure&) {
         std::stringstream ss;
         ss << "Failed to open input file '" << file_path_ << "'";
         std::runtime_error(ss.str());
     }
 
     // Get file size
-    file_size_bytes_ = file_in_.tellg();
-    if (!file_in_) {
-        // Note that destructor is not run if this fails
+    try {
+        file_size_bytes_ = file_.tellg();
+    } catch (const std::ios::failure&) {
         std::stringstream ss;
-        ss << "Failed to get file size of file '" << file_path_ << "'";
+        ss << "Failed to get size of file '" << file_path_ << "'";
         std::runtime_error(ss.str());
     }
 
     // Go to start
-    file_in_.seekg(0);
-    if (!file_in_) {
-        // Note that destructor is not run if this fails
+    try {
+        file_.seekg(0);
+    } catch (const std::ios::failure&) {
         std::stringstream ss;
         ss << "Failed to seek in file '" << file_path_ << "'";
         std::runtime_error(ss.str());
@@ -79,14 +81,15 @@ bool InputStream::read_next_packet() {
 
     // Read header
     // We know here that buffer size at least has room for the header
-    file_in_.read(reinterpret_cast<char*>(buf_.data()), sizeof(uint32_t) * VRT_WORDS_HEADER);
-    if (file_in_.gcount() != 0 && file_in_.gcount() != sizeof(uint32_t) * VRT_WORDS_HEADER) {
+    try {
+        file_.read(reinterpret_cast<char*>(buf_.data()), sizeof(uint32_t) * VRT_WORDS_HEADER);
+    } catch (const std::ios::failure&) {
+        if (file_.eof()) {
+            return false;
+        }
         std::stringstream ss;
         ss << "Packet #" << pkt_idx_ << " in '" << file_path_ << "': Failed to read header";
         throw std::runtime_error(ss.str());
-    }
-    if (file_in_.eof()) {
-        return false;
     }
 
     // Byte swap if necessary
@@ -111,17 +114,18 @@ bool InputStream::read_next_packet() {
     }
 
     // Read packet remainder
-    file_in_.read(reinterpret_cast<char*>(buf_.data() + words_header),
-                  sizeof(uint32_t) * (header_.packet_size - words_header));
-    if (file_in_.gcount() != 0 && file_in_.gcount() != sizeof(uint32_t) * (header_.packet_size - words_header)) {
+    try {
+        file_.read(reinterpret_cast<char*>(buf_.data() + words_header),
+                   sizeof(uint32_t) * (header_.packet_size - words_header));
+    } catch (const std::ios::failure&) {
+        if (file_.eof()) {
+            // Just a warning. Mark as EOF.
+            std::cerr << "Warning: End of file in middle of packet #" << pkt_idx_ << '\n';
+            return false;
+        }
         std::stringstream ss;
         ss << "Packet #" << pkt_idx_ << " in '" << file_path_ << "': Failed to read remainder of packet";
         throw std::runtime_error(ss.str());
-    }
-    if (file_in_.eof()) {
-        // Just a warning. Mark as EOF.
-        std::cerr << "Warning: End of file in middle of packet #" << pkt_idx_ << '\n';
-        return false;
     }
 
     // Byte swap fields section if necessary
@@ -157,8 +161,9 @@ bool InputStream::read_next_packet() {
  * \throw std::runtime_error On I/O error.
  */
 void InputStream::write(std::ofstream& of) {
-    of.write(reinterpret_cast<char*>(buf_.data()), sizeof(uint32_t) * buf_.size());
-    if (!of) {
+    try {
+        of.write(reinterpret_cast<char*>(buf_.data()), sizeof(uint32_t) * buf_.size());
+    } catch (const std::ios::failure&) {
         std::stringstream ss;
         ss << "Failed to write to output file";
         throw std::runtime_error(ss.str());

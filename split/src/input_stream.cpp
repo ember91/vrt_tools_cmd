@@ -22,27 +22,30 @@ namespace vrt::split {
  * \throw std::runtime_error On read or parse error.
  */
 InputStream::InputStream(const std::filesystem::path& file_path, bool do_byte_swap) : do_byte_swap_{do_byte_swap} {
+    file_.exceptions(std::ios::badbit | std::ios::failbit | std::ios::eofbit);
+
     // Start at end so file size is available
-    file_in_.open(file_path, std::ios::in | std::ios::binary | std::ios::ate);
-    if (file_in_.fail()) {
+    try {
+        file_.open(file_path, std::ios::in | std::ios::binary | std::ios::ate);
+    } catch (const std::ios::failure&) {
         std::stringstream ss;
         ss << "Failed to open file '" << file_path << "'";
         throw std::runtime_error(ss.str());
     }
 
     // Get file size
-    file_size_bytes_ = file_in_.tellg();
-    if (!file_in_) {
-        // Note that destructor is not run if this fails
+    try {
+        file_size_bytes_ = file_.tellg();
+    } catch (const std::ios::failure&) {
         std::stringstream ss;
         ss << "Failed to get file size of file '" << file_path << "'";
         std::runtime_error(ss.str());
     }
 
     // Go to start
-    file_in_.seekg(0);
-    if (!file_in_) {
-        // Note that destructor is not run if this fails
+    try {
+        file_.seekg(0);
+    } catch (const std::ios::failure&) {
         std::stringstream ss;
         ss << "Failed to seek in file '" << file_path << "'";
         std::runtime_error(ss.str());
@@ -63,14 +66,15 @@ bool InputStream::read_next() {
     std::array<uint32_t, VRT_WORDS_HEADER + VRT_WORDS_MAX_FIELDS> buf_header_fields{};
 
     // No need to increase buffer size here, since buf preallocated VRT_SIZE_HEADER words and never shrinks
-    file_in_.read(reinterpret_cast<char*>(buf_.data()), sizeof(uint32_t) * VRT_WORDS_HEADER);
-    if (file_in_.gcount() != 0 && file_in_.gcount() != sizeof(uint32_t) * VRT_WORDS_HEADER) {
+    try {
+        file_.read(reinterpret_cast<char*>(buf_.data()), sizeof(uint32_t) * VRT_WORDS_HEADER);
+    } catch (const std::ios::failure&) {
+        if (file_.eof()) {
+            return false;
+        }
         std::stringstream ss;
         ss << "Packet #" << pkt_idx_ << ": Failed to read header";
         throw std::runtime_error(ss.str());
-    }
-    if (file_in_.eof()) {
-        return false;
     }
 
     // Byte swap header section if necessary
@@ -94,10 +98,11 @@ bool InputStream::read_next() {
         buf_.resize(packet_->header.packet_size);
     }
 
-    file_in_.read(reinterpret_cast<char*>(buf_.data() + words_header),
-                  sizeof(uint32_t) * (packet_->header.packet_size - words_header));
-    // Do not handle EOF here
-    if (file_in_.gcount() != sizeof(uint32_t) * (packet_->header.packet_size - words_header)) {
+    // Read remainder
+    try {
+        file_.read(reinterpret_cast<char*>(buf_.data() + words_header),
+                   sizeof(uint32_t) * (packet_->header.packet_size - words_header));
+    } catch (const std::ios::failure&) {
         std::stringstream ss;
         ss << "Packet #" << pkt_idx_ << ": Failed to read remainder of packet";
         throw std::runtime_error(ss.str());

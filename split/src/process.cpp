@@ -296,9 +296,6 @@ void process(const ProgramArguments& args) {
     std::signal(SIGINT, signal_handler);
     std::signal(SIGTERM, signal_handler);
 
-    // Preallocate room for, perhaps byte swapped, header and fields
-    std::array<uint32_t, VRT_WORDS_HEADER + VRT_WORDS_MAX_FIELDS> buf_header_fields{};
-
     InputStream input_stream(args.file_path_in, args.do_byte_swap);
 
     // Clear, since it's static

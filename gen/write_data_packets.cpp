@@ -46,21 +46,25 @@ int main() {
 
     /* Write generated packet to file */
     std::string   file_path("data_100.vrt");
-    std::ofstream fs(file_path, std::ios::out | std::ios::binary | std::ios::trunc);
-    if (!fs) {
+    std::ofstream file;
+    file.exceptions(std::ios::badbit | std::ios::failbit | std::ios::eofbit);
+    try {
+        file.open(file_path, std::ios::out | std::ios::binary | std::ios::trunc);
+    } catch (const std::ios::failure&) {
         std::cerr << "Failed to open file '" << file_path << "'" << std::endl;
         return EXIT_FAILURE;
     }
-    for (int i{0}; i < 100; ++i) {
-        fs.write(reinterpret_cast<char*>(b.data()), sizeof(uint32_t) * SIZE);
-        if (!fs) {
-            std::cerr << "Failed to write to file '" << file_path << "'" << std::endl;
-            return EXIT_FAILURE;
+    try {
+        for (int i{0}; i < 100; ++i) {
+            file.write(reinterpret_cast<char*>(b.data()), sizeof(uint32_t) * SIZE);
         }
+    } catch (const std::ios::failure&) {
+        std::cerr << "Failed to write to file '" << file_path << "'" << std::endl;
+        return EXIT_FAILURE;
     }
 
     /* Cleanup */
-    fs.close();
+    file.close();
 
     return EXIT_SUCCESS;
 }

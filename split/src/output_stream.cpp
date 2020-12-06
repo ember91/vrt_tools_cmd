@@ -22,18 +22,20 @@ namespace fs = std::filesystem;
  * \param file_path_in Input file path.
  * \param packet       Packet header and fields.
  *
- * \throw std::runtime_error On temporary file creating error.
+ * \throw std::runtime_error On temporary file creation error.
  */
 OutputStream::OutputStream(const std::filesystem::path& file_path_in, std::shared_ptr<vrt_packet> packet)
     : packet_{std::move(packet)} {
     file_path_tmp_ = generate_temporary_file_path(file_path_in);
 
+    file_.exceptions(std::ios::badbit | std::ios::failbit | std::ios::eofbit);
+
     // Open file for non-appended writing
-    fp_.open(file_path_tmp_, std::ios::out | std::ios::binary | std::ios::trunc);
-    if (!fp_) {
-        // Note that destructor is not run if this fails
+    try {
+        file_.open(file_path_tmp_, std::ios::out | std::ios::binary | std::ios::trunc);
+    } catch (const std::ios::failure&) {
         std::stringstream ss;
-        ss << "Failed to create temporary output file '" << file_path_tmp_ << "'";
+        ss << "Failed to open temporary output file '" << file_path_tmp_ << "'";
         std::runtime_error(ss.str());
     }
 }
@@ -87,8 +89,9 @@ fs::path OutputStream::generate_temporary_file_path(const fs::path& file_path_in
  * \throw std::runtime_error On write failure.
  */
 void OutputStream::write(const vrt_header& header, const std::vector<uint32_t>& buf) {
-    fp_.write(reinterpret_cast<const char*>(buf.data()), sizeof(uint32_t) * header.packet_size);
-    if (!fp_) {
+    try {
+        file_.write(reinterpret_cast<const char*>(buf.data()), sizeof(uint32_t) * header.packet_size);
+    } catch (const std::ios::failure&) {
         std::stringstream ss;
         ss << "Failed to write to file '" << file_path_tmp_ << "'";
         throw std::runtime_error(ss.str());
@@ -103,7 +106,7 @@ void OutputStream::write(const vrt_header& header, const std::vector<uint32_t>& 
  * \throw std::filesystem::filesystem_error On I/O or renaming error.
  */
 void OutputStream::rename(const fs::path& p) {
-    fp_.close();
+    file_.close();
     fs::rename(file_path_tmp_, p);
     file_path_new_ = p;
 }

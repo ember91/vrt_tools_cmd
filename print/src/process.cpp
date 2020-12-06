@@ -217,9 +217,12 @@ void process(const ProgramArguments& args) {
     // Preallocate so it has room for header
     std::vector<uint32_t> buf(VRT_WORDS_HEADER);
 
-    // Note that the stream is closed implicitly at destruction
-    std::ifstream file(args.file_path, std::ios::in | std::ios::binary);
-    if (file.fail()) {
+    std::ifstream file;
+    file.exceptions(std::ios::badbit | std::ios::failbit | std::ios::eofbit);
+
+    try {
+        file.open(args.file_path, std::ios::in | std::ios::binary);
+    } catch (const std::ios::failure&) {
         std::stringstream ss;
         ss << "Failed to open file '" << args.file_path << "'";
         throw std::runtime_error(ss.str());
@@ -235,14 +238,15 @@ void process(const ProgramArguments& args) {
     // is.
     for (i = 0; n_printed_packets < args.packet_count; ++i) {
         // No need to increase buffer size here, since buf preallocated VRT_SIZE_HEADER words and never shrinks
-        file.read(reinterpret_cast<char*>(buf.data()), sizeof(uint32_t) * VRT_WORDS_HEADER);
-        if (file.gcount() != 0 && file.gcount() != sizeof(uint32_t) * VRT_WORDS_HEADER) {
+        try {
+            file.read(reinterpret_cast<char*>(buf.data()), sizeof(uint32_t) * VRT_WORDS_HEADER);
+        } catch (const std::ios::failure&) {
+            if (file.eof()) {
+                break;
+            }
             std::stringstream ss;
             ss << "Packet #" << i << ": Failed to read header";
             throw std::runtime_error(ss.str());
-        }
-        if (file.eof()) {
-            break;
         }
 
         // Byte swap if necessary
@@ -272,7 +276,11 @@ void process(const ProgramArguments& args) {
 
         // No need to actually read packet. Just skip ahead to the next.
         if (!do_print_packet) {
-            file.seekg(sizeof(uint32_t) * (header.packet_size - words_header), std::ios_base::cur);
+            try {
+                file.seekg(sizeof(uint32_t) * (header.packet_size - words_header), std::ios_base::cur);
+            } catch (const std::ios::failure&) {
+                throw std::runtime_error("Failed to seek in file");
+            }
             continue;
         }
 
@@ -281,10 +289,10 @@ void process(const ProgramArguments& args) {
             buf.resize(header.packet_size);
         }
 
-        file.read(reinterpret_cast<char*>(buf.data() + words_header),
-                  sizeof(uint32_t) * (header.packet_size - words_header));
-        // Do not handle EOF here
-        if (file.gcount() != sizeof(uint32_t) * (header.packet_size - words_header)) {
+        try {
+            file.read(reinterpret_cast<char*>(buf.data() + words_header),
+                      sizeof(uint32_t) * (header.packet_size - words_header));
+        } catch (const std::ios::failure&) {
             std::stringstream ss;
             ss << "Packet #" << i << ": Failed to read remainder of packet";
             throw std::runtime_error(ss.str());

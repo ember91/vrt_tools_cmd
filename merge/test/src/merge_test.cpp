@@ -68,10 +68,13 @@ static void check(bool do_byte_swap = false) {
 
     std::string file_path = TMP_FILE_OUT_PATH;
 
+    std::ifstream file;
+    file.exceptions(std::ios::badbit | std::ios::failbit | std::ios::eofbit);
+
     // Open file for reading
-    std::ifstream file(file_path, std::ios::in | std::ios::binary);
-    if (!file) {
-        // Note that destructor is not run if this fails
+    try {
+        file.open(file_path, std::ios::in | std::ios::binary);
+    } catch (const std::ios::failure&) {
         std::stringstream ss;
         ss << "Failed to open input file '" << file_path << "'";
         std::runtime_error(ss.str());
@@ -89,9 +92,13 @@ static void check(bool do_byte_swap = false) {
 
         // Read header
         // We know here that buffer size at least has room for the header
-        file.read(reinterpret_cast<char*>(buf.data()), sizeof(uint32_t) * VRT_WORDS_HEADER);
-        if (file.gcount() != sizeof(uint32_t) * VRT_WORDS_HEADER) {
-            break;
+        try {
+            file.read(reinterpret_cast<char*>(buf.data()), sizeof(uint32_t) * VRT_WORDS_HEADER);
+        } catch (const std::ios::failure&) {
+            if (file.eof()) {
+                break;
+            }
+            throw std::runtime_error("File read error");
         }
 
         if (do_byte_swap) {
@@ -109,10 +116,14 @@ static void check(bool do_byte_swap = false) {
         }
 
         // Read packet remainder
-        file.read(reinterpret_cast<char*>(buf.data() + words_header),
-                  sizeof(uint32_t) * (header.packet_size - words_header));
-        if (file.gcount() != sizeof(uint32_t) * (header.packet_size - words_header)) {
-            break;
+        try {
+            file.read(reinterpret_cast<char*>(buf.data() + words_header),
+                      sizeof(uint32_t) * (header.packet_size - words_header));
+        } catch (const std::ios::failure&) {
+            if (file.eof()) {
+                break;
+            }
+            throw std::runtime_error("File read error");
         }
 
         // Byte swap remainder of packet

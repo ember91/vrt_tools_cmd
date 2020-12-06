@@ -27,30 +27,12 @@ namespace vrt::merge {
 // For convenience
 using InputStreamPtr = std::shared_ptr<InputStream>;
 
-// Static so they cam be used when signal is called
-static fs::path      file_path_out;
-static std::ofstream file_out;
-
-/**
- * Close output file stream and remove any traces.
- */
-static void remove_output_file() {
-    file_out.close();
-    try {
-        fs::remove(file_path_out);
-    } catch (const fs::filesystem_error&) {
-        // Do nothing
-    }
-}
-
 /**
  * Handle shutdown signals gracefully by closing and removing any output file before shutdown.
  *
  * \param signum Signal number.
  */
 [[noreturn]] static void signal_handler(int signum) {
-    remove_output_file();
-
     std::exit(signum);
 }
 
@@ -169,7 +151,7 @@ void process(const ProgramArguments& args) {
         progress.done();
     } catch (...) {
         // Cleanup and rethrow
-        remove_output_file();
+        output_stream.remove_file();
         throw;
     }
 }
