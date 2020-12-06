@@ -36,13 +36,6 @@ class InputStream {
     const vrt_fields& get_fields() const { return fields_; }
 
     /**
-     * Get current packet index in file.
-     *
-     * \return Packet index.
-     */
-    uint64_t get_packet_index() const { return pkt_idx_; }
-
-    /**
      * Get output file path.
      *
      * \return Output file path.

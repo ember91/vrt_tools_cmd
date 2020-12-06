@@ -15,6 +15,7 @@
 #include <vrt/vrt_util.h>
 
 #include "Progress-CPP/ProgressBar.hpp"
+#include "comparator_id.h"
 #include "input_stream.h"
 #include "output_stream.h"
 #include "program_arguments.h"
@@ -24,78 +25,15 @@ namespace fs = std::filesystem;
 namespace vrt::split {
 
 // For convenience
-using PacketPtr     = std::shared_ptr<vrt_packet>;
-using OutputFilePtr = std::unique_ptr<OutputStream>;
-
-/**
- * Comparator to compare packets by Class and Stream ID.
- */
-struct ComparatorId {
-    /**
-     * Compare packets by Class and Stream ID.
-     *
-     * \param a Packet 1.
-     * \param b Packet 2.
-     *
-     * \return True if a is less than b.
-     */
-    bool operator()(const PacketPtr& a, const PacketPtr& b) const {
-        if (!a->header.has.class_id && b->header.has.class_id) {
-            return true;
-        }
-        if (a->header.has.class_id && !b->header.has.class_id) {
-            return false;
-        }
-        // Either both or none has Class ID here
-        if (a->header.has.class_id && b->header.has.class_id) {
-            if (a->fields.class_id.oui < b->fields.class_id.oui) {
-                return true;
-            }
-            if (a->fields.class_id.oui > b->fields.class_id.oui) {
-                return false;
-            }
-            // OUI equal
-            if (a->fields.class_id.information_class_code < b->fields.class_id.information_class_code) {
-                return true;
-            }
-            if (a->fields.class_id.information_class_code > b->fields.class_id.information_class_code) {
-                return false;
-            }
-            // OUI and Information class code equal
-            if (a->fields.class_id.packet_class_code < b->fields.class_id.packet_class_code) {
-                return true;
-            }
-            if (a->fields.class_id.packet_class_code > b->fields.class_id.packet_class_code) {
-                return false;
-            }
-            // OUI, Information class code and Packet class code are equal
-        }
-        if (!vrt_has_stream_id(&a->header) && vrt_has_stream_id(&b->header)) {
-            return true;
-        }
-        if (vrt_has_stream_id(&a->header) && !vrt_has_stream_id(&b->header)) {
-            return false;
-        }
-        if (vrt_has_stream_id(&a->header) && vrt_has_stream_id(&b->header)) {
-            if (a->fields.stream_id < b->fields.stream_id) {
-                return true;
-            }
-            if (a->fields.stream_id > b->fields.stream_id) {
-                return false;
-            }
-        }
-
-        // Equality
-        return false;
-    }
-};
+using PacketPtr       = std::shared_ptr<vrt_packet>;
+using OutputStreamPtr = std::unique_ptr<OutputStream>;
 
 /**
  * Packet -> File map.
  * std::map seems to be a better choice than std::unordered_map for few keys.
  * Static so it can be used in the signal handler.
  */
-static std::map<PacketPtr, OutputFilePtr, ComparatorId> files_out;
+static std::map<PacketPtr, OutputStreamPtr, ComparatorId> output_streams;
 
 /**
  * Handle shutdown signals gracefully by removing any temporary and output files before shutdown.
@@ -103,7 +41,7 @@ static std::map<PacketPtr, OutputFilePtr, ComparatorId> files_out;
  * \param signum Signal number.
  */
 [[noreturn]] static void signal_handler(int signum) {
-    for (auto& el : files_out) {
+    for (auto& el : output_streams) {
         try {
             el.second->remove_temporary();
         } catch (const fs::filesystem_error&) {
@@ -144,7 +82,7 @@ static PacketDiffs packet_differences() {
 
     // Calculate
     PacketDiffs ret;
-    for (const auto& el : files_out) {
+    for (const auto& el : output_streams) {
         if (prev_p != nullptr) {
             if (el.first->header.has.class_id) {
                 ret.any_has_class_id = true;
@@ -244,8 +182,8 @@ static fs::path final_file_path(const fs::path& file_path_in, vrt_packet* packet
  */
 static void finish(const std::string& file_path_in) {
     // Check if all Class and Stream IDs are the same
-    if (files_out.size() <= 1) {
-        for (auto& el : files_out) {
+    if (output_streams.size() <= 1) {
+        for (auto& el : output_streams) {
             try {
                 el.second->remove_temporary();
             } catch (const fs::filesystem_error&) {
@@ -260,13 +198,13 @@ static void finish(const std::string& file_path_in) {
     try {
         PacketDiffs packet_diffs{packet_differences()};
 
-        for (auto& el : files_out) {
+        for (auto& el : output_streams) {
             fs::path file_out{final_file_path(file_path_in, el.first.get(), packet_diffs)};
             el.second->rename(file_out);
         }
     } catch (...) {
         // Remove any newly created files before rethrow
-        for (auto& el : files_out) {
+        for (auto& el : output_streams) {
             try {
                 el.second->remove_new();
             } catch (const fs::filesystem_error&) {
@@ -292,7 +230,7 @@ void process(const ProgramArguments& args) {
     InputStream input_stream(args.file_path_in, args.do_byte_swap);
 
     // Clear, since it's static
-    files_out.clear();
+    output_streams.clear();
 
     // Progress bar
     progresscpp::ProgressBar progress(static_cast<size_t>(input_stream.get_file_size()), 70);
@@ -305,9 +243,9 @@ void process(const ProgramArguments& args) {
 
         // Find Class ID, Stream ID combination in map, or construct new output file if needed
         PacketPtr packet{input_stream.get_packet()};
-        auto      it{files_out.find(packet)};
-        if (it == files_out.end()) {
-            auto pair{files_out.emplace(packet, std::make_unique<OutputStream>(args.file_path_in, packet))};
+        auto      it{output_streams.find(packet)};
+        if (it == output_streams.end()) {
+            auto pair{output_streams.emplace(packet, std::make_unique<OutputStream>(args.file_path_in, packet))};
 
             it = pair.first;
         }
