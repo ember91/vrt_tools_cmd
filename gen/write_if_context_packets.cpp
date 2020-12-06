@@ -55,8 +55,5 @@ int main() {
         return EXIT_FAILURE;
     }
 
-    /* Cleanup */
-    file.close();
-
     return EXIT_SUCCESS;
 }

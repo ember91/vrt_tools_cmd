@@ -35,7 +35,11 @@ OutputStream::OutputStream(std::string file_path) : file_path_{std::move(file_pa
  * Close and remove file. Do not write after this.
  */
 void OutputStream::remove_file() {
-    file_.close();
+    try {
+        file_.close();
+    } catch (const fs::filesystem_error&) {
+        // Do nothing
+    }
     try {
         fs::remove(file_path_);
     } catch (const fs::filesystem_error&) {

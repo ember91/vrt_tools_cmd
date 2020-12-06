@@ -81,10 +81,7 @@ void generate_packet_sequence(
             throw std::runtime_error(ss.str());
         }
     }
-
-    // Cleanup
-    file.close();
-}  // namespace vrt
+}
 
 }  // namespace vrt
 

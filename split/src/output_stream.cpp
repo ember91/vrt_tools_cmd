@@ -106,7 +106,11 @@ void OutputStream::write(const vrt_header& header, const std::vector<uint32_t>& 
  * \throw std::filesystem::filesystem_error On I/O or renaming error.
  */
 void OutputStream::rename(const fs::path& p) {
-    file_.close();
+    try {
+        file_.close();
+    } catch (const fs::filesystem_error&) {
+        // Do nothing
+    }
     fs::rename(file_path_tmp_, p);
     file_path_new_ = p;
 }
