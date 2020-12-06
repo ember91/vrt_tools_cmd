@@ -42,7 +42,7 @@ class InputStream {
 
     std::streampos        file_size_bytes_;
     std::ifstream         file_in_;
-    uint64_t              pkt_idx_;
+    uint64_t              pkt_idx_{0};
     std::vector<uint32_t> buf_;
 };
 
