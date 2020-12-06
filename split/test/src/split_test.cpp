@@ -32,7 +32,6 @@ class SplitTest : public ::testing::Test {
     void TearDown() override {
         try {
             fs::remove_all(TMP_DIR);
-
         } catch (const fs::filesystem_error&) {
             // Do nothing
         }
