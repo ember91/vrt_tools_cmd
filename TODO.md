@@ -2,3 +2,4 @@
 * Check that input and output aren't the same files
 * Prefer to use std::filesystem::path over std::string
 * Remove static fields in favour of bind
+* Create common input stream class?
