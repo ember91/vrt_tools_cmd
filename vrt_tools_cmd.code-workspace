@@ -72,7 +72,8 @@
 		"doxdocgen.generic.paramTemplate": "\\param {param} ",
 		"doxdocgen.generic.returnTemplate": "\\return ",
 		"files.exclude": {
-			"doc/html/*": true
+			"doc/html/*": true,
+			"lib/CLI11/*": true
 		}
 	}
 }
