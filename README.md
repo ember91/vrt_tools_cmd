@@ -61,6 +61,10 @@ Results in output files `signal_ABABABAB.vrt` and `signal_12345678.vrt` with all
 
 Merges multiple VRT files into a single file and sorts them by time. Assumes packets in input files are ordered by time stamps.
 
+## VRT Length
+
+Calculates number of packets and time difference for all different streams in a VRT packet file.
+
 ### Prerequisites
 
 * C++17 compiler, such as GCC

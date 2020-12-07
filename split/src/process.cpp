@@ -18,6 +18,7 @@
 #include "comparator_id.h"
 #include "input_stream.h"
 #include "output_stream.h"
+#include "packet_id_differences.h"
 #include "program_arguments.h"
 
 namespace fs = std::filesystem;
@@ -58,71 +59,6 @@ static std::map<PacketPtr, OutputStreamPtr, ComparatorId> output_streams;
 }
 
 /**
- * Describe differences between packets, as booleans.
- */
-struct PacketDiffs {
-    bool any_has_class_id{false};   // If any packet has Class ID
-    bool any_has_stream_id{false};  // If any packet has Stream ID
-    bool diff_oui{false};           // If OUI differs
-    bool diff_icc{false};           // If Information class code differs
-    bool diff_pcc{false};           // If Packet class code differs
-    bool diff_sid{false};           // If Stream ID differs
-};
-
-/**
- * Get differences between packets.
- *
- * \return booleans describing packet differences.
- */
-static PacketDiffs packet_differences() {
-    // Pointers to previous packets
-    vrt_packet* prev_p{nullptr};    // Previous packet
-    vrt_packet* prev_cid{nullptr};  // Previous packet with Class ID
-    vrt_packet* prev_sid{nullptr};  // Previous packet with Stream ID
-
-    // Calculate
-    PacketDiffs ret;
-    for (const auto& el : output_streams) {
-        if (prev_p != nullptr) {
-            if (el.first->header.has.class_id) {
-                ret.any_has_class_id = true;
-            }
-            if (vrt_has_stream_id(&el.first->header)) {
-                ret.any_has_stream_id = true;
-            }
-            if (prev_cid != nullptr && el.first->header.has.class_id) {
-                if (el.first->fields.class_id.oui != prev_cid->fields.class_id.oui) {
-                    ret.diff_oui = true;
-                }
-                if (el.first->fields.class_id.information_class_code !=
-                    prev_cid->fields.class_id.information_class_code) {
-                    ret.diff_icc = true;
-                }
-                if (el.first->fields.class_id.packet_class_code != prev_cid->fields.class_id.packet_class_code) {
-                    ret.diff_pcc = true;
-                }
-            }
-            if (prev_sid != nullptr && vrt_has_stream_id(&el.first->header)) {
-                if (el.first->fields.stream_id != prev_sid->fields.stream_id) {
-                    ret.diff_sid = true;
-                }
-            }
-        }
-
-        // Save pointers to previous packets
-        prev_p = el.first.get();
-        if (el.first->header.has.class_id) {
-            prev_cid = el.first.get();
-        }
-        if (vrt_has_stream_id(&el.first->header)) {
-            prev_sid = el.first.get();
-        }
-    }
-
-    return ret;
-}
-
-/**
  * Generate final output file path.
  *
  * \param file_path_in  Input file path.
@@ -130,7 +66,7 @@ static PacketDiffs packet_differences() {
  * \param diffs         Packet differences.
  * \return Final output file path.
  */
-static fs::path final_file_path(const fs::path& file_path_in, vrt_packet* packet, const PacketDiffs& diffs) {
+static fs::path final_file_path(const fs::path& file_path_in, vrt_packet* packet, const PacketIdDiffs& diffs) {
     std::stringstream body{};
     if (diffs.any_has_class_id) {
         if (packet->header.has.class_id) {
@@ -196,7 +132,14 @@ static void finish(const std::string& file_path_in) {
     }
 
     try {
-        PacketDiffs packet_diffs{packet_differences()};
+        // Make vector from map
+        std::vector<PacketPtr> v;
+        v.reserve(output_streams.size());
+        for (const auto& el : output_streams) {
+            v.push_back(el.first);
+        }
+
+        PacketIdDiffs packet_diffs{packet_id_differences(v)};
 
         for (auto& el : output_streams) {
             fs::path file_out{final_file_path(file_path_in, el.first.get(), packet_diffs)};
