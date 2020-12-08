@@ -21,7 +21,7 @@
 static vrt::print::ProgramArguments setup_arg_parse(CLI::App* app) {
     vrt::print::ProgramArguments args;
 
-    CLI::Option* opt_file{app->add_option("-f,--file", args.file_path, "Input file path")};
+    CLI::Option* opt_file{app->add_option("-f,--file,file", args.file_path, "Input file path")};
     opt_file->required(true);
     opt_file->check(CLI::ExistingFile);
 
