@@ -9,6 +9,8 @@
 #include "process.h"
 #include "program_arguments.h"
 
+namespace fs = std::filesystem;
+
 /**
  * Setup program command line argument parsing.
  *
@@ -55,6 +57,17 @@ int main(int argc, const char** argv) {
     if (program_args.file_paths_in.empty()) {
         std::cerr << "--input_files is required with at least one file" << std::endl;
         return EXIT_FAILURE;
+    }
+    for (const std::string& path_in : program_args.file_paths_in) {
+        try {
+            if (fs::equivalent(path_in, program_args.file_path_out)) {
+                std::cerr << "Cannot use the same input as output file path: '" << path_in << "'" << std::endl;
+                return EXIT_FAILURE;
+            }
+        } catch (const fs::filesystem_error&) {
+            // Do nothing. Output path does not exist. If input path doesn't exist it will be shown when file opens
+            // anyway.
+        }
     }
 
     // Check that endianness of platform compared to byte swap parameter makes sense
