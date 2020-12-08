@@ -19,6 +19,7 @@ class InputStream {
     InputStream(std::filesystem::path file_path, bool do_byte_swap);
 
     bool read_next_packet();
+    bool skip_next_packet();
 
     void write(std::ofstream& of);
 
@@ -44,6 +45,8 @@ class InputStream {
     std::streampos get_file_size() const { return file_size_bytes_; }
 
    private:
+    bool read_parse_header();
+
     const std::filesystem::path file_path_;
     const bool                  do_byte_swap_;
 
