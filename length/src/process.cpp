@@ -45,7 +45,7 @@ void process(const ProgramArguments& args) {
     // Go over all packets in input file
     uint64_t i;
     for (i = 0;; ++i) {
-        if (!input_stream.read_next()) {
+        if (!input_stream.read_next_packet()) {
             break;
         }
 

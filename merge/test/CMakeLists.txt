@@ -8,8 +8,7 @@ file(GLOB SRC_FILES CONFIGURE_DEPENDS
      ${CMAKE_CURRENT_SOURCE_DIR}/../test/src/*.cpp)
 add_executable(
   ${TARGET_NAME}
-  ${SRC_FILES} ${CMAKE_CURRENT_SOURCE_DIR}/../src/input_stream.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/../src/output_stream.cpp
+  ${SRC_FILES} ${CMAKE_CURRENT_SOURCE_DIR}/../src/output_stream.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/../src/process.cpp)
 
 # Setup testing
@@ -46,10 +45,10 @@ set_target_properties(${TARGET_NAME} PROPERTIES CXX_STANDARD 17)
 target_include_directories(${TARGET_NAME}
                            PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../include/)
 target_include_directories(${TARGET_NAME} SYSTEM
-                           PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../../lib)
+                           PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../../lib/src)
 
 # Link executable
-target_link_libraries(${TARGET_NAME} vrt ${GTEST_LIBRARIES} pthread)
+target_link_libraries(${TARGET_NAME} vrt ${GTEST_LIBRARIES} pthread vrt_lib)
 
 # Add test
 add_test(name ${TARGET_NAME} COMMAND ${TARGET_NAME})

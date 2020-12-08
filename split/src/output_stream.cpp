@@ -82,24 +82,6 @@ fs::path OutputStream::generate_temporary_file_path(const fs::path& file_path_in
 }
 
 /**
- * Write to temporary file.
- *
- * \param header Header to write.
- * \param buf    Buffer with data to write.
- *
- * \throw std::runtime_error On write failure.
- */
-void OutputStream::write(const vrt_header& header, const std::vector<uint32_t>& buf) {
-    try {
-        file_.write(reinterpret_cast<const char*>(buf.data()), sizeof(uint32_t) * header.packet_size);
-    } catch (const std::ios::failure&) {
-        std::stringstream ss;
-        ss << "Failed to write to file '" << file_path_tmp_ << "'";
-        throw std::runtime_error(ss.str());
-    }
-}
-
-/**
  * Make temporary file the output file.
  *
  * \param p File path to new file.

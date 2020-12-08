@@ -137,6 +137,7 @@ find_package(Libvrt REQUIRED)
 
 add_subdirectory(gen)
 add_subdirectory(length)
+add_subdirectory(lib)
 add_subdirectory(merge)
 add_subdirectory(print)
 add_subdirectory(split)

@@ -1,44 +1,42 @@
 #include "input_stream.h"
 
 #include <algorithm>
-#include <array>
 #include <cstddef>
 #include <cstdint>
+#include <filesystem>
+#include <fstream>
 #include <iostream>
 #include <sstream>
 #include <stdexcept>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include <vrt/vrt_init.h>
 #include <vrt/vrt_read.h>
 #include <vrt/vrt_string.h>
+#include <vrt/vrt_types.h>
 #include <vrt/vrt_words.h>
 
 #include "byte_swap.h"
 
 namespace fs = std::filesystem;
 
-namespace vrt::merge {
+namespace vrt {
 
 /**
  * Constructor. Open input file for reading.
  *
- * \param file_path    File path to input file.
- * \param do_byte_swap True if byte swap shall be used.
+ * \param file_path    Path to file.
+ * \param do_byte_swap True if byte swap before parsing.
  *
- * \throw std::runtime_error If file failed to open.
+ * \throw std::runtime_error On read or parse error.
  */
 InputStream::InputStream(fs::path file_path, bool do_byte_swap)
     : file_path_{std::move(file_path)}, do_byte_swap_{do_byte_swap} {
-    // Zero initialize
-    vrt_init_header(&header_);
-    vrt_init_fields(&fields_);
-
     file_.exceptions(std::ios::badbit | std::ios::failbit | std::ios::eofbit);
 
-    // Open file for reading
-    // Start at end so file size is available
+    // Open file for reading at end so file size is available
     try {
         file_.open(file_path_, std::ios::in | std::ios::binary | std::ios::ate);
     } catch (const std::ios::failure&) {
@@ -65,23 +63,20 @@ InputStream::InputStream(fs::path file_path, bool do_byte_swap)
         throw std::runtime_error(ss.str());
     }
 
-    // Make space for header at least
+    // Preallocate room for header at least
     buf_.resize(VRT_WORDS_HEADER);
+    buf_byte_swap_.resize(VRT_WORDS_HEADER);
 }
 
 /**
- * Read next packet in stream, if any, into internal buffer.
+ * Read next packet in stream.
  *
- * \return True if there was any next packet.
+ * \return False if End Of File.
  *
- * \throw std::runtime_error On I/O error.
+ * \throw std::runtime_error On read or parse error.
  */
 bool InputStream::read_next_packet() {
-    // Preallocate room for, perhaps byte swapped, header and fields
-    std::array<uint32_t, VRT_WORDS_HEADER + VRT_WORDS_MAX_FIELDS> buf_header_fields{};
-
-    // Read header
-    // We know here that buffer size at least has room for the header
+    // No need to increase buffer size here, since buf preallocated VRT_SIZE_HEADER words and never shrinks
     try {
         file_.read(reinterpret_cast<char*>(buf_.data()), sizeof(uint32_t) * VRT_WORDS_HEADER);
     } catch (const std::ios::failure&) {
@@ -93,31 +88,33 @@ bool InputStream::read_next_packet() {
         throw std::runtime_error(ss.str());
     }
 
-    // Byte swap if necessary
+    // Byte swap header if necessary
     if (do_byte_swap_) {
-        buf_header_fields[0] = bswap_32(buf_[0]);
+        buf_byte_swap_[0] = bswap_32(buf_[0]);
     } else {
-        buf_header_fields[0] = buf_[0];
+        buf_byte_swap_[0] = buf_[0];
     }
 
     // Parse and validate header
-    int32_t words_header{vrt_read_header(buf_header_fields.data(), buf_header_fields.size(), &header_, true)};
+    packet_ = std::make_shared<vrt_packet>();
+    int32_t words_header{vrt_read_header(buf_byte_swap_.data(), buf_byte_swap_.size(), &packet_->header, true)};
     if (words_header < 0) {
         std::stringstream ss;
-        ss << "Error when validating packet #" << pkt_idx_ << " header in '" << file_path_
-           << "': " << vrt_string_error(words_header);
+        ss << "Packet #" << pkt_idx_ << " in '" << file_path_
+           << "': Failed to parse header: " << vrt_string_error(words_header);
         throw std::runtime_error(ss.str());
     }
 
-    // Resize buffer if needed
-    if (buf_.size() < header_.packet_size) {
-        buf_.resize(header_.packet_size);
+    // Enlarge read buffer for the next section if needed
+    if (buf_.size() < packet_->header.packet_size) {
+        buf_.resize(packet_->header.packet_size);
+        buf_byte_swap_.resize(packet_->header.packet_size);
     }
 
-    // Read packet remainder
+    // Read remainder
     try {
         file_.read(reinterpret_cast<char*>(buf_.data() + words_header),
-                   sizeof(uint32_t) * (header_.packet_size - words_header));
+                   sizeof(uint32_t) * (packet_->header.packet_size - words_header));
     } catch (const std::ios::failure&) {
         if (file_.eof()) {
             // Just a warning. Mark as EOF.
@@ -129,24 +126,36 @@ bool InputStream::read_next_packet() {
         throw std::runtime_error(ss.str());
     }
 
-    // Byte swap fields section if necessary
-    int32_t words_fields = vrt_words_fields(&header_);
+    // Byte swap remainder
     if (do_byte_swap_) {
-        for (size_t j{1}; j < static_cast<size_t>(words_fields) + 1; ++j) {
-            buf_header_fields[j] = bswap_32(buf_[j]);
+        for (size_t j{1}; j < static_cast<size_t>(packet_->header.packet_size); ++j) {
+            buf_byte_swap_[j] = bswap_32(buf_[j]);
         }
     } else {
-        std::copy_n(buf_.data() + 1, words_fields, buf_header_fields.data() + 1);
+        std::copy_n(buf_.data() + 1, packet_->header.packet_size - 1, buf_byte_swap_.data() + 1);
     }
 
     // Parse and validate fields section
-    words_fields = vrt_read_fields(&header_, buf_header_fields.data() + words_header,
-                                   buf_header_fields.size() - words_header, &fields_, true);
+    int32_t words_fields{vrt_read_fields(&packet_->header, buf_byte_swap_.data() + words_header,
+                                         buf_byte_swap_.size() - words_header, &packet_->fields, true)};
     if (words_fields < 0) {
         std::stringstream ss;
-        ss << "Error when validating packet #" << pkt_idx_ << " fields section in '" << file_path_
-           << "': " << vrt_string_error(words_fields);
+        ss << "Packet #" << pkt_idx_ << " in '" << file_path_
+           << "': Failed to parse fields section: " << vrt_string_error(words_fields);
         throw std::runtime_error(ss.str());
+    }
+
+    // Parse IF context, if any
+    if (packet_->header.packet_type == VRT_PT_IF_CONTEXT) {
+        int32_t words_header_fields{words_header + words_fields};
+        vrt_read_if_context(buf_byte_swap_.data() + words_header_fields, buf_byte_swap_.size() - words_header_fields,
+                            &packet_->if_context, true);
+    }
+
+    // Parse trailer, if any
+    if (packet_->header.has.trailer) {
+        vrt_read_trailer(buf_byte_swap_.data() + packet_->header.packet_size - 1,
+                         buf_byte_swap_.size() - (packet_->header.packet_size - 1), &packet_->trailer);
     }
 
     pkt_idx_++;
@@ -163,7 +172,7 @@ bool InputStream::read_next_packet() {
  */
 void InputStream::write(std::ofstream& of) {
     try {
-        of.write(reinterpret_cast<char*>(buf_.data()), sizeof(uint32_t) * buf_.size());
+        of.write(reinterpret_cast<char*>(buf_.data()), sizeof(uint32_t) * packet_->header.packet_size);
     } catch (const std::ios::failure&) {
         std::stringstream ss;
         ss << "Failed to write to output file";
@@ -171,4 +180,4 @@ void InputStream::write(std::ofstream& of) {
     }
 }
 
-}  // namespace vrt::merge
+}  // namespace vrt

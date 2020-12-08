@@ -180,7 +180,7 @@ void process(const ProgramArguments& args) {
 
     // Go over all packets in input file
     for (int i{0};; ++i) {
-        if (!input_stream.read_next()) {
+        if (!input_stream.read_next_packet()) {
             break;
         }
 
@@ -193,7 +193,8 @@ void process(const ProgramArguments& args) {
             it = pair.first;
         }
 
-        it->second->write(packet->header, input_stream.get_data_buffer());
+        // Write input packet to output
+        input_stream.write(it->second->get_file());
 
         // Handle progress bar
         progress += sizeof(uint32_t) * packet->header.packet_size;

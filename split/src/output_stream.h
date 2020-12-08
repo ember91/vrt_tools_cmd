@@ -21,11 +21,12 @@ class OutputStream {
 
     std::filesystem::path generate_temporary_file_path(const std::filesystem::path& file_path_in) const;
 
-    void write(const vrt_header& header, const std::vector<uint32_t>& buf);
     void rename(const std::filesystem::path& p);
 
     void remove_temporary() const;
     void remove_new() const;
+
+    std::ofstream& get_file() { return file_; }
 
    private:
     const std::shared_ptr<vrt_packet> packet_;

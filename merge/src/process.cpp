@@ -48,10 +48,10 @@ struct ComparatorTime {
      */
     bool operator()(const InputStreamPtr& a, const InputStreamPtr& b) const {
         // Get headers and fields
-        const vrt_header& ah{a->get_header()};
-        const vrt_header& bh{b->get_header()};
-        const vrt_fields& af{a->get_fields()};
-        const vrt_fields& bf{b->get_fields()};
+        const vrt_header& ah{a->get_packet()->header};
+        const vrt_header& bh{b->get_packet()->header};
+        const vrt_fields& af{a->get_packet()->fields};
+        const vrt_fields& bf{b->get_packet()->fields};
 
         if (ah.tsi == VRT_TSI_NONE) {
             std::stringstream ss;
@@ -139,7 +139,7 @@ void process(const ProgramArguments& args) {
             }
 
             // Handle progress bar
-            progress += sizeof(uint32_t) * input_stream->get_header().packet_size;
+            progress += sizeof(uint32_t) * input_stream->get_packet()->header.packet_size;
             if (progress.get_ticks() % 65536 == 0) {
                 progress.display();
             }

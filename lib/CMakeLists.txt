@@ -1,18 +1,16 @@
 cmake_minimum_required(VERSION 3.0)
 
 project(
-  vrt_length
+  vrt_lib
   LANGUAGES CXX
-  DESCRIPTION
-    "Calculate length in packets and time for each packet stream in a vita49 VRT format file"
-)
+  DESCRIPTION "Common files for VRT command line tools")
 
 # Name target the same as project
 set(TARGET_NAME ${PROJECT_NAME})
 
 # Add source files
 file(GLOB FILES_SRC CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
-add_executable(${TARGET_NAME} ${FILES_SRC})
+add_library(${TARGET_NAME} SHARED ${FILES_SRC})
 
 # Set warning levels
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
@@ -30,18 +28,12 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
   endif()
 endif()
 
-if(${TEST})
-  # add_subdirectory(test)
-endif()
-
 # Set C++ standard
 set_target_properties(${TARGET_NAME} PROPERTIES CXX_STANDARD 17)
 
 # Include directory and library
 target_include_directories(${TARGET_NAME} SYSTEM PUBLIC ${Libvrt_INCLUDE_DIR})
-target_include_directories(${TARGET_NAME} SYSTEM
-                           PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../lib/src)
-target_link_libraries(${TARGET_NAME} ${Libvrt_LIBRARY} vrt_lib)
+target_link_libraries(${TARGET_NAME} ${Libvrt_LIBRARY})
 
 # Install executable
 install(TARGETS ${PROJECT_NAME} DESTINATION bin)
