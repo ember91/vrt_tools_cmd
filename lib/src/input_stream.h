@@ -16,7 +16,7 @@ namespace vrt {
  */
 class InputStream {
    public:
-    InputStream(std::filesystem::path file_path, bool do_byte_swap);
+    InputStream(std::filesystem::path file_path, bool do_byte_swap, bool do_validate = true);
 
     bool read_next_packet();
     bool skip_next_packet();
@@ -49,6 +49,7 @@ class InputStream {
 
     const std::filesystem::path file_path_;
     const bool                  do_byte_swap_;
+    const bool                  do_validate_;
 
     std::shared_ptr<vrt_packet> packet_;
     std::ifstream               file_;

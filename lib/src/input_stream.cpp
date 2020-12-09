@@ -29,11 +29,12 @@ namespace vrt {
  *
  * \param file_path    Path to file.
  * \param do_byte_swap True if byte swap before parsing.
+ * \param do_validate  True if packets shall be validated.
  *
  * \throw std::runtime_error On read or parse error.
  */
-InputStream::InputStream(fs::path file_path, bool do_byte_swap)
-    : file_path_{std::move(file_path)}, do_byte_swap_{do_byte_swap} {
+InputStream::InputStream(fs::path file_path, bool do_byte_swap, bool do_validate)
+    : file_path_{std::move(file_path)}, do_byte_swap_{do_byte_swap}, do_validate_{do_validate} {
     file_.exceptions(std::ios::badbit | std::ios::failbit | std::ios::eofbit);
 
     // Open file for reading at end so file size is available
@@ -114,23 +115,61 @@ bool InputStream::read_next_packet() {
     int32_t words_fields{vrt_read_fields(&packet_->header, buf_byte_swap_.data() + VRT_WORDS_HEADER,
                                          buf_byte_swap_.size() - VRT_WORDS_HEADER, &packet_->fields, true)};
     if (words_fields < 0) {
-        std::stringstream ss;
-        ss << "Packet #" << pkt_idx_ << " in '" << file_path_
-           << "': Failed to parse fields section: " << vrt_string_error(words_fields);
-        throw std::runtime_error(ss.str());
+        if (do_validate_) {
+            std::stringstream ss;
+            ss << "Packet #" << pkt_idx_ << " in '" << file_path_
+               << "': Failed to parse fields section: " << vrt_string_error(words_fields);
+            throw std::runtime_error(ss.str());
+        } else {
+            // Never any error here, since buffer size is sufficient
+            vrt_read_fields(&packet_->header, buf_byte_swap_.data() + VRT_WORDS_HEADER,
+                            buf_byte_swap_.size() - VRT_WORDS_HEADER, &packet_->fields, false);
+            std::cerr << "Warning: Packet #" << pkt_idx_ << " in '" << file_path_
+                      << "': Failed to validate fields section: " << vrt_string_error(words_fields);
+        }
     }
 
     // Parse IF context, if any
     if (packet_->header.packet_type == VRT_PT_IF_CONTEXT) {
         int32_t words_header_fields{VRT_WORDS_HEADER + words_fields};
-        vrt_read_if_context(buf_byte_swap_.data() + words_header_fields, buf_byte_swap_.size() - words_header_fields,
-                            &packet_->if_context, true);
+        int32_t words_if_context{vrt_read_if_context(buf_byte_swap_.data() + words_header_fields,
+                                                     buf_byte_swap_.size() - words_header_fields, &packet_->if_context,
+                                                     true)};
+        if (words_if_context < 0) {
+            if (do_validate_) {
+                std::stringstream ss;
+                ss << "Packet #" << pkt_idx_ << " in '" << file_path_
+                   << "': Failed to parse IF context: " << vrt_string_error(words_if_context);
+                throw std::runtime_error(ss.str());
+            } else {
+                // Never any error here, since buffer size is sufficient
+                vrt_read_if_context(buf_byte_swap_.data() + words_header_fields,
+                                    buf_byte_swap_.size() - words_header_fields, &packet_->if_context, false);
+                std::cerr << "Warning: Packet #" << pkt_idx_ << " in '" << file_path_
+                          << "': Failed to validate IF context: " << vrt_string_error(words_if_context);
+            }
+        }
     }
 
     // Parse trailer, if any
     if (packet_->header.has.trailer) {
-        vrt_read_trailer(buf_byte_swap_.data() + packet_->header.packet_size - 1,
-                         buf_byte_swap_.size() - (packet_->header.packet_size - 1), &packet_->trailer);
+        int32_t words_trailer{vrt_read_trailer(buf_byte_swap_.data() + packet_->header.packet_size - 1,
+                                               buf_byte_swap_.size() - (packet_->header.packet_size - 1),
+                                               &packet_->trailer)};
+        if (words_trailer < 0) {
+            if (do_validate_) {
+                std::stringstream ss;
+                ss << "Packet #" << pkt_idx_ << " in '" << file_path_
+                   << "': Failed to parse trailer: " << vrt_string_error(words_trailer);
+                throw std::runtime_error(ss.str());
+            } else {
+                // Never any error here, since buffer size is sufficient
+                vrt_read_trailer(buf_byte_swap_.data() + packet_->header.packet_size - 1,
+                                 buf_byte_swap_.size() - (packet_->header.packet_size - 1), &packet_->trailer);
+                std::cerr << "Warning: Packet #" << pkt_idx_ << " in '" << file_path_
+                          << "': Failed to validate trailer: " << vrt_string_error(words_trailer);
+            }
+        }
     }
 
     pkt_idx_++;
@@ -210,12 +249,19 @@ bool InputStream::read_parse_header() {
 
     // Parse and validate header
     packet_ = std::make_shared<vrt_packet>();
-    int32_t words_header{vrt_read_header(buf_byte_swap_.data(), buf_byte_swap_.size(), &packet_->header, true)};
+    int32_t words_header{vrt_read_header(buf_byte_swap_.data(), buf_byte_swap_.size(), &packet_->header, do_validate_)};
     if (words_header < 0) {
-        std::stringstream ss;
-        ss << "Packet #" << pkt_idx_ << " in '" << file_path_
-           << "': Failed to parse header: " << vrt_string_error(words_header);
-        throw std::runtime_error(ss.str());
+        if (do_validate_) {
+            std::stringstream ss;
+            ss << "Packet #" << pkt_idx_ << " in '" << file_path_
+               << "': Failed to parse header: " << vrt_string_error(words_header);
+            throw std::runtime_error(ss.str());
+        } else {
+            // Never any error here, since buffer size is sufficient
+            vrt_read_header(buf_byte_swap_.data(), buf_byte_swap_.size(), &packet_->header, false);
+            std::cerr << "Warning: Packet #" << pkt_idx_ << " in '" << file_path_
+                      << "': Failed to validate header: " << vrt_string_error(words_header);
+        }
     }
 
     // No infinite loops thank you
