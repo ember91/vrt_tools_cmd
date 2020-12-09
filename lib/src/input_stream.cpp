@@ -130,11 +130,11 @@ bool InputStream::read_next_packet() {
     }
 
     // Parse IF context, if any
+    int32_t words_if_context{0};
     if (packet_->header.packet_type == VRT_PT_IF_CONTEXT) {
         int32_t words_header_fields{VRT_WORDS_HEADER + words_fields};
-        int32_t words_if_context{vrt_read_if_context(buf_byte_swap_.data() + words_header_fields,
-                                                     buf_byte_swap_.size() - words_header_fields, &packet_->if_context,
-                                                     true)};
+        words_if_context = vrt_read_if_context(buf_byte_swap_.data() + words_header_fields,
+                                               buf_byte_swap_.size() - words_header_fields, &packet_->if_context, true);
         if (words_if_context < 0) {
             if (do_validate_) {
                 std::stringstream ss;
@@ -152,10 +152,10 @@ bool InputStream::read_next_packet() {
     }
 
     // Parse trailer, if any
+    int32_t words_trailer{0};
     if (packet_->header.has.trailer) {
-        int32_t words_trailer{vrt_read_trailer(buf_byte_swap_.data() + packet_->header.packet_size - 1,
-                                               buf_byte_swap_.size() - (packet_->header.packet_size - 1),
-                                               &packet_->trailer)};
+        words_trailer = vrt_read_trailer(buf_byte_swap_.data() + packet_->header.packet_size - 1,
+                                         buf_byte_swap_.size() - (packet_->header.packet_size - 1), &packet_->trailer);
         if (words_trailer < 0) {
             if (do_validate_) {
                 std::stringstream ss;
@@ -170,6 +170,22 @@ bool InputStream::read_next_packet() {
                           << "': Failed to validate trailer: " << vrt_string_error(words_trailer);
             }
         }
+    }
+
+    packet_->words_body =
+        packet_->header.packet_size - (VRT_WORDS_HEADER + words_fields + words_if_context + words_trailer);
+    if (packet_->words_body < 0) {
+        if (do_validate_) {
+            std::stringstream ss;
+            ss << "Packet #" << pkt_idx_ << " in '" << file_path_ << "': Body is a negative size";
+            throw std::runtime_error(ss.str());
+        } else {
+            packet_->words_body = 0;
+            packet_->body       = nullptr;
+            std::cerr << "Warning: Packet #" << pkt_idx_ << " in '" << file_path_ << "': Body is a negative size";
+        }
+    } else {
+        packet_->body = buf_.data() + VRT_WORDS_HEADER + words_fields;
     }
 
     pkt_idx_++;
