@@ -2,6 +2,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <filesystem>
+#include <fstream>
 #include <random>
 #include <stdexcept>
 #include <string>
