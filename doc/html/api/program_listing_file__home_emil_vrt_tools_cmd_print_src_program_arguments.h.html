@@ -153,15 +153,16 @@
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#ifndef VRT_PRINT_SRC_PROGRAM_ARGUMENTS_H_</span>
 <span class="cp">#define VRT_PRINT_SRC_PROGRAM_ARGUMENTS_H_</span>
 
+<span class="cp">#include</span> <span class="cpf">&lt;filesystem&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp"></span>
 
 <span class="k">namespace</span> <span class="n">vrt</span><span class="o">::</span><span class="n">print</span> <span class="p">{</span>
 
 <span class="k">struct</span> <span class="n">ProgramArguments</span> <span class="p">{</span>
-    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">file_path</span><span class="p">{};</span>
-    <span class="kt">size_t</span>      <span class="n">packet_skip</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
-    <span class="kt">size_t</span>      <span class="n">packet_count</span><span class="p">{</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">size_t</span><span class="o">&gt;</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)};</span>
-    <span class="kt">bool</span>        <span class="n">do_byte_swap</span><span class="p">{</span><span class="nb">false</span><span class="p">};</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">path</span> <span class="n">file_path</span><span class="p">{};</span>
+    <span class="kt">size_t</span>                <span class="n">packet_skip</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+    <span class="kt">size_t</span>                <span class="n">packet_count</span><span class="p">{</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">size_t</span><span class="o">&gt;</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)};</span>
+    <span class="kt">bool</span>                  <span class="n">do_byte_swap</span><span class="p">{</span><span class="nb">false</span><span class="p">};</span>
 <span class="p">};</span>
 
 <span class="p">}</span>  <span class="c1">// namespace vrt::print</span>

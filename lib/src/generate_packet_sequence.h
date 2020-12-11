@@ -1,6 +1,7 @@
 #ifndef VRT_TOOLS_CMD_LIB_GENERATE_PACKET_SEQUENCE_H_
 #define VRT_TOOLS_CMD_LIB_GENERATE_PACKET_SEQUENCE_H_
 
+#include <filesystem>
 #include <fstream>
 #include <functional>
 #include <ios>
@@ -27,7 +28,7 @@ namespace vrt {
  * \param change    Function to run before each write, which may change the written packet.
  */
 void generate_packet_sequence(
-    const std::string&                                  file_path,
+    const std::filesystem::path&                        file_path,
     vrt_packet*                                         p,
     size_t                                              n,
     const std::function<void(uint64_t i, vrt_packet*)>& change       = [](uint64_t i, vrt_packet*) {},

@@ -1,5 +1,4 @@
 * Use exhale/breathe/sphinx instead
-* Prefer to use std::filesystem::path over std::string
 * Cleanup in lib
 * Add namespace for lib
 * Should lib be SYSTEM or not in CMakeLists.txt? Make lib/internal and lib/external?

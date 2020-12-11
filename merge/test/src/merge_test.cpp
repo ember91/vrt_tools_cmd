@@ -47,8 +47,8 @@ class MergeTest : public ::testing::Test {
     vrt_packet p_;
 };
 
-static std::vector<std::string> generate_input_file_paths(size_t n) {
-    std::vector<std::string> paths;
+static std::vector<fs::path> generate_input_file_paths(size_t n) {
+    std::vector<fs::path> paths;
     paths.reserve(n);
 
     for (size_t i{0}; i < n; ++i) {
@@ -62,7 +62,7 @@ static std::vector<std::string> generate_input_file_paths(size_t n) {
     return paths;
 }
 
-static void process(const std::vector<std::string>& file_paths_in, bool do_byte_swap = false) {
+static void process(const std::vector<fs::path>& file_paths_in, bool do_byte_swap = false) {
     vrt::merge::ProgramArguments args;
     args.file_paths_in = file_paths_in;
     args.file_path_out = TMP_FILE_OUT_PATH;
@@ -73,7 +73,7 @@ static void process(const std::vector<std::string>& file_paths_in, bool do_byte_
 static void check(bool do_byte_swap = false) {
     std::vector<uint32_t> buf;
 
-    std::string file_path(TMP_FILE_OUT_PATH);
+    fs::path file_path(TMP_FILE_OUT_PATH);
 
     std::ifstream file;
     file.exceptions(std::ios::badbit | std::ios::failbit | std::ios::eofbit);
@@ -176,7 +176,7 @@ TEST_F(MergeTest, Sorted) {
     std::mt19937                            gen(rd());
     std::uniform_int_distribution<uint64_t> distrib(1, ps_in_s / 10);
 
-    std::vector<std::string> file_paths_in{generate_input_file_paths(n)};
+    std::vector<fs::path> file_paths_in{generate_input_file_paths(n)};
 
     for (const auto& file_path : file_paths_in) {
         vrt::generate_packet_sequence(file_path, &p_, N_PACKETS / n, [&](uint64_t i, vrt_packet* p) {
@@ -207,7 +207,7 @@ TEST_F(MergeTest, ByteSwap) {
     std::mt19937                            gen(rd());
     std::uniform_int_distribution<uint64_t> distrib(1, ps_in_s / 10);
 
-    std::vector<std::string> file_paths_in{generate_input_file_paths(n)};
+    std::vector<fs::path> file_paths_in{generate_input_file_paths(n)};
 
     for (const auto& file_path : file_paths_in) {
         vrt::generate_packet_sequence(

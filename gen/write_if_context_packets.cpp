@@ -1,6 +1,7 @@
 #include <array>
 #include <cstdint>
 #include <cstdlib>
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -9,6 +10,8 @@
 #include <vrt/vrt_string.h>
 #include <vrt/vrt_types.h>
 #include <vrt/vrt_write.h>
+
+namespace fs = ::std::filesystem;
 
 /* Buffer size in 32-bit words */
 static const size_t SIZE{515};
@@ -37,7 +40,7 @@ int main() {
     }
 
     /* Write generated packet to file */
-    std::string   file_path("if_context_100.vrt");
+    fs::path      file_path("if_context_100.vrt");
     std::ofstream file;
     file.exceptions(std::ios::badbit | std::ios::failbit | std::ios::eofbit);
     try {

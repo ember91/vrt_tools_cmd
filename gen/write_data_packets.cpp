@@ -1,6 +1,7 @@
 #include <array>
 #include <cstdint>
 #include <cstdlib>
+#include <filesystem>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -11,6 +12,8 @@
 #include <vrt/vrt_write.h>
 
 #include "generate_tone.h"
+
+namespace fs = ::std::filesystem;
 
 /* Size of packet in 32-bit words */
 static const size_t SIZE{515};
@@ -44,7 +47,7 @@ int main() {
     }
 
     /* Write generated packet to file */
-    std::string   file_path("data_100.vrt");
+    fs::path      file_path("data_100.vrt");
     std::ofstream file;
     file.exceptions(std::ios::badbit | std::ios::failbit | std::ios::eofbit);
     try {

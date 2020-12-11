@@ -121,7 +121,7 @@ static fs::path final_file_path(const fs::path& file_path_in, vrt_packet* packet
  *
  * \throw std::filesystem::filesystem_error On renaming error.
  */
-static void finish(const std::string& file_path_in, const PacketOutputStreamMap& output_streams) {
+static void finish(const fs::path& file_path_in, const PacketOutputStreamMap& output_streams) {
     // Check if all Class and Stream IDs are the same
     if (output_streams.size() <= 1) {
         for (auto& el : output_streams) {

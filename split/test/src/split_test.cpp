@@ -21,10 +21,10 @@
 
 namespace fs = ::std::filesystem;
 
-static const size_t      N_PACKETS{100};
-static const std::string TMP_DIR{"test_tmp"};
-static const std::string TMP_FILE_NAME{"split.vrt"};
-static const std::string TMP_FILE_PATH{TMP_DIR + "/" + TMP_FILE_NAME};
+static const size_t   N_PACKETS{100};
+static const fs::path TMP_DIR{"test_tmp"};
+static const fs::path TMP_FILE_NAME{"split.vrt"};
+static const fs::path TMP_FILE_PATH{TMP_DIR / TMP_FILE_NAME};
 
 class SplitTest : public ::testing::Test {
    protected:
@@ -62,7 +62,7 @@ static void compare(const std::vector<std::string>& file_names, bool do_byte_swa
 
     size_t total_packets{0};
     for (const auto& file_name : file_names) {
-        std::string file_path = TMP_DIR + "/" + file_name;
+        fs::path file_path{TMP_DIR / file_name};
 
         std::ifstream file;
         file.exceptions(std::ios::badbit | std::ios::failbit | std::ios::eofbit);
