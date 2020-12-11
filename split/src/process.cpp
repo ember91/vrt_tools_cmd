@@ -17,24 +17,24 @@
 #include "Progress-CPP/ProgressBar.hpp"
 #include "comparator_id.h"
 #include "input_stream.h"
-#include "output_stream.h"
+#include "output_stream_rename.h"
 #include "packet_id_differences.h"
 #include "program_arguments.h"
 
-namespace fs = std::filesystem;
-
 namespace vrt::split {
 
+namespace fs = ::std::filesystem;
+
 // For convenience
-using PacketPtr       = std::shared_ptr<vrt_packet>;
-using OutputStreamPtr = std::unique_ptr<OutputStream>;
+using PacketPtr             = std::shared_ptr<vrt_packet>;
+using OutputStreamRenamePtr = std::unique_ptr<OutputStreamRename>;
 
 /**
  * Packet -> File map.
  * std::map seems to be a better choice than std::unordered_map for few keys.
  * Static so it can be used in the signal handler.
  */
-static std::map<PacketPtr, OutputStreamPtr, ComparatorId> output_streams;
+static std::map<PacketPtr, OutputStreamRenamePtr, ComparatorId> output_streams;
 
 /**
  * Handle shutdown signals gracefully by removing any temporary and output files before shutdown.
@@ -43,19 +43,41 @@ static std::map<PacketPtr, OutputStreamPtr, ComparatorId> output_streams;
  */
 [[noreturn]] static void signal_handler(int signum) {
     for (auto& el : output_streams) {
-        try {
-            el.second->remove_temporary();
-        } catch (const fs::filesystem_error&) {
-            // Do nothing. Just keep removing files.
-        }
-        try {
-            el.second->remove_new();
-        } catch (const fs::filesystem_error&) {
-            // Do nothing. Just keep removing files.
-        }
+        el.second->remove_file();
     }
 
     std::exit(signum);
+}
+
+/**
+ * Generate a temporary and for this application unique file path.
+ *
+ * \param file_path_in Input file path.
+ * \param packet       Packet.
+ *
+ * \return Temporary file path.
+ */
+static fs::path generate_temporary_file_path(const fs::path& file_path_in, const vrt_packet& packet) {
+    // Separate path into parts
+    fs::path dir{file_path_in.parent_path()};
+    fs::path stem{file_path_in.stem()};
+    fs::path ext{file_path_in.extension()};
+
+    // Create filename as dir/stem_{Has Class ID}_{OUI}_{ICC}_{PCC}_{Has Stream ID}_{Stream ID}.{Extension}
+    fs::path file_path_tmp{dir};
+    file_path_tmp /= stem;
+    std::stringstream ss;
+    ss << '_' << (packet.header.has.class_id ? '1' : '0');
+    ss << '_' << std::hex << std::uppercase << packet.fields.class_id.oui << "_"
+       << packet.fields.class_id.information_class_code << "_" << packet.fields.class_id.packet_class_code;
+    file_path_tmp += ss.str();
+    ss.str("");
+    ss << '_' << (vrt_has_stream_id(&packet.header) ? '1' : '0');
+    ss << '_' << std::hex << std::uppercase << packet.fields.stream_id;
+    file_path_tmp += ss.str();
+    file_path_tmp += ext;
+
+    return file_path_tmp;
 }
 
 /**
@@ -120,11 +142,7 @@ static void finish(const std::string& file_path_in) {
     // Check if all Class and Stream IDs are the same
     if (output_streams.size() <= 1) {
         for (auto& el : output_streams) {
-            try {
-                el.second->remove_temporary();
-            } catch (const fs::filesystem_error&) {
-                // Do nothing. Just keep removing.
-            }
+            el.second->remove_file();
         }
         std::cerr << "Warning: All packets have the same Class and Stream ID (if any). Use the existing '"
                   << file_path_in << "'." << std::endl;
@@ -143,16 +161,12 @@ static void finish(const std::string& file_path_in) {
 
         for (auto& el : output_streams) {
             fs::path file_out{final_file_path(file_path_in, el.first.get(), packet_diffs)};
-            el.second->rename(file_out);
+            el.second->rename_file(file_out);
         }
     } catch (...) {
         // Remove any newly created files before rethrow
         for (auto& el : output_streams) {
-            try {
-                el.second->remove_new();
-            } catch (const fs::filesystem_error&) {
-                // Do nothing. Just keep removing.
-            }
+            el.second->remove_file();
         }
         throw;
     }
@@ -188,7 +202,8 @@ void process(const ProgramArguments& args) {
         PacketPtr packet{input_stream.get_packet()};
         auto      it{output_streams.find(packet)};
         if (it == output_streams.end()) {
-            auto pair{output_streams.emplace(packet, std::make_unique<OutputStream>(args.file_path_in, packet))};
+            fs::path p{generate_temporary_file_path(args.file_path_in, *packet.get())};
+            auto     pair{output_streams.emplace(packet, std::make_unique<OutputStreamRename>(p))};
 
             it = pair.first;
         }

@@ -47,31 +47,6 @@ Functions
 .. toctree::
    :maxdepth: 5
 
-   function_namespacevrt_1_1print_1a65580619504397aed5bd416cc75687a3.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   function_namespacevrt_1_1print_1af3766fbb9e8ad2a77f7e357759b5f5ab.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   function_namespacevrt_1_1print_1ab147dcd69b8d1c599f7d7ab793f866c2.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   function_namespacevrt_1_1print_1aa6d331b9ba540f1991ee16878cf28b3e.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   function_namespacevrt_1_1print_1afb3ccdb017bebaecf2af5645dea05e57.rst
-
-.. toctree::
-   :maxdepth: 5
-
    function_namespacevrt_1_1print_1ac753b78dee19942bcba784029ac4833e.rst
 
 .. toctree::
@@ -118,3 +93,12 @@ Functions
    :maxdepth: 5
 
    function_namespacevrt_1_1print_1ace7f98f1c7905bd7e5c9d9adce5a5138.rst
+
+Typedefs
+********
+
+
+.. toctree::
+   :maxdepth: 5
+
+   typedef_namespacevrt_1_1print_1aadf4a93015195e07cd485d359a96fb32.rst

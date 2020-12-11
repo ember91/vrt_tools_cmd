@@ -1,0 +1,13 @@
+.. _exhale_typedef_namespacevrt_1_1print_1aadf4a93015195e07cd485d359a96fb32:
+
+Typedef vrt::print::PacketPtr
+=============================
+
+- Defined in :ref:`file__home_emil_vrt_tools_cmd_print_src_process.cpp`
+
+
+Typedef Documentation
+---------------------
+
+
+.. doxygentypedef:: vrt::print::PacketPtr

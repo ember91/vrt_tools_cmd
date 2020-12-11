@@ -8,7 +8,7 @@ file(GLOB SRC_FILES CONFIGURE_DEPENDS
      ${CMAKE_CURRENT_SOURCE_DIR}/../test/src/*.cpp)
 add_executable(
   ${TARGET_NAME}
-  ${SRC_FILES} ${CMAKE_CURRENT_SOURCE_DIR}/../src/output_stream.cpp
+  ${SRC_FILES} ${CMAKE_CURRENT_SOURCE_DIR}/../src/output_stream_rename.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/../src/process.cpp)
 
 # Setup testing
