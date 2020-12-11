@@ -1,10 +1,12 @@
 #include "generate_packet_sequence.h"
 
+#include <cstdint>
 #include <filesystem>
 #include <fstream>
 #include <functional>
 #include <ios>
 #include <sstream>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -66,7 +68,7 @@ void generate_packet_sequence(const fs::path&                                   
 
         // Byte swap if enabled
         if (do_byte_swap) {
-            for (size_t j{0}; j < size; ++j) {
+            for (uint32_t j{0}; j < static_cast<uint32_t>(size); ++j) {
                 // Don't care about how to byte swap data...
                 b[j] = bswap_32(b[j]);
             }

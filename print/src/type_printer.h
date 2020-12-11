@@ -3,7 +3,10 @@
 
 #include <cstdint>
 
-#include <vrt/vrt_types.h>
+struct vrt_fields;
+struct vrt_header;
+struct vrt_if_context;
+struct vrt_trailer;
 
 namespace vrt::print {
 

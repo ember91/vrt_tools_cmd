@@ -1,11 +1,8 @@
 #include "process.h"
 
-#include <csignal>
 #include <cstdint>
 #include <cstdio>
-#include <cstdlib>
 #include <filesystem>
-#include <functional>
 #include <iostream>
 #include <map>
 #include <memory>

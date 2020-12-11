@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <memory>
 
-#include <vrt/vrt_types.h>
+struct vrt_packet;
 
 namespace vrt::length {
 

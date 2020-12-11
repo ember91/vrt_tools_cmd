@@ -1,4 +1,5 @@
 #include <cstdlib>
+#include <filesystem>
 #include <iostream>
 #include <stdexcept>
 
@@ -58,7 +59,7 @@ int main(int argc, const char** argv) {
         std::cerr << "--input_files is required with at least one file" << std::endl;
         return EXIT_FAILURE;
     }
-    for (const std::string& path_in : program_args.file_paths_in) {
+    for (const fs::path& path_in : program_args.file_paths_in) {
         try {
             if (fs::equivalent(path_in, program_args.file_path_out)) {
                 std::cerr << "Cannot use the same input as output file path: '" << path_in << "'" << std::endl;

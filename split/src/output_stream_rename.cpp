@@ -3,9 +3,9 @@
 
 #include <filesystem>
 #include <fstream>
-#include <sstream>
-#include <stdexcept>
 #include <utility>
+
+#include "output_stream.h"
 
 namespace vrt::split {
 

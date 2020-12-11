@@ -1,10 +1,12 @@
 #ifndef VRT_TOOLS_CMD_LIB_GENERATE_PACKET_SEQUENCE_H_
 #define VRT_TOOLS_CMD_LIB_GENERATE_PACKET_SEQUENCE_H_
 
+#include <cstddef>
+#include <cstdint>
 #include <filesystem>
 #include <functional>
 
-#include <vrt/vrt_types.h>
+struct vrt_packet;
 
 namespace vrt {
 

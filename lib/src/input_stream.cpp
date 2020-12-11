@@ -12,7 +12,6 @@
 #include <utility>
 #include <vector>
 
-#include <vrt/vrt_init.h>
 #include <vrt/vrt_read.h>
 #include <vrt/vrt_string.h>
 #include <vrt/vrt_types.h>

@@ -1,6 +1,7 @@
 #ifndef VRT_TOOLS_CMD_LIB_GENERATE_TONE_H_
 #define VRT_TOOLS_CMD_LIB_GENERATE_TONE_H_
 
+#include <cstddef>
 #include <vector>
 
 namespace vrt {

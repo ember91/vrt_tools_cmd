@@ -1,21 +1,13 @@
 #include "process.h"
 
 #include <cstddef>
-#include <cstdint>
-#include <fstream>
+#include <filesystem>
 #include <iostream>
 #include <memory>
-#include <sstream>
-#include <stdexcept>
 #include <string>
-#include <vector>
 
-#include <vrt/vrt_read.h>
-#include <vrt/vrt_string.h>
 #include <vrt/vrt_types.h>
-#include <vrt/vrt_words.h>
 
-#include "byte_swap.h"
 #include "input_stream.h"
 #include "program_arguments.h"
 #include "stringify.h"

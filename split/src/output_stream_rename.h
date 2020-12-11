@@ -2,7 +2,6 @@
 #define VRT_SPLIT_SRC_OUTPUT_STREAM_H_
 
 #include <filesystem>
-#include <fstream>
 
 #include "output_stream.h"
 

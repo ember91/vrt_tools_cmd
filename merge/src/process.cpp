@@ -1,7 +1,6 @@
 #include "process.h"
 
 #include <algorithm>
-#include <csignal>
 #include <cstdint>
 #include <cstdlib>
 #include <filesystem>

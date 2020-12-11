@@ -7,7 +7,7 @@
 #include <memory>
 #include <vector>
 
-#include <vrt/vrt_types.h>
+struct vrt_packet;
 
 namespace vrt {
 

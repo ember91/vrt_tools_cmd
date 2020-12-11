@@ -5,6 +5,7 @@
 #include <filesystem>
 #include <fstream>
 #include <istream>
+#include <sstream>
 #include <stdexcept>
 #include <string>
 #include <vector>
