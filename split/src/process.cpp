@@ -5,6 +5,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <filesystem>
+#include <functional>
 #include <iostream>
 #include <map>
 #include <memory>
@@ -28,26 +29,7 @@ namespace fs = ::std::filesystem;
 // For convenience
 using PacketPtr             = std::shared_ptr<vrt_packet>;
 using OutputStreamRenamePtr = std::unique_ptr<OutputStreamRename>;
-
-/**
- * Packet -> File map.
- * std::map seems to be a better choice than std::unordered_map for few keys.
- * Static so it can be used in the signal handler.
- */
-static std::map<PacketPtr, OutputStreamRenamePtr, ComparatorId> output_streams;
-
-/**
- * Handle shutdown signals gracefully by removing any temporary and output files before shutdown.
- *
- * \param signum Signal number.
- */
-[[noreturn]] static void signal_handler(int signum) {
-    for (auto& el : output_streams) {
-        el.second->remove_file();
-    }
-
-    std::exit(signum);
-}
+using PacketOutputStreamMap = std::map<PacketPtr, OutputStreamRenamePtr, ComparatorId>;
 
 /**
  * Generate a temporary and for this application unique file path.
@@ -134,11 +116,12 @@ static fs::path final_file_path(const fs::path& file_path_in, vrt_packet* packet
 /**
  * Called when finishing writing, for renaming temporary files to final.
  *
- * \param file_path_in Input file path.
+ * \param file_path_in   Input file path.
+ * \param output_streams Output streams.
  *
  * \throw std::filesystem::filesystem_error On renaming error.
  */
-static void finish(const std::string& file_path_in) {
+static void finish(const std::string& file_path_in, const PacketOutputStreamMap& output_streams) {
     // Check if all Class and Stream IDs are the same
     if (output_streams.size() <= 1) {
         for (auto& el : output_streams) {
@@ -180,14 +163,12 @@ static void finish(const std::string& file_path_in) {
  * \throw std::runtime_error If there's an error.
  */
 void process(const ProgramArguments& args) {
-    // Catch signals that aren't programming errors
-    std::signal(SIGINT, signal_handler);
-    std::signal(SIGTERM, signal_handler);
+    /**
+     * Packet -> File map.
+     */
+    PacketOutputStreamMap output_streams;
 
     InputStream input_stream(args.file_path_in, args.do_byte_swap);
-
-    // Clear, since it's static
-    output_streams.clear();
 
     // Progress bar
     progresscpp::ProgressBar progress(static_cast<size_t>(input_stream.get_file_size()), 70);
@@ -220,7 +201,7 @@ void process(const ProgramArguments& args) {
 
     progress.done();
 
-    finish(args.file_path_in);
+    finish(args.file_path_in, output_streams);
 }
 
 }  // namespace vrt::split

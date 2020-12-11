@@ -26,15 +26,6 @@ namespace vrt::merge {
 using InputStreamPtr = std::shared_ptr<InputStream>;
 
 /**
- * Handle shutdown signals gracefully by closing and removing any output file before shutdown.
- *
- * \param signum Signal number.
- */
-[[noreturn]] static void signal_handler(int signum) {
-    std::exit(signum);
-}
-
-/**
  * Comparator for packets by time.
  */
 struct ComparatorTime {
@@ -102,10 +93,6 @@ struct ComparatorTime {
  * \throw std::runtime_error If there's an error.
  */
 void process(const ProgramArguments& args) {
-    // Catch signals that aren't programming errors
-    std::signal(SIGINT, signal_handler);
-    std::signal(SIGTERM, signal_handler);
-
     OutputStream output_stream(args.file_path_out);
 
     // Earliest element is on top

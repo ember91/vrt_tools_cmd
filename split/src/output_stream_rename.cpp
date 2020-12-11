@@ -24,8 +24,11 @@ OutputStreamRename::OutputStreamRename(std::filesystem::path file_path) : Output
  * Destructor. Remove any temporary file.
  */
 OutputStreamRename::~OutputStreamRename() {
-    // Explicitly call parent function here
-    OutputStream::remove_file();
+    // Ensure removed at destruction only if final name differ
+    if (file_path_ != file_path_renamed_) {
+        // Explicitly call parent function here
+        OutputStream::remove_file();
+    }
 }
 
 /**
