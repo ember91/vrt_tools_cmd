@@ -20,9 +20,9 @@
 
 #include "byte_swap.h"
 
-namespace fs = std::filesystem;
-
 namespace vrt {
+
+namespace fs = ::std::filesystem;
 
 /**
  * Constructor. Open input file for reading.

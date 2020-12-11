@@ -9,7 +9,7 @@
 #include "process.h"
 #include "program_arguments.h"
 
-namespace fs = std::filesystem;
+namespace fs = ::std::filesystem;
 
 /**
  * Setup program command line argument parsing.

@@ -23,6 +23,8 @@
 
 namespace vrt::print {
 
+namespace fs = ::std::filesystem;
+
 using PacketPtr = std::shared_ptr<vrt_packet>;
 
 /**

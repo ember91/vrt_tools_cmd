@@ -17,7 +17,7 @@
 #include "byte_swap.h"
 #include "generate_packet_sequence.h"
 
-namespace fs = std::filesystem;
+namespace fs = ::std::filesystem;
 
 static const size_t   N_PACKETS{100};
 static const fs::path TMP_DIR{"test_tmp"};

@@ -19,9 +19,9 @@
 #include "program_arguments.h"
 #include "stream_history.h"
 
-namespace fs = std::filesystem;
-
 namespace vrt::length {
+
+namespace fs = ::std::filesystem;
 
 // For convenience
 using PacketPtr        = std::shared_ptr<vrt_packet>;
