@@ -73,7 +73,7 @@ static void process(const std::vector<std::string>& file_paths_in, bool do_byte_
 static void check(bool do_byte_swap = false) {
     std::vector<uint32_t> buf;
 
-    std::string file_path = TMP_FILE_OUT_PATH;
+    std::string file_path(TMP_FILE_OUT_PATH);
 
     std::ifstream file;
     file.exceptions(std::ios::badbit | std::ios::failbit | std::ios::eofbit);
