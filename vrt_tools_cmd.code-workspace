@@ -75,6 +75,10 @@
 		"files.exclude": {
 			"doc/html/*": true,
 			"lib/CLI11/*": true
-		}
+		},
+		"trailing-spaces.syntaxIgnore": [
+			"c",
+			"cpp"
+		]
 	}
 }
