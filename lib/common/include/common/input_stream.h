@@ -1,5 +1,5 @@
-#ifndef VRT_MERGE_INPUT_STREAM_H_
-#define VRT_MERGE_INPUT_STREAM_H_
+#ifndef LIB_COMMON_INCLUDE_COMMON_INPUT_STREAM_H_
+#define LIB_COMMON_INCLUDE_COMMON_INPUT_STREAM_H_
 
 #include <cstdint>
 #include <filesystem>

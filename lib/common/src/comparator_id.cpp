@@ -1,6 +1,3 @@
-#ifndef VRT_TOOLS_CMD_LIB_COMPARATOR_ID_H_
-#define VRT_TOOLS_CMD_LIB_COMPARATOR_ID_H_
-
 #include <memory>
 
 #include <vrt/vrt_types.h>
@@ -68,5 +65,3 @@ struct ComparatorId {
         return false;
     }
 };
-
-#endif
