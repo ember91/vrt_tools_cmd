@@ -1,6 +1,7 @@
 #include "process.h"
 
 #include <cstddef>
+#include <cstdint>
 #include <filesystem>
 #include <iostream>
 #include <memory>

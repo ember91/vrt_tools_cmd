@@ -4,7 +4,9 @@
 
 #include <vrt/vrt_util.h>
 
+#include "CLI/App.hpp"
 #include "CLI/CLI.hpp"
+#include "CLI/Option.hpp"
 
 #include "process.h"
 #include "program_arguments.h"

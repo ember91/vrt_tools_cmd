@@ -4,13 +4,9 @@
 #include <cstdio>
 #include <filesystem>
 #include <iostream>
-#include <map>
 #include <memory>
-#include <string>
-#include <utility>
 
 #include <vrt/vrt_types.h>
-#include <vrt/vrt_util.h>
 
 #include "Progress-CPP/ProgressBar.hpp"
 #include "common/input_stream.h"

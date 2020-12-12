@@ -1,7 +1,7 @@
-
-#include <iostream>
-
 #include "Progress-CPP/ProgressBar.hpp"
+
+#include <chrono>
+#include <iostream>
 
 namespace progresscpp {
 

@@ -8,6 +8,7 @@
 #include <memory>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include <vrt/vrt_types.h>
 #include <vrt/vrt_util.h>
