@@ -65,6 +65,10 @@ Merges multiple VRT files into a single file and sorts them by time. Assumes pac
 
 Calculates number of packets and time difference for all different streams in a VRT packet file.
 
+## VRT Packet loss
+
+Simulate packet loss by generating a file with some VRT packets missing.
+
 ### Prerequisites
 
 * C++17 compiler, such as GCC
