@@ -28,7 +28,7 @@ class ProgressBar {
     size_t get_ticks() const { return ticks; }
 
     void display() const {
-        float progress = (float)ticks / total_ticks;
+        float progress = total_ticks == 0 ? 1.0F : static_cast<float>(ticks) / total_ticks;
         int   pos      = (int)(bar_width * progress);
 
         std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
