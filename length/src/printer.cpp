@@ -48,24 +48,31 @@ static uint64_t d_frac(vrt_packet* fir, vrt_packet* cur) {
 static void print_ids(vrt_packet* p, const PacketIdDiffs& differences) {
     std::cout << std::hex << std::setfill('0');
     if (p->header.has.class_id) {
-        std::cout << "Class ID\n";
-        if (differences.diff_oui) {
-            std::cout << "  OUI 0x" << std::setw(6) << p->fields.class_id.oui << '\n';
+        if (differences.diff_oui || differences.diff_icc || differences.diff_pcc) {
+            std::cout << "Class ID\n";
+            if (differences.diff_oui) {
+                std::cout << "  OUI: 0x" << std::setw(6) << p->fields.class_id.oui << '\n';
+            }
+            if (differences.diff_icc) {
+                std::cout << "  Information class code: 0x" << std::setw(4) << p->fields.class_id.information_class_code
+                          << '\n';
+            }
+            if (differences.diff_pcc) {
+                std::cout << "  Packet class code: 0x" << std::setw(4) << p->fields.class_id.packet_class_code << '\n';
+            }
         }
-        if (differences.diff_icc) {
-            std::cout << "  Information class code 0x" << std::setw(4) << p->fields.class_id.information_class_code
-                      << '\n';
-        }
-        if (differences.diff_pcc) {
-            std::cout << "  Packet class code 0x" << std::setw(4) << p->fields.class_id.packet_class_code << '\n';
-        }
+    } else if (differences.any_has_class_id) {
+        std::cout << "Class ID: None\n";
     }
     if (vrt_has_stream_id(&p->header)) {
         if (differences.diff_sid) {
-            std::cout << "Stream ID\n";
-            std::cout << "  0x" << std::setw(8) << p->fields.stream_id << '\n';
+            std::cout << "Stream ID: 0x" << std::setw(8) << p->fields.stream_id << '\n';
         }
+    } else if (differences.any_has_stream_id) {
+        std::cout << "Stream ID: None\n";
     }
+
+    // Reset stream manipulators
     std::cout << std::setw(0) << std::dec << std::setfill(' ');
 }
 
@@ -112,10 +119,11 @@ static void print_integer_fractional_real_time(vrt_packet* fir, vrt_packet* cur)
         if (cur->fields.fractional_seconds_timestamp > fir->fields.fractional_seconds_timestamp) {
             std::cout << d_int(fir, cur) << '.' << std::setfill('0') << std::setw(11) << d_frac(fir, cur) << " s\n";
         } else {
-            std::cout << d_int(fir, cur) - 1 << '.' << std::setfill('0') << std::setw(11) << PS_IN_S + d_frac(fir, cur)
+            std::cout << d_int(fir, cur) - 1 << '.' << std::setfill('0') << std::setw(11) << PS_IN_S - d_frac(cur, fir)
                       << " s\n";
         }
-        // Reset cout
+
+        // Reset stream manipulators
         std::cout << std::setw(0) << std::setfill(' ');
     }
 }
@@ -156,15 +164,18 @@ static void print_integer_fractional_sample_count(vrt_packet* fir, vrt_packet* c
         } else {
             if (cur->fields.fractional_seconds_timestamp > fir->fields.fractional_seconds_timestamp) {
                 std::cout << d_int(fir, cur) << '.' << std::setfill('0') << std::setw(11)
-                          << (d_frac(fir, cur)) / sample_rate / static_cast<double>(PS_IN_S) << " s\n";
+                          << static_cast<uint64_t>((d_frac(fir, cur)) / sample_rate * PS_IN_S) << " s\n";
             } else {
                 std::cout << d_int(fir, cur) - 1 << '.' << std::setfill('0') << std::setw(11)
-                          << (sample_rate - cur->fields.fractional_seconds_timestamp -
-                              fir->fields.fractional_seconds_timestamp) /
-                                 sample_rate / static_cast<double>(PS_IN_S)
+                          << static_cast<uint64_t>((sample_rate - cur->fields.fractional_seconds_timestamp -
+                                                    fir->fields.fractional_seconds_timestamp) /
+                                                   sample_rate * PS_IN_S)
                           << " s\n";
             }
         }
+
+        // Reset stream manipulators
+        std::cout << std::setw(0) << std::setfill(' ');
     }
 }
 
@@ -209,17 +220,13 @@ static void print_integer_fractional_time(vrt_packet* fir, vrt_packet* cur, doub
  * \param differences    Differences between streams.
  */
 void print_difference(const StreamHistory& stream_history, const PacketIdDiffs& differences) {
-    std::cout << "Number of packets: " << stream_history.get_number_of_packets() << '\n';
-
     vrt_packet* fir{stream_history.get_packet_first().get()};
     vrt_packet* cur{stream_history.get_packet_current().get()};
     double      sample_rate{stream_history.get_sample_rate()};
 
-    if (fir == nullptr) {
-        return;
-    }
-
     print_ids(fir, differences);
+
+    std::cout << "Number of packets: " << stream_history.get_number_of_packets() << '\n';
 
     bool integer{(cur->header.tsi != VRT_TSI_NONE && cur->header.tsi == fir->header.tsi)};
     bool fractional{(cur->header.tsf != VRT_TSF_NONE && cur->header.tsf == fir->header.tsf)};
