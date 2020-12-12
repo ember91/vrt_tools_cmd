@@ -8,7 +8,7 @@
 #include <vrt/vrt_types.h>
 #include <vrt/vrt_util.h>
 
-#include "packet_id_differences.h"
+#include "common/packet_id_differences.h"
 #include "stream_history.h"
 
 namespace vrt::length {

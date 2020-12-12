@@ -15,8 +15,8 @@
 
 #include "../../src/process.h"
 #include "../../src/program_arguments.h"
-#include "byte_swap.h"
-#include "generate_packet_sequence.h"
+#include "common/byte_swap.h"
+#include "common/generate_packet_sequence.h"
 
 namespace fs = ::std::filesystem;
 

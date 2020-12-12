@@ -43,9 +43,8 @@ set_target_properties(${TARGET_NAME} PROPERTIES CXX_STANDARD 17)
 
 # Include directory and library
 target_include_directories(${TARGET_NAME} SYSTEM PUBLIC ${Libvrt_INCLUDE_DIR})
-target_include_directories(${TARGET_NAME} SYSTEM
-                           PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../lib/src)
-target_link_libraries(${TARGET_NAME} ${Libvrt_LIBRARY} vrt_lib)
+target_link_libraries(${TARGET_NAME} ${Libvrt_LIBRARY} vrt_common CLI11
+                      Progress-CPP)
 
 # Install executable
 install(TARGETS ${PROJECT_NAME} DESTINATION bin)

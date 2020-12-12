@@ -5,7 +5,7 @@
 
 #include <vrt/vrt_util.h>
 
-#include "CLI11/CLI11.hpp"
+#include "CLI/CLI.hpp"
 
 #include "process.h"
 #include "program_arguments.h"

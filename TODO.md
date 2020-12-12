@@ -1,6 +1,4 @@
 * Use exhale/breathe/sphinx instead
-* Cleanup in lib
 * Add namespace for lib
-* Should lib be SYSTEM or not in CMakeLists.txt? Make lib/internal and lib/external?
 * Make input_stream more efficient. Perhaps do not copy all byte swap bytes and do not parse all fields
 * input_stream could perhaps return a normal C pointer

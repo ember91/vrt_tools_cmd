@@ -13,10 +13,10 @@
 #include <vrt/vrt_util.h>
 
 #include "Progress-CPP/ProgressBar.hpp"
-#include "comparator_id.h"
-#include "input_stream.h"
+#include "common/comparator_id.h"
+#include "common/input_stream.h"
+#include "common/packet_id_differences.h"
 #include "output_stream_rename.h"
-#include "packet_id_differences.h"
 #include "program_arguments.h"
 
 namespace vrt::split {

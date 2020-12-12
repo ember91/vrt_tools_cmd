@@ -8,8 +8,8 @@
 #include <vrt/vrt_init.h>
 #include <vrt/vrt_types.h>
 
-#include "generate_packet_sequence.h"
-#include "generate_tone.h"
+#include "common/generate_packet_sequence.h"
+#include "common/generate_tone.h"
 
 /* Size of packet in 32-bit words */
 static const size_t SIZE{515};

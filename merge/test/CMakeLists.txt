@@ -42,11 +42,10 @@ set_target_properties(${TARGET_NAME} PROPERTIES CXX_STANDARD 17)
 # Add include directory
 target_include_directories(${TARGET_NAME}
                            PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../include/)
-target_include_directories(${TARGET_NAME} SYSTEM
-                           PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../../lib/src)
 
 # Link executable
-target_link_libraries(${TARGET_NAME} vrt ${GTEST_LIBRARIES} pthread vrt_lib)
+target_link_libraries(${TARGET_NAME} vrt ${GTEST_LIBRARIES} pthread vrt_common
+                      Progress-CPP)
 
 # Add test
 add_test(name ${TARGET_NAME} COMMAND ${TARGET_NAME})

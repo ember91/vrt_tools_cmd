@@ -3,7 +3,7 @@
 
 #include <filesystem>
 
-#include "output_stream.h"
+#include "common/output_stream.h"
 
 namespace vrt::split {
 

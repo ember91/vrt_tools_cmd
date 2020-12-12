@@ -8,7 +8,7 @@
 
 #include <vrt/vrt_types.h>
 
-#include "input_stream.h"
+#include "common/input_stream.h"
 #include "program_arguments.h"
 #include "stringify.h"
 #include "type_printer.h"

@@ -12,9 +12,9 @@
 #include <vrt/vrt_types.h>
 
 #include "Progress-CPP/ProgressBar.hpp"
-#include "comparator_id.h"
-#include "input_stream.h"
-#include "packet_id_differences.h"
+#include "common/comparator_id.h"
+#include "common/input_stream.h"
+#include "common/packet_id_differences.h"
 #include "printer.h"
 #include "program_arguments.h"
 #include "stream_history.h"

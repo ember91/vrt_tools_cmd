@@ -13,8 +13,8 @@
 #include <vrt/vrt_util.h>
 
 #include "Progress-CPP/ProgressBar.hpp"
-#include "input_stream.h"
-#include "output_stream.h"
+#include "common/input_stream.h"
+#include "common/output_stream.h"
 #include "program_arguments.h"
 
 namespace vrt::packet_loss {

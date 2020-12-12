@@ -12,7 +12,7 @@
 #include <vrt/vrt_types.h>
 #include <vrt/vrt_write.h>
 
-#include "generate_tone.h"
+#include "common/generate_tone.h"
 
 namespace fs = ::std::filesystem;
 

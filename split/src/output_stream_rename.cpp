@@ -5,7 +5,7 @@
 #include <fstream>
 #include <utility>
 
-#include "output_stream.h"
+#include "common/output_stream.h"
 
 namespace vrt::split {
 
