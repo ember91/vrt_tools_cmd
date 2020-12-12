@@ -1,10 +1,10 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.9)
 
 project(
   vrt_print
   LANGUAGES CXX
   DESCRIPTION
-    "Print packet information in packets following the VITA Radio Transport (VRT) standard, i.e. VITA-49.0."
+    "Prints information in vita49 VRT format files in a human readable format. Only prints, does not validate packets."
 )
 
 # Name target the same as project
@@ -13,6 +13,10 @@ set(TARGET_NAME ${PROJECT_NAME})
 # Add source files
 file(GLOB FILES_SRC CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 add_executable(${TARGET_NAME} ${FILES_SRC})
+
+# Add preprocessor flag with program description
+target_compile_definitions(
+  ${TARGET_NAME} PUBLIC "CMAKE_PROJECT_DESCRIPTION=\"${PROJECT_DESCRIPTION}\"")
 
 # Set warning levels
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")

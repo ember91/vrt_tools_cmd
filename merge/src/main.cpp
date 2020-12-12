@@ -10,6 +10,10 @@
 #include "process.h"
 #include "program_arguments.h"
 
+#ifndef CMAKE_PROJECT_DESCRIPTION
+#error "No project description imported from CMake"
+#endif
+
 namespace fs = ::std::filesystem;
 
 /**
@@ -47,10 +51,7 @@ static vrt::merge::ProgramArguments setup_arg_parse(CLI::App* app) {
  */
 int main(int argc, const char** argv) {
     // Parse arguments
-    CLI::App app(
-        "Merge multiple vita49 VRT format files into a single file, sorting packets with regard to timestamps. Assumes "
-        "that input file packets are sorted by time.",
-        "vrt_merge");
+    CLI::App                     app(CMAKE_PROJECT_DESCRIPTION, "vrt_merge");
     vrt::merge::ProgramArguments program_args{setup_arg_parse(&app)};
     CLI11_PARSE(app, argc, argv)
 

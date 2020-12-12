@@ -9,6 +9,10 @@
 #include "process.h"
 #include "program_arguments.h"
 
+#ifndef CMAKE_PROJECT_DESCRIPTION
+#error "No project description imported from CMake"
+#endif
+
 /**
  * Setup program command line argument parsing.
  *
@@ -46,8 +50,7 @@ static vrt::length::ProgramArguments setup_arg_parse(CLI::App* app) {
  */
 int main(int argc, const char** argv) {
     // Parse arguments
-    CLI::App app("Calculate length in packets and time for each packet stream in a vita49 VRT format file",
-                 "vrt_length");
+    CLI::App                      app(CMAKE_PROJECT_DESCRIPTION, "vrt_length");
     vrt::length::ProgramArguments program_args{setup_arg_parse(&app)};
     CLI11_PARSE(app, argc, argv)
 

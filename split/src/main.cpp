@@ -9,6 +9,10 @@
 #include "process.h"
 #include "program_arguments.h"
 
+#ifndef CMAKE_PROJECT_DESCRIPTION
+#error "No project description imported from CMake"
+#endif
+
 /**
  * Setup program command line argument parsing.
  *
@@ -40,7 +44,7 @@ static vrt::split::ProgramArguments setup_arg_parse(CLI::App* app) {
  */
 int main(int argc, const char** argv) {
     // Parse arguments
-    CLI::App app("Split a vita49 VRT format files into multiple files depending on class and stream ID", "vrt_split");
+    CLI::App                     app(CMAKE_PROJECT_DESCRIPTION, "vrt_split");
     vrt::split::ProgramArguments program_args{setup_arg_parse(&app)};
     CLI11_PARSE(app, argc, argv)
 

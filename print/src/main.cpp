@@ -11,6 +11,10 @@
 #include "process.h"
 #include "program_arguments.h"
 
+#ifndef CMAKE_PROJECT_DESCRIPTION
+#error "No project description imported from CMake"
+#endif
+
 /**
  * Setup program command line argument parsing.
  *
@@ -63,10 +67,7 @@ int main(int argc, const char** argv) {
     // Speed up output
     std::ios_base::sync_with_stdio(false);
 
-    CLI::App app(
-        "Prints information in vita49 VRT format files in a human readable format. Only prints, does not "
-        "validate packets.",
-        "vrt_print");
+    CLI::App app(CMAKE_PROJECT_DESCRIPTION, "vrt_print");
 
     vrt::print::ProgramArguments program_args{setup_arg_parse(&app)};
     CLI11_PARSE(app, argc, argv)

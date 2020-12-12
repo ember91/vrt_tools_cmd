@@ -10,6 +10,10 @@
 #include "process.h"
 #include "program_arguments.h"
 
+#ifndef CMAKE_PROJECT_DESCRIPTION
+#error "No project description imported from CMake"
+#endif
+
 namespace fs = std::filesystem;
 
 /**
@@ -56,9 +60,7 @@ static vrt::packet_loss::ProgramArguments setup_arg_parse(CLI::App* app) {
  */
 int main(int argc, const char** argv) {
     // Parse arguments
-    CLI::App app(
-        "Simulate packet loss by removing packets with a certain probability, with options for burst loss simulation",
-        "vrt_packet_loss");
+    CLI::App                           app(CMAKE_PROJECT_DESCRIPTION, "vrt_packet_loss");
     vrt::packet_loss::ProgramArguments program_args{setup_arg_parse(&app)};
     CLI11_PARSE(app, argc, argv)
 

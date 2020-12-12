@@ -79,6 +79,9 @@
 		"trailing-spaces.syntaxIgnore": [
 			"c",
 			"cpp"
+		],
+		"C_Cpp.default.defines": [
+			"CMAKE_PROJECT_DESCRIPTION=\"Project definition\""
 		]
 	}
 }
