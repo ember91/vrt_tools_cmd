@@ -11,12 +11,14 @@
 #include "common/generate_packet_sequence.h"
 #include "common/generate_tone.h"
 
+using namespace vrt;
+
 /* Size of packet in 32-bit words */
 static const size_t SIZE{515};
 
 int main() {
     /* Generate signal data */
-    std::vector<float> s{vrt::generate_tone(SIZE - 10)};
+    std::vector<float> s{common::generate_tone(SIZE - 10)};
 
     /* Initialize to reasonable values */
     vrt_packet p;
@@ -47,19 +49,19 @@ int main() {
             }
         };
         p.fields.stream_id = 0;
-        vrt::generate_packet_sequence("time_0.vrt", &p, N_PACKETS, func);
+        common::generate_packet_sequence("time_0.vrt", &p, N_PACKETS, func);
         p.fields.stream_id                    = 1;
         p.fields.integer_seconds_timestamp    = 0;
         p.fields.fractional_seconds_timestamp = 0;
-        vrt::generate_packet_sequence("time_1.vrt", &p, N_PACKETS, func);
+        common::generate_packet_sequence("time_1.vrt", &p, N_PACKETS, func);
         p.fields.stream_id                    = 2;
         p.fields.integer_seconds_timestamp    = 0;
         p.fields.fractional_seconds_timestamp = 0;
-        vrt::generate_packet_sequence("time_2.vrt", &p, N_PACKETS, func);
+        common::generate_packet_sequence("time_2.vrt", &p, N_PACKETS, func);
         p.fields.stream_id                    = 3;
         p.fields.integer_seconds_timestamp    = 0;
         p.fields.fractional_seconds_timestamp = 0;
-        vrt::generate_packet_sequence("time_3.vrt", &p, N_PACKETS, func);
+        common::generate_packet_sequence("time_3.vrt", &p, N_PACKETS, func);
     } catch (const std::runtime_error& exc) {
         std::cerr << exc.what() << std::endl;
     }

@@ -45,7 +45,7 @@ static uint64_t d_frac(vrt_packet* fir, vrt_packet* cur) {
  *
  * \param p A packet in stream.
  */
-static void print_ids(vrt_packet* p, const PacketIdDiffs& differences) {
+static void print_ids(vrt_packet* p, const common::PacketIdDiffs& differences) {
     std::cout << std::hex << std::setfill('0');
     if (p->header.has.class_id) {
         if (differences.diff_oui || differences.diff_icc || differences.diff_pcc) {
@@ -219,7 +219,7 @@ static void print_integer_fractional_time(vrt_packet* fir, vrt_packet* cur, doub
  * \param stream_history Stream history.
  * \param differences    Differences between streams.
  */
-void print_difference(const StreamHistory& stream_history, const PacketIdDiffs& differences) {
+void print_difference(const StreamHistory& stream_history, const common::PacketIdDiffs& differences) {
     vrt_packet* fir{stream_history.get_packet_first().get()};
     vrt_packet* cur{stream_history.get_packet_current().get()};
     double      sample_rate{stream_history.get_sample_rate()};

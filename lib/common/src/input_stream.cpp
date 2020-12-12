@@ -19,7 +19,7 @@
 
 #include "common/byte_swap.h"
 
-namespace vrt {
+namespace vrt::common {
 
 namespace fs = ::std::filesystem;
 
@@ -289,4 +289,4 @@ bool InputStream::read_parse_header() {
     return true;
 }
 
-}  // namespace vrt
+}  // namespace vrt::common

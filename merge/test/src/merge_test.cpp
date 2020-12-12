@@ -18,6 +18,8 @@
 #include "common/byte_swap.h"
 #include "common/generate_packet_sequence.h"
 
+using namespace vrt;
+
 namespace fs = ::std::filesystem;
 
 static const size_t   N_PACKETS{100};
@@ -180,7 +182,7 @@ TEST_F(MergeTest, Sorted) {
     std::vector<fs::path> file_paths_in{generate_input_file_paths(n)};
 
     for (const auto& file_path : file_paths_in) {
-        vrt::generate_packet_sequence(file_path, &p_, N_PACKETS / n, [&](uint64_t i, vrt_packet* p) {
+        common::generate_packet_sequence(file_path, &p_, N_PACKETS / n, [&](uint64_t i, vrt_packet* p) {
             p->fields.stream_id = static_cast<uint32_t>(i);
             p->fields.fractional_seconds_timestamp += distrib(gen);
             if (p->fields.fractional_seconds_timestamp >= ps_in_s) {
@@ -211,7 +213,7 @@ TEST_F(MergeTest, ByteSwap) {
     std::vector<fs::path> file_paths_in{generate_input_file_paths(n)};
 
     for (const auto& file_path : file_paths_in) {
-        vrt::generate_packet_sequence(
+        common::generate_packet_sequence(
             file_path, &p_, N_PACKETS / n,
             [&](uint64_t i, vrt_packet* p) {
                 p->fields.stream_id = static_cast<uint32_t>(i);

@@ -4,7 +4,7 @@
 #include <filesystem>
 #include <fstream>
 
-namespace vrt {
+namespace vrt::common {
 
 /**
  * Output stream.
@@ -29,6 +29,6 @@ class OutputStream {
     std::ofstream file_;
 };
 
-}  // namespace vrt
+}  // namespace vrt::common
 
 #endif

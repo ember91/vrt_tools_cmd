@@ -9,7 +9,7 @@
 
 struct vrt_packet;
 
-namespace vrt {
+namespace vrt::common {
 
 /**
  * Input stream.
@@ -59,6 +59,6 @@ class InputStream {
     uint64_t                    pkt_idx_{0};
 };
 
-}  // namespace vrt
+}  // namespace vrt::common
 
 #endif

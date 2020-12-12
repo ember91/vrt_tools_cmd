@@ -6,7 +6,7 @@
 #include <stdexcept>
 #include <utility>
 
-namespace vrt {
+namespace vrt::common {
 
 namespace fs = ::std::filesystem;
 
@@ -51,4 +51,4 @@ void OutputStream::remove_file() {
     }
 }
 
-}  // namespace vrt
+}  // namespace vrt::common

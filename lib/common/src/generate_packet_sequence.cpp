@@ -18,7 +18,7 @@
 
 #include "common/byte_swap.h"
 
-namespace vrt {
+namespace vrt::common {
 
 namespace fs = ::std::filesystem;
 
@@ -85,4 +85,4 @@ void generate_packet_sequence(const fs::path&                                   
     }
 }
 
-}  // namespace vrt
+}  // namespace vrt::common

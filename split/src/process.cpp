@@ -27,7 +27,7 @@ namespace fs = ::std::filesystem;
 // For convenience
 using PacketPtr             = std::shared_ptr<vrt_packet>;
 using OutputStreamRenamePtr = std::unique_ptr<OutputStreamRename>;
-using PacketOutputStreamMap = std::map<PacketPtr, OutputStreamRenamePtr, ComparatorId>;
+using PacketOutputStreamMap = std::map<PacketPtr, OutputStreamRenamePtr, common::ComparatorId>;
 
 /**
  * Generate a temporary and for this application unique file path.
@@ -68,7 +68,7 @@ static fs::path generate_temporary_file_path(const fs::path& file_path_in, const
  * \param diffs         Packet differences.
  * \return Final output file path.
  */
-static fs::path final_file_path(const fs::path& file_path_in, vrt_packet* packet, const PacketIdDiffs& diffs) {
+static fs::path final_file_path(const fs::path& file_path_in, vrt_packet* packet, const common::PacketIdDiffs& diffs) {
     std::stringstream body{};
     if (diffs.any_has_class_id) {
         if (packet->header.has.class_id) {
@@ -138,7 +138,7 @@ static void finish(const fs::path& file_path_in, const PacketOutputStreamMap& ou
             v.push_back(el.first);
         }
 
-        PacketIdDiffs packet_diffs{packet_id_differences(v)};
+        common::PacketIdDiffs packet_diffs{common::packet_id_differences(v)};
 
         for (auto& el : output_streams) {
             fs::path file_out{final_file_path(file_path_in, el.first.get(), packet_diffs)};
@@ -166,7 +166,7 @@ void process(const ProgramArguments& args) {
      */
     PacketOutputStreamMap output_streams;
 
-    InputStream input_stream(args.file_path_in, args.do_byte_swap);
+    common::InputStream input_stream(args.file_path_in, args.do_byte_swap);
 
     // Progress bar
     progresscpp::ProgressBar progress(static_cast<size_t>(input_stream.get_file_size()), 70);

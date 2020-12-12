@@ -12,6 +12,8 @@
 #include "common/byte_swap.h"
 #include "common/generate_packet_sequence.h"
 
+using namespace vrt;
+
 namespace fs = ::std::filesystem;
 
 static const size_t   N_PACKETS{10};
@@ -44,62 +46,62 @@ class TimestampTest : public ::testing::Test {
 };
 
 static void process(double sample_rate = 0.0) {
-    vrt::length::ProgramArguments args;
+    length::ProgramArguments args;
     args.file_path_in = TMP_FILE_PATH;
     args.sample_rate  = sample_rate;
-    vrt::length::process(args);
+    length::process(args);
 }
 
 TEST_F(TimestampTest, None) {
-    vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, 0);
+    common::generate_packet_sequence(TMP_FILE_PATH, &p_, 0);
 
     process();
 }
 
 TEST_F(TimestampTest, TsiUtc) {
     p_.header.tsi = VRT_TSI_UTC;
-    vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS,
-                                  [](uint64_t i, vrt_packet* p) { p->fields.integer_seconds_timestamp = i; });
+    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS,
+                                     [](uint64_t i, vrt_packet* p) { p->fields.integer_seconds_timestamp = i; });
 
     process();
 }
 
 TEST_F(TimestampTest, TsiGps) {
     p_.header.tsi = VRT_TSI_GPS;
-    vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS,
-                                  [](uint64_t i, vrt_packet* p) { p->fields.integer_seconds_timestamp = i; });
+    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS,
+                                     [](uint64_t i, vrt_packet* p) { p->fields.integer_seconds_timestamp = i; });
 
     process();
 }
 
 TEST_F(TimestampTest, TsiOther) {
     p_.header.tsi = VRT_TSI_OTHER;
-    vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS,
-                                  [](uint64_t i, vrt_packet* p) { p->fields.integer_seconds_timestamp = i; });
+    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS,
+                                     [](uint64_t i, vrt_packet* p) { p->fields.integer_seconds_timestamp = i; });
 
     process();
 }
 
 TEST_F(TimestampTest, TsfSampleCount) {
     p_.header.tsf = VRT_TSF_SAMPLE_COUNT;
-    vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS,
-                                  [](uint64_t i, vrt_packet* p) { p->fields.fractional_seconds_timestamp = i; });
+    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS,
+                                     [](uint64_t i, vrt_packet* p) { p->fields.fractional_seconds_timestamp = i; });
 
     process();
 }
 
 TEST_F(TimestampTest, TsfRealTime) {
     p_.header.tsf = VRT_TSF_REAL_TIME;
-    vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS,
-                                  [](uint64_t i, vrt_packet* p) { p->fields.fractional_seconds_timestamp = i; });
+    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS,
+                                     [](uint64_t i, vrt_packet* p) { p->fields.fractional_seconds_timestamp = i; });
 
     process();
 }
 
 TEST_F(TimestampTest, TsfFreeRunning) {
     p_.header.tsf = VRT_TSF_FREE_RUNNING_COUNT;
-    vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS,
-                                  [](uint64_t i, vrt_packet* p) { p->fields.fractional_seconds_timestamp = i; });
+    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS,
+                                     [](uint64_t i, vrt_packet* p) { p->fields.fractional_seconds_timestamp = i; });
 
     process();
 }
@@ -107,7 +109,7 @@ TEST_F(TimestampTest, TsfFreeRunning) {
 TEST_F(TimestampTest, TsiUtcTsfSampleCount) {
     p_.header.tsi = VRT_TSI_UTC;
     p_.header.tsf = VRT_TSF_SAMPLE_COUNT;
-    vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
+    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
         p->fields.integer_seconds_timestamp    = i;
         p->fields.fractional_seconds_timestamp = i;
     });
@@ -118,7 +120,7 @@ TEST_F(TimestampTest, TsiUtcTsfSampleCount) {
 TEST_F(TimestampTest, TsiUtcTsfRealTime) {
     p_.header.tsi = VRT_TSI_UTC;
     p_.header.tsf = VRT_TSF_REAL_TIME;
-    vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
+    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
         p->fields.integer_seconds_timestamp    = i;
         p->fields.fractional_seconds_timestamp = i;
     });
@@ -129,7 +131,7 @@ TEST_F(TimestampTest, TsiUtcTsfRealTime) {
 TEST_F(TimestampTest, TsiUtcTsfFreeRunning) {
     p_.header.tsi = VRT_TSI_UTC;
     p_.header.tsf = VRT_TSF_FREE_RUNNING_COUNT;
-    vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
+    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
         p->fields.integer_seconds_timestamp    = i;
         p->fields.fractional_seconds_timestamp = i;
     });
@@ -140,7 +142,7 @@ TEST_F(TimestampTest, TsiUtcTsfFreeRunning) {
 TEST_F(TimestampTest, TsiGpsTsfSampleCount) {
     p_.header.tsi = VRT_TSI_GPS;
     p_.header.tsf = VRT_TSF_SAMPLE_COUNT;
-    vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
+    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
         p->fields.integer_seconds_timestamp    = i;
         p->fields.fractional_seconds_timestamp = i;
     });
@@ -151,7 +153,7 @@ TEST_F(TimestampTest, TsiGpsTsfSampleCount) {
 TEST_F(TimestampTest, TsiGpsTsfRealTime) {
     p_.header.tsi = VRT_TSI_GPS;
     p_.header.tsf = VRT_TSF_REAL_TIME;
-    vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
+    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
         p->fields.integer_seconds_timestamp    = i;
         p->fields.fractional_seconds_timestamp = i;
     });
@@ -162,7 +164,7 @@ TEST_F(TimestampTest, TsiGpsTsfRealTime) {
 TEST_F(TimestampTest, TsiGpsTsfFreeRunning) {
     p_.header.tsi = VRT_TSI_GPS;
     p_.header.tsf = VRT_TSF_FREE_RUNNING_COUNT;
-    vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
+    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
         p->fields.integer_seconds_timestamp    = i;
         p->fields.fractional_seconds_timestamp = i;
     });
@@ -173,7 +175,7 @@ TEST_F(TimestampTest, TsiGpsTsfFreeRunning) {
 TEST_F(TimestampTest, TsiOtherTsfSampleCount) {
     p_.header.tsi = VRT_TSI_OTHER;
     p_.header.tsf = VRT_TSF_SAMPLE_COUNT;
-    vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
+    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
         p->fields.integer_seconds_timestamp    = i;
         p->fields.fractional_seconds_timestamp = i;
     });
@@ -184,7 +186,7 @@ TEST_F(TimestampTest, TsiOtherTsfSampleCount) {
 TEST_F(TimestampTest, TsiOtherTsfRealTime) {
     p_.header.tsi = VRT_TSI_OTHER;
     p_.header.tsf = VRT_TSF_REAL_TIME;
-    vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
+    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
         p->fields.integer_seconds_timestamp    = i;
         p->fields.fractional_seconds_timestamp = i;
     });
@@ -195,7 +197,7 @@ TEST_F(TimestampTest, TsiOtherTsfRealTime) {
 TEST_F(TimestampTest, TsiOtherTsfFreeRunning) {
     p_.header.tsi = VRT_TSI_OTHER;
     p_.header.tsf = VRT_TSF_FREE_RUNNING_COUNT;
-    vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
+    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
         p->fields.integer_seconds_timestamp    = i;
         p->fields.fractional_seconds_timestamp = i;
     });
@@ -206,7 +208,7 @@ TEST_F(TimestampTest, TsiOtherTsfFreeRunning) {
 TEST_F(TimestampTest, TsiUtcTsfSampleCountSampleRate) {
     p_.header.tsi = VRT_TSI_UTC;
     p_.header.tsf = VRT_TSF_SAMPLE_COUNT;
-    vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
+    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
         p->fields.integer_seconds_timestamp    = i;
         p->fields.fractional_seconds_timestamp = i;
     });
@@ -217,7 +219,7 @@ TEST_F(TimestampTest, TsiUtcTsfSampleCountSampleRate) {
 TEST_F(TimestampTest, TsiUtcTsfRealTimeSampleRate) {
     p_.header.tsi = VRT_TSI_UTC;
     p_.header.tsf = VRT_TSF_REAL_TIME;
-    vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
+    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
         p->fields.integer_seconds_timestamp    = i;
         p->fields.fractional_seconds_timestamp = i;
     });
@@ -228,7 +230,7 @@ TEST_F(TimestampTest, TsiUtcTsfRealTimeSampleRate) {
 TEST_F(TimestampTest, TsiUtcTsfFreeRunningSampleRate) {
     p_.header.tsi = VRT_TSI_UTC;
     p_.header.tsf = VRT_TSF_FREE_RUNNING_COUNT;
-    vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
+    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
         p->fields.integer_seconds_timestamp    = i;
         p->fields.fractional_seconds_timestamp = i;
     });
@@ -239,7 +241,7 @@ TEST_F(TimestampTest, TsiUtcTsfFreeRunningSampleRate) {
 TEST_F(TimestampTest, TsiGpsTsfSampleCountSampleRate) {
     p_.header.tsi = VRT_TSI_GPS;
     p_.header.tsf = VRT_TSF_SAMPLE_COUNT;
-    vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
+    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
         p->fields.integer_seconds_timestamp    = i;
         p->fields.fractional_seconds_timestamp = i;
     });
@@ -250,7 +252,7 @@ TEST_F(TimestampTest, TsiGpsTsfSampleCountSampleRate) {
 TEST_F(TimestampTest, TsiGpsTsfRealTimeSampleRate) {
     p_.header.tsi = VRT_TSI_GPS;
     p_.header.tsf = VRT_TSF_REAL_TIME;
-    vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
+    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
         p->fields.integer_seconds_timestamp    = i;
         p->fields.fractional_seconds_timestamp = i;
     });
@@ -261,7 +263,7 @@ TEST_F(TimestampTest, TsiGpsTsfRealTimeSampleRate) {
 TEST_F(TimestampTest, TsiGpsTsfFreeRunningSampleRate) {
     p_.header.tsi = VRT_TSI_GPS;
     p_.header.tsf = VRT_TSF_FREE_RUNNING_COUNT;
-    vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
+    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
         p->fields.integer_seconds_timestamp    = i;
         p->fields.fractional_seconds_timestamp = i;
     });
@@ -272,7 +274,7 @@ TEST_F(TimestampTest, TsiGpsTsfFreeRunningSampleRate) {
 TEST_F(TimestampTest, TsiOtherTsfSampleCountSampleRate) {
     p_.header.tsi = VRT_TSI_OTHER;
     p_.header.tsf = VRT_TSF_SAMPLE_COUNT;
-    vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
+    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
         p->fields.integer_seconds_timestamp    = i;
         p->fields.fractional_seconds_timestamp = i;
     });
@@ -283,7 +285,7 @@ TEST_F(TimestampTest, TsiOtherTsfSampleCountSampleRate) {
 TEST_F(TimestampTest, TsiOtherTsfRealTimeSampleRate) {
     p_.header.tsi = VRT_TSI_OTHER;
     p_.header.tsf = VRT_TSF_REAL_TIME;
-    vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
+    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
         p->fields.integer_seconds_timestamp    = i;
         p->fields.fractional_seconds_timestamp = i;
     });
@@ -294,7 +296,7 @@ TEST_F(TimestampTest, TsiOtherTsfRealTimeSampleRate) {
 TEST_F(TimestampTest, TsiOtherTsfFreeRunningSampleRate) {
     p_.header.tsi = VRT_TSI_OTHER;
     p_.header.tsf = VRT_TSF_FREE_RUNNING_COUNT;
-    vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
+    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
         p->fields.integer_seconds_timestamp    = i;
         p->fields.fractional_seconds_timestamp = i;
     });

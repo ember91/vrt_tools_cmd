@@ -6,6 +6,8 @@
 #include <vrt/vrt_types.h>
 #include <vrt/vrt_util.h>
 
+namespace vrt::common {
+
 /**
  * Comparator to compare packets by Class and Stream ID.
  */
@@ -68,5 +70,7 @@ struct ComparatorId {
         return false;
     }
 };
+
+}  // namespace vrt::common
 
 #endif

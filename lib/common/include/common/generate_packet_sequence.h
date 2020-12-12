@@ -8,7 +8,7 @@
 
 struct vrt_packet;
 
-namespace vrt {
+namespace vrt::common {
 
 void generate_packet_sequence(
     const std::filesystem::path&                        file_path,
@@ -17,6 +17,6 @@ void generate_packet_sequence(
     const std::function<void(uint64_t i, vrt_packet*)>& change       = [](uint64_t i, vrt_packet*) {},
     bool                                                do_byte_swap = false);
 
-}  // namespace vrt
+}  // namespace vrt::common
 
 #endif

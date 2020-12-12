@@ -10,7 +10,7 @@ namespace vrt::split {
 /**
  * Output stream that can be renamed.
  */
-class OutputStreamRename : public OutputStream {
+class OutputStreamRename : public common::OutputStream {
    public:
     OutputStreamRename(std::filesystem::path file_path);
     virtual ~OutputStreamRename();

@@ -22,7 +22,7 @@
 namespace vrt::merge {
 
 // For convenience
-using InputStreamPtr = std::shared_ptr<InputStream>;
+using InputStreamPtr = std::shared_ptr<common::InputStream>;
 
 /**
  * Comparator for packets by time.
@@ -92,7 +92,7 @@ struct ComparatorTime {
  * \throw std::runtime_error If there's an error.
  */
 void process(const ProgramArguments& args) {
-    OutputStream output_stream(args.file_path_out);
+    common::OutputStream output_stream(args.file_path_out);
 
     // Earliest element is on top
     std::priority_queue<InputStreamPtr, std::vector<InputStreamPtr>, ComparatorTime> input_stream_queue;
@@ -100,7 +100,7 @@ void process(const ProgramArguments& args) {
     // Start by filling queue
     std::streampos total_file_size_bytes{0};
     for (const auto& file_path_in : args.file_paths_in) {
-        InputStreamPtr stream{std::make_shared<InputStream>(file_path_in, args.do_byte_swap)};
+        InputStreamPtr stream{std::make_shared<common::InputStream>(file_path_in, args.do_byte_swap)};
         if (stream->read_next_packet()) {
             input_stream_queue.push(stream);
         }

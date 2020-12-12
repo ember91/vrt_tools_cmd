@@ -6,7 +6,7 @@
 #include <vrt/vrt_types.h>
 #include <vrt/vrt_util.h>
 
-namespace vrt {
+namespace vrt::common {
 
 /**
  * Find differences between packets.
@@ -61,4 +61,4 @@ PacketIdDiffs packet_id_differences(const std::vector<std::shared_ptr<vrt_packet
     return ret;
 }
 
-}  // namespace vrt
+}  // namespace vrt::common

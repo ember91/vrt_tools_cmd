@@ -28,7 +28,7 @@ using PacketPtr = std::shared_ptr<vrt_packet>;
  * \throw std::runtime_error If there's an error.
  */
 void process(const ProgramArguments& args) {
-    InputStream input_stream(args.file_path, args.do_byte_swap, false);
+    common::InputStream input_stream(args.file_path, args.do_byte_swap, false);
 
     // Number of printed packets
     size_t n_printed_packets{0};

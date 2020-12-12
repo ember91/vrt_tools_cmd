@@ -4,13 +4,13 @@
 namespace vrt::length {
 class StreamHistory;
 }
-namespace vrt {
+namespace vrt::common {
 struct PacketIdDiffs;
 }
 
 namespace vrt::length {
 
-void print_difference(const StreamHistory& stream_history, const PacketIdDiffs& differences);
+void print_difference(const StreamHistory& stream_history, const common::PacketIdDiffs& differences);
 
 }  // namespace vrt::length
 

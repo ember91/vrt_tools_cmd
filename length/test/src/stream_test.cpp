@@ -12,6 +12,8 @@
 #include "common/byte_swap.h"
 #include "common/generate_packet_sequence.h"
 
+using namespace vrt;
+
 namespace fs = ::std::filesystem;
 
 static const size_t   N_PACKETS{10};
@@ -54,7 +56,7 @@ TEST_F(StreamTest, SameClassId) {
     p_.fields.class_id.oui                    = 0xDEDEDE;
     p_.fields.class_id.information_class_code = 0xBEBE;
     p_.fields.class_id.packet_class_code      = 0xABAB;
-    vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS);
+    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS);
 
     process();
 }
@@ -62,7 +64,7 @@ TEST_F(StreamTest, SameClassId) {
 TEST_F(StreamTest, SameStreamId) {
     p_.header.packet_type = VRT_PT_IF_DATA_WITH_STREAM_ID;
     p_.fields.stream_id   = 0xDEADBEEF;
-    vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS);
+    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS);
 
     process();
 }
@@ -74,39 +76,40 @@ TEST_F(StreamTest, SameAll) {
     p_.fields.class_id.oui                    = 0xDEDEDE;
     p_.fields.class_id.information_class_code = 0xBEBE;
     p_.fields.class_id.packet_class_code      = 0xABAB;
-    vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS);
+    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS);
 
     process();
 }
 
 TEST_F(StreamTest, Oui) {
     p_.header.has.class_id = true;
-    vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS,
-                                  [](uint64_t i, vrt_packet* p) { p->fields.class_id.oui = i % 4; });
+    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS,
+                                     [](uint64_t i, vrt_packet* p) { p->fields.class_id.oui = i % 4; });
 
     process();
 }
 
 TEST_F(StreamTest, InformationClassCode) {
     p_.header.has.class_id = true;
-    vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS,
-                                  [](uint64_t i, vrt_packet* p) { p->fields.class_id.information_class_code = i % 4; });
+    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
+        p->fields.class_id.information_class_code = i % 4;
+    });
 
     process();
 }
 
 TEST_F(StreamTest, PacketClassCode) {
     p_.header.has.class_id = true;
-    vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS,
-                                  [](uint64_t i, vrt_packet* p) { p->fields.class_id.packet_class_code = i % 4; });
+    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS,
+                                     [](uint64_t i, vrt_packet* p) { p->fields.class_id.packet_class_code = i % 4; });
 
     process();
 }
 
 TEST_F(StreamTest, StreamId) {
     p_.header.packet_type = VRT_PT_IF_DATA_WITH_STREAM_ID;
-    vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS,
-                                  [](uint64_t i, vrt_packet* p) { p->fields.stream_id = i % 4; });
+    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS,
+                                     [](uint64_t i, vrt_packet* p) { p->fields.stream_id = i % 4; });
 
     process();
 }
@@ -114,7 +117,7 @@ TEST_F(StreamTest, StreamId) {
 TEST_F(StreamTest, All) {
     p_.header.packet_type  = VRT_PT_IF_DATA_WITH_STREAM_ID;
     p_.header.has.class_id = true;
-    vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
+    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
         p->fields.stream_id                       = i % 4;
         p->fields.class_id.oui                    = p->fields.stream_id;
         p->fields.class_id.information_class_code = static_cast<uint16_t>(p->fields.stream_id);
@@ -125,7 +128,7 @@ TEST_F(StreamTest, All) {
 }
 
 TEST_F(StreamTest, SomeClassIdDefault) {
-    vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
+    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
         p->header.has.class_id                    = i % 4 != 0;
         p->fields.class_id.oui                    = i % 2;
         p->fields.class_id.information_class_code = i % 2;
@@ -136,7 +139,7 @@ TEST_F(StreamTest, SomeClassIdDefault) {
 }
 
 TEST_F(StreamTest, SomeStreamIdDefault) {
-    vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
+    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
         if (i % 4 == 0) {
             p->header.packet_type = VRT_PT_IF_DATA_WITHOUT_STREAM_ID;
         } else {
@@ -149,7 +152,7 @@ TEST_F(StreamTest, SomeStreamIdDefault) {
 }
 
 TEST_F(StreamTest, SomeClassStreamIdDefault) {
-    vrt::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
+    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
         if (i % 3 == 0) {
             p->header.packet_type = VRT_PT_IF_DATA_WITHOUT_STREAM_ID;
         } else {

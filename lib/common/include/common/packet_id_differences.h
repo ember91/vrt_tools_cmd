@@ -6,7 +6,7 @@
 
 struct vrt_packet;
 
-namespace vrt {
+namespace vrt::common {
 
 /**
  * Describe differences between packets, as booleans.
@@ -22,6 +22,6 @@ struct PacketIdDiffs {
 
 PacketIdDiffs packet_id_differences(const std::vector<std::shared_ptr<vrt_packet>>& packets);
 
-}  // namespace vrt
+}  // namespace vrt::common
 
 #endif

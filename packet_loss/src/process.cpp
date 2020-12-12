@@ -49,8 +49,8 @@ bool Processor::lost() {
  * \throw std::runtime_error If there's an error.
  */
 void Processor::process() {
-    InputStream  input_stream(program_args_.file_path_in, program_args_.do_byte_swap);
-    OutputStream output_stream(program_args_.file_path_out);
+    common::InputStream  input_stream(program_args_.file_path_in, program_args_.do_byte_swap);
+    common::OutputStream output_stream(program_args_.file_path_out);
 
     // Progress bar
     progresscpp::ProgressBar progress(static_cast<size_t>(input_stream.get_file_size()), 70);

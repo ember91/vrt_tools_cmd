@@ -4,10 +4,10 @@
 #include <cstddef>
 #include <vector>
 
-namespace vrt {
+namespace vrt::common {
 
 std::vector<float> generate_tone(size_t n = 512, float fc = 10000.0F, float sr = 44100.0F);
 
-}  // namespace vrt
+}  // namespace vrt::common
 
 #endif

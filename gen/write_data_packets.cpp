@@ -14,6 +14,8 @@
 
 #include "common/generate_tone.h"
 
+using namespace vrt;
+
 namespace fs = ::std::filesystem;
 
 /* Size of packet in 32-bit words */
@@ -24,7 +26,7 @@ int main() {
     std::array<uint32_t, SIZE> b;
 
     /* Generate signal data */
-    std::vector<float> s{vrt::generate_tone(SIZE - 3)};
+    std::vector<float> s{common::generate_tone(SIZE - 3)};
 
     /* Initialize to reasonable values */
     vrt_packet p;

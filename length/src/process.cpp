@@ -35,9 +35,9 @@ using StreamHistoryPtr = std::unique_ptr<StreamHistory>;
  * \throw std::runtime_error If there's an error.
  */
 void process(const ProgramArguments& args) {
-    InputStream input_stream(args.file_path_in, args.do_byte_swap);
+    common::InputStream input_stream(args.file_path_in, args.do_byte_swap);
 
-    std::map<PacketPtr, StreamHistoryPtr, ComparatorId> id_streams;
+    std::map<PacketPtr, StreamHistoryPtr, common::ComparatorId> id_streams;
 
     // Progress bar
     progresscpp::ProgressBar progress(static_cast<size_t>(input_stream.get_file_size()), 70);
@@ -77,7 +77,7 @@ void process(const ProgramArguments& args) {
     }
 
     // Print differences between packets
-    PacketIdDiffs packet_diffs{packet_id_differences(v)};
+    common::PacketIdDiffs packet_diffs{common::packet_id_differences(v)};
     for (const auto& el : id_streams) {
         print_difference(*el.second.get(), packet_diffs);
     }

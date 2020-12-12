@@ -12,6 +12,8 @@
 #include "common/byte_swap.h"
 #include "common/generate_packet_sequence.h"
 
+using namespace vrt;
+
 namespace fs = ::std::filesystem;
 
 static const size_t   N_PACKETS{10};
@@ -52,7 +54,7 @@ static void process(bool do_byte_swap = false) {
 
 TEST_F(LengthTest, ByteSwap) {
     p_.header.tsi = VRT_TSI_UTC;
-    vrt::generate_packet_sequence(
+    common::generate_packet_sequence(
         TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) { p->fields.integer_seconds_timestamp = i; },
         true);
 

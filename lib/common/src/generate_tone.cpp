@@ -3,7 +3,7 @@
 #include <cmath>
 #include <vector>
 
-namespace vrt {
+namespace vrt::common {
 
 /**
  * Generate tone signal in vector.
@@ -25,4 +25,4 @@ std::vector<float> generate_tone(size_t n, float fc, float sr) {
     return v;
 }
 
-}  // namespace vrt
+}  // namespace vrt::common
