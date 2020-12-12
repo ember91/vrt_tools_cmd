@@ -2,7 +2,6 @@
 #define VRT_SPLIT_SRC_PROGRAM_ARGUMENTS_H_
 
 #include <filesystem>
-#include <string>
 
 namespace vrt::split {
 
