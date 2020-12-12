@@ -45,7 +45,7 @@ struct ComparatorTime {
 
         if (ah.tsi == VRT_TSI_NONE) {
             std::stringstream ss;
-            ss << "Packet in '" << a->get_file_path() << "': Integer second timestamp is NONE";
+            ss << "Packet in " << a->get_file_path() << ": Integer second timestamp is NONE";
             throw std::runtime_error(ss.str());
         }
 

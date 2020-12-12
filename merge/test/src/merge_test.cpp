@@ -84,7 +84,7 @@ static void check(bool do_byte_swap = false) {
         file.open(file_path, std::ios::in | std::ios::binary);
     } catch (const std::ios::failure&) {
         std::stringstream ss;
-        ss << "Failed to open input file '" << file_path << "'";
+        ss << "Failed to open input file " << file_path;
         throw std::runtime_error(ss.str());
     }
 

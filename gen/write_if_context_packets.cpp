@@ -46,7 +46,7 @@ int main() {
     try {
         file.open(file_path, std::ios::out | std::ios::binary | std::ios::trunc);
     } catch (const std::ios::failure&) {
-        std::cerr << "Failed to open file '" << file_path << "'" << std::endl;
+        std::cerr << "Failed to open file " << file_path << std::endl;
         return EXIT_FAILURE;
     }
     try {
@@ -54,7 +54,7 @@ int main() {
             file.write(reinterpret_cast<char*>(b.data()), sizeof(uint32_t) * size);
         }
     } catch (const std::ios::failure&) {
-        std::cerr << "Failed to write to file '" << file_path << "'" << std::endl;
+        std::cerr << "Failed to write to file " << file_path << std::endl;
         return EXIT_FAILURE;
     }
 

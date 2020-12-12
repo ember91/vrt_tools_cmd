@@ -43,7 +43,7 @@ void generate_packet_sequence(const fs::path&                                   
         file.open(file_path, std::ios::out | std::ios::binary | std::ios::trunc);
     } catch (const std::ios::failure&) {
         std::stringstream ss;
-        ss << "Failed to open file '" << file_path << "'";
+        ss << "Failed to open file " << file_path;
         throw std::runtime_error(ss.str());
     }
 
@@ -79,7 +79,7 @@ void generate_packet_sequence(const fs::path&                                   
             file.write(reinterpret_cast<char*>(b.data()), sizeof(uint32_t) * size);
         } catch (const std::ios::failure&) {
             std::stringstream ss;
-            ss << "Failed to write VRT packet to file '" << file_path << "'";
+            ss << "Failed to write VRT packet to file " << file_path;
             throw std::runtime_error(ss.str());
         }
     }

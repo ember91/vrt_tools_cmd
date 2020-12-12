@@ -124,8 +124,8 @@ static void finish(const fs::path& file_path_in, const PacketOutputStreamMap& ou
         for (auto& el : output_streams) {
             el.second->remove_file();
         }
-        std::cerr << "Warning: All packets have the same Class and Stream ID (if any). Use the existing '"
-                  << file_path_in << "'." << std::endl;
+        std::cerr << "Warning: All packets have the same Class and Stream ID (if any). Use the existing "
+                  << file_path_in << '.' << std::endl;
         return;
     }
 

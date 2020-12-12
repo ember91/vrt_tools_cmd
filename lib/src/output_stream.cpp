@@ -25,7 +25,7 @@ OutputStream::OutputStream(fs::path file_path) : file_path_{std::move(file_path)
         file_.open(file_path_, std::ios::out | std::ios::binary | std::ios::trunc);
     } catch (const std::ios::failure&) {
         std::stringstream ss;
-        ss << "Failed to open output file '" << file_path_ << "'";
+        ss << "Failed to open output file " << file_path_;
         throw std::runtime_error(ss.str());
     }
 }

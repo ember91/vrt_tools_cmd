@@ -62,7 +62,7 @@ int main(int argc, const char** argv) {
     for (const fs::path& path_in : program_args.file_paths_in) {
         try {
             if (fs::equivalent(path_in, program_args.file_path_out)) {
-                std::cerr << "Cannot use the same input as output file path: '" << path_in << "'" << std::endl;
+                std::cerr << "Cannot use the same input as output file path: " << path_in << std::endl;
                 return EXIT_FAILURE;
             }
         } catch (const fs::filesystem_error&) {
