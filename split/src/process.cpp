@@ -171,7 +171,7 @@ void process(const ProgramArguments& args) {
     progresscpp::ProgressBar progress(static_cast<size_t>(input_stream.get_file_size()), 70);
 
     // Go over all packets in input file
-    for (int i{0};; ++i) {
+    for (uint64_t i{0};; ++i) {
         if (!input_stream.read_next_packet()) {
             break;
         }

@@ -68,7 +68,7 @@ void generate_packet_sequence(const fs::path&                                   
 
         // Byte swap if enabled
         if (do_byte_swap) {
-            for (uint32_t j{0}; j < static_cast<uint32_t>(size); ++j) {
+            for (uint16_t j{0}; j < size; ++j) {
                 // Don't care about how to byte swap data...
                 b[j] = bswap_32(b[j]);
             }

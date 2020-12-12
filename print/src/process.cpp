@@ -33,7 +33,7 @@ void process(const ProgramArguments& args) {
     size_t n_printed_packets{0};
 
     // Current packet index
-    size_t i;
+    uint64_t i;
 
     // Note that we must go through all packets, since we don't know the size of a packet in the middle of the stream
     // is.

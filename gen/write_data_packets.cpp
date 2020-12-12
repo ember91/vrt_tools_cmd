@@ -58,7 +58,7 @@ int main() {
         return EXIT_FAILURE;
     }
     try {
-        for (int i{0}; i < 100; ++i) {
+        for (uint64_t i{0}; i < 100; ++i) {
             file.write(reinterpret_cast<char*>(b.data()), sizeof(uint32_t) * SIZE);
         }
     } catch (const std::ios::failure&) {

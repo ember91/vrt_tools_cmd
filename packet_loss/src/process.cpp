@@ -63,7 +63,7 @@ void Processor::process() {
     uint64_t n_lost{0};
 
     // Go over all packets in input file
-    int i;
+    uint64_t i;
     for (i = 0;; ++i) {
         // Always read packet, so we get header size for progress bar
         if (!input_stream.read_next_packet()) {

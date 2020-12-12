@@ -91,7 +91,7 @@ static void check(bool do_byte_swap = false) {
     vrt_header prev_header;
     vrt_fields prev_fields;
 
-    size_t i;
+    uint64_t i;
     for (i = 0;; ++i) {
         // Make space for header
         if (buf.size() < VRT_WORDS_HEADER) {

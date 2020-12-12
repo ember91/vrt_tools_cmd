@@ -103,7 +103,7 @@ bool InputStream::read_next_packet() {
 
     // Byte swap remainder
     if (do_byte_swap_) {
-        for (size_t j{1}; j < static_cast<size_t>(packet_->header.packet_size); ++j) {
+        for (uint32_t j{1}; j < static_cast<uint32_t>(packet_->header.packet_size); ++j) {
             buf_byte_swap_[j] = bswap_32(buf_[j]);
         }
     } else {
