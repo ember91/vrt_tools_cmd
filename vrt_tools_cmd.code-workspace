@@ -73,10 +73,6 @@
 		"doxdocgen.generic.dateTemplate": "\\date {date}",
 		"doxdocgen.generic.paramTemplate": "\\param {param} ",
 		"doxdocgen.generic.returnTemplate": "\\return ",
-		"files.exclude": {
-			"doc/html/*": true,
-			"lib/CLI11/*": true
-		},
 		"trailing-spaces.syntaxIgnore": [
 			"c",
 			"cpp"
@@ -84,6 +80,10 @@
 		"C_Cpp.default.defines": [
 			"CMAKE_PROJECT_Name=\"Editor definition: Project name\"",
 			"CMAKE_PROJECT_DESCRIPTION=\"Editor definition: Project description\""
-		]
+		],
+		"search.exclude": {
+			"doc/html": true,
+			"lib/CLI11": true
+		}
 	}
 }
