@@ -7,6 +7,7 @@
 
 #include "CLI/CLI.hpp"
 
+#include "percentage_validator.h"
 #include "process.h"
 #include "program_arguments.h"
 
@@ -43,11 +44,13 @@ static vrt::packet_loss::ProgramArguments setup_arg_parse(CLI::App* app) {
         app->add_option("-p,--packet-loss", args.prob_packet_loss, "Probability that a packet is lost")};
     opt_file_packet_loss->required(true);
     opt_file_packet_loss->check(CLI::Range(0.0, 1.0));
+    opt_file_packet_loss->transform(PercentageValidator());
 
     // Burst loss
     CLI::Option* opt_file_burst_loss{app->add_option(
         "-B,--burst-loss", args.prob_burst_loss, "Probability that a packet is lost if the previous packet was lost")};
     opt_file_burst_loss->check(CLI::Range(0.0, 1.0));
+    opt_file_burst_loss->transform(PercentageValidator());
 
     // Byte swap
     app->add_flag("-b,--byte-swap", args.do_byte_swap,

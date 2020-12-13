@@ -61,7 +61,8 @@
 			"map": "cpp",
 			"set": "cpp",
 			"csignal": "cpp",
-			"filesystem": "cpp"
+			"filesystem": "cpp",
+			"regex": "cpp"
 		},
 		"files.insertFinalNewline": true,
 		"doxdocgen.cpp.tparamTemplate": "\\tparam {param} ",
