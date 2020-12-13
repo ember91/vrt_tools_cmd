@@ -36,7 +36,8 @@ static vrt::merge::ProgramArguments setup_arg_parse(CLI::App* app) {
     opt_file_out->required(true);
 
     // Byte swap
-    app->add_flag("-b,--byte-swap", args.do_byte_swap, "Apply byte swap before parsing file");
+    app->add_flag("-b,--byte-swap", args.do_byte_swap,
+                  "Apply byte swap before parsing file. Note that this will NOT byte swap packet output.");
 
     return args;
 }
