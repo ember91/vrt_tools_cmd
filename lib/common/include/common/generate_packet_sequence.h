@@ -14,7 +14,7 @@ void generate_packet_sequence(
     const std::filesystem::path&           file_path,
     vrt_packet*                            p,
     uint64_t                               n,
-    const std::function<void(uint64_t i)>& change       = [](uint64_t i) {},
+    const std::function<void(uint64_t i)>& change       = [](uint64_t) {},
     bool                                   do_byte_swap = false);
 
 }  // namespace vrt::common
