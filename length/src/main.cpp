@@ -29,11 +29,11 @@ static vrt::length::ProgramArguments setup_arg_parse(CLI::App* app) {
     opt_file_in->check(CLI::ExistingFile);
 
     // Byte swap
-    app->add_flag("-b,--byte_swap", args.do_byte_swap, "Apply byte swap before parsing file");
+    app->add_flag("-b,--byte-swap", args.do_byte_swap, "Apply byte swap before parsing file");
 
     // Sample rate
     CLI::Option* opt_sample_rate{app->add_flag(
-        "-s,--sample_rate", args.sample_rate,
+        "-s,--sample-rate", args.sample_rate,
         "Sample rate [Hz]. If IF context sample rate appears in the stream it will take precedence over this option.")};
     opt_sample_rate->check(CLI::NonNegativeNumber);
 

@@ -31,7 +31,7 @@ static vrt::split::ProgramArguments setup_arg_parse(CLI::App* app) {
     opt_file_in->check(CLI::ExistingFile);
 
     // Byte swap
-    app->add_flag("-b,--byte_swap", args.do_byte_swap, "Apply byte swap before parsing file");
+    app->add_flag("-b,--byte-swap", args.do_byte_swap, "Apply byte swap before parsing file");
 
     return args;
 }

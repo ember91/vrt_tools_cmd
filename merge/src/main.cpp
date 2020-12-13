@@ -27,16 +27,16 @@ static vrt::merge::ProgramArguments setup_arg_parse(CLI::App* app) {
     vrt::merge::ProgramArguments args;
 
     // Input files
-    CLI::Option* opt_files_in{app->add_option("-i,--input_files", args.file_paths_in, "Input file path(s)")};
+    CLI::Option* opt_files_in{app->add_option("-i,--input-files", args.file_paths_in, "Input file path(s)")};
     opt_files_in->required(true);
     opt_files_in->check(CLI::ExistingFile);
 
     // Output file
-    CLI::Option* opt_file_out{app->add_option("-o,--output_file", args.file_path_out, "Output file path")};
+    CLI::Option* opt_file_out{app->add_option("-o,--output-file", args.file_path_out, "Output file path")};
     opt_file_out->required(true);
 
     // Byte swap
-    app->add_flag("-b,--byte_swap", args.do_byte_swap, "Apply byte swap before parsing file");
+    app->add_flag("-b,--byte-swap", args.do_byte_swap, "Apply byte swap before parsing file");
 
     return args;
 }
