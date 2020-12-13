@@ -30,11 +30,11 @@ namespace fs = ::std::filesystem;
  * \param n         Number of packets to generate.
  * \param change    Function to run before each write, which may change the written packet.
  */
-void generate_packet_sequence(const fs::path&                                     file_path,
-                              vrt_packet*                                         p,
-                              size_t                                              n,
-                              const std::function<void(uint64_t i, vrt_packet*)>& change,
-                              bool                                                do_byte_swap) {
+void generate_packet_sequence(const fs::path&                        file_path,
+                              vrt_packet*                            p,
+                              uint64_t                               n,
+                              const std::function<void(uint64_t i)>& change,
+                              bool                                   do_byte_swap) {
     std::ofstream file;
     file.exceptions(std::ios::badbit | std::ios::failbit | std::ios::eofbit);
 
@@ -52,7 +52,7 @@ void generate_packet_sequence(const fs::path&                                   
 
     for (uint64_t i{0}; i < n; ++i) {
         /* Change fields depending on index */
-        change(i, p);
+        change(i);
 
         // Write packet to buffer
         int32_t size{vrt_write_packet(p, b.data(), b.size(), true)};

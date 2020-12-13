@@ -40,12 +40,12 @@ int main() {
     const size_t N_PACKETS{100};
 
     try {
-        auto func = [&](uint64_t, vrt_packet* p) {
-            p->fields.fractional_seconds_timestamp += distrib(gen);
-            if (p->fields.fractional_seconds_timestamp >= ps_in_s) {
-                uint64_t n{p->fields.fractional_seconds_timestamp / ps_in_s};
-                p->fields.integer_seconds_timestamp += n;
-                p->fields.fractional_seconds_timestamp -= n * ps_in_s;
+        auto func = [&](uint64_t) {
+            p.fields.fractional_seconds_timestamp += distrib(gen);
+            if (p.fields.fractional_seconds_timestamp >= ps_in_s) {
+                uint64_t n{p.fields.fractional_seconds_timestamp / ps_in_s};
+                p.fields.integer_seconds_timestamp += n;
+                p.fields.fractional_seconds_timestamp -= n * ps_in_s;
             }
         };
         p.fields.stream_id = 0;

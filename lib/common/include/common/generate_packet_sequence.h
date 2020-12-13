@@ -11,11 +11,11 @@ struct vrt_packet;
 namespace vrt::common {
 
 void generate_packet_sequence(
-    const std::filesystem::path&                        file_path,
-    vrt_packet*                                         p,
-    size_t                                              n,
-    const std::function<void(uint64_t i, vrt_packet*)>& change       = [](uint64_t i, vrt_packet*) {},
-    bool                                                do_byte_swap = false);
+    const std::filesystem::path&           file_path,
+    vrt_packet*                            p,
+    uint64_t                               n,
+    const std::function<void(uint64_t i)>& change       = [](uint64_t i) {},
+    bool                                   do_byte_swap = false);
 
 }  // namespace vrt::common
 

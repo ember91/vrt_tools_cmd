@@ -182,13 +182,13 @@ TEST_F(MergeTest, Sorted) {
     std::vector<fs::path> file_paths_in{generate_input_file_paths(n)};
 
     for (const auto& file_path : file_paths_in) {
-        common::generate_packet_sequence(file_path, &p_, N_PACKETS / n, [&](uint64_t i, vrt_packet* p) {
-            p->fields.stream_id = static_cast<uint32_t>(i);
-            p->fields.fractional_seconds_timestamp += distrib(gen);
-            if (p->fields.fractional_seconds_timestamp >= ps_in_s) {
-                uint64_t t{p->fields.fractional_seconds_timestamp / ps_in_s};
-                p->fields.integer_seconds_timestamp += t;
-                p->fields.fractional_seconds_timestamp -= t * ps_in_s;
+        common::generate_packet_sequence(file_path, &p_, N_PACKETS / n, [&](uint64_t i) {
+            p_.fields.stream_id = static_cast<uint32_t>(i);
+            p_.fields.fractional_seconds_timestamp += distrib(gen);
+            if (p_.fields.fractional_seconds_timestamp >= ps_in_s) {
+                uint64_t t{p_.fields.fractional_seconds_timestamp / ps_in_s};
+                p_.fields.integer_seconds_timestamp += t;
+                p_.fields.fractional_seconds_timestamp -= t * ps_in_s;
             }
         });
     }
@@ -215,13 +215,13 @@ TEST_F(MergeTest, ByteSwap) {
     for (const auto& file_path : file_paths_in) {
         common::generate_packet_sequence(
             file_path, &p_, N_PACKETS / n,
-            [&](uint64_t i, vrt_packet* p) {
-                p->fields.stream_id = static_cast<uint32_t>(i);
-                p->fields.fractional_seconds_timestamp += distrib(gen);
-                if (p->fields.fractional_seconds_timestamp >= ps_in_s) {
-                    uint64_t t{p->fields.fractional_seconds_timestamp / ps_in_s};
-                    p->fields.integer_seconds_timestamp += t;
-                    p->fields.fractional_seconds_timestamp -= t * ps_in_s;
+            [&](uint64_t i) {
+                p_.fields.stream_id = static_cast<uint32_t>(i);
+                p_.fields.fractional_seconds_timestamp += distrib(gen);
+                if (p_.fields.fractional_seconds_timestamp >= ps_in_s) {
+                    uint64_t t{p_.fields.fractional_seconds_timestamp / ps_in_s};
+                    p_.fields.integer_seconds_timestamp += t;
+                    p_.fields.fractional_seconds_timestamp -= t * ps_in_s;
                 }
             },
             true);

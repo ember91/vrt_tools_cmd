@@ -55,8 +55,7 @@ static void process(bool do_byte_swap = false) {
 TEST_F(LengthTest, ByteSwap) {
     p_.header.tsi = VRT_TSI_UTC;
     common::generate_packet_sequence(
-        TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) { p->fields.integer_seconds_timestamp = i; },
-        true);
+        TMP_FILE_PATH, &p_, N_PACKETS, [&](uint64_t i) { p_.fields.integer_seconds_timestamp = i; }, true);
 
     process(true);
 }

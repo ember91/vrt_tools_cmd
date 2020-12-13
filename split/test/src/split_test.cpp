@@ -218,7 +218,7 @@ TEST_F(SplitTest, SameAll) {
 TEST_F(SplitTest, Oui) {
     p_.header.has.class_id = true;
     common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS,
-                                     [](uint64_t i, vrt_packet* p) { p->fields.class_id.oui = i % 4; });
+                                     [&](uint64_t i) { p_.fields.class_id.oui = i % 4; });
 
     process();
     SCOPED_TRACE(::testing::UnitTest::GetInstance()->current_test_info()->name());
@@ -227,9 +227,8 @@ TEST_F(SplitTest, Oui) {
 
 TEST_F(SplitTest, InformationClassCode) {
     p_.header.has.class_id = true;
-    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
-        p->fields.class_id.information_class_code = i % 4;
-    });
+    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS,
+                                     [&](uint64_t i) { p_.fields.class_id.information_class_code = i % 4; });
 
     process();
     SCOPED_TRACE(::testing::UnitTest::GetInstance()->current_test_info()->name());
@@ -239,7 +238,7 @@ TEST_F(SplitTest, InformationClassCode) {
 TEST_F(SplitTest, PacketClassCode) {
     p_.header.has.class_id = true;
     common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS,
-                                     [](uint64_t i, vrt_packet* p) { p->fields.class_id.packet_class_code = i % 4; });
+                                     [&](uint64_t i) { p_.fields.class_id.packet_class_code = i % 4; });
 
     process();
     SCOPED_TRACE(::testing::UnitTest::GetInstance()->current_test_info()->name());
@@ -248,8 +247,7 @@ TEST_F(SplitTest, PacketClassCode) {
 
 TEST_F(SplitTest, StreamId) {
     p_.header.packet_type = VRT_PT_IF_DATA_WITH_STREAM_ID;
-    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS,
-                                     [](uint64_t i, vrt_packet* p) { p->fields.stream_id = i % 4; });
+    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [&](uint64_t i) { p_.fields.stream_id = i % 4; });
 
     process();
     SCOPED_TRACE(::testing::UnitTest::GetInstance()->current_test_info()->name());
@@ -259,11 +257,11 @@ TEST_F(SplitTest, StreamId) {
 TEST_F(SplitTest, All) {
     p_.header.packet_type  = VRT_PT_IF_DATA_WITH_STREAM_ID;
     p_.header.has.class_id = true;
-    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
-        p->fields.stream_id                       = i % 4;
-        p->fields.class_id.oui                    = p->fields.stream_id;
-        p->fields.class_id.information_class_code = static_cast<uint16_t>(p->fields.stream_id);
-        p->fields.class_id.packet_class_code      = static_cast<uint16_t>(p->fields.stream_id);
+    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [&](uint64_t i) {
+        p_.fields.stream_id                       = i % 4;
+        p_.fields.class_id.oui                    = p_.fields.stream_id;
+        p_.fields.class_id.information_class_code = static_cast<uint16_t>(p_.fields.stream_id);
+        p_.fields.class_id.packet_class_code      = static_cast<uint16_t>(p_.fields.stream_id);
     });
 
     process();
@@ -272,11 +270,11 @@ TEST_F(SplitTest, All) {
 }
 
 TEST_F(SplitTest, SomeClassIdDefault) {
-    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
-        p->header.has.class_id                    = i % 4 != 0;
-        p->fields.class_id.oui                    = i % 2;
-        p->fields.class_id.information_class_code = i % 2;
-        p->fields.class_id.packet_class_code      = i % 2;
+    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [&](uint64_t i) {
+        p_.header.has.class_id                    = i % 4 != 0;
+        p_.fields.class_id.oui                    = i % 2;
+        p_.fields.class_id.information_class_code = i % 2;
+        p_.fields.class_id.packet_class_code      = i % 2;
     });
 
     process();
@@ -285,12 +283,12 @@ TEST_F(SplitTest, SomeClassIdDefault) {
 }
 
 TEST_F(SplitTest, SomeStreamIdDefault) {
-    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
+    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [&](uint64_t i) {
         if (i % 4 == 0) {
-            p->header.packet_type = VRT_PT_IF_DATA_WITHOUT_STREAM_ID;
+            p_.header.packet_type = VRT_PT_IF_DATA_WITHOUT_STREAM_ID;
         } else {
-            p->header.packet_type = VRT_PT_IF_DATA_WITH_STREAM_ID;
-            p->fields.stream_id   = i % 4;
+            p_.header.packet_type = VRT_PT_IF_DATA_WITH_STREAM_ID;
+            p_.fields.stream_id   = i % 4;
         }
     });
 
@@ -300,20 +298,20 @@ TEST_F(SplitTest, SomeStreamIdDefault) {
 }
 
 TEST_F(SplitTest, SomeClassStreamIdDefault) {
-    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
+    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [&](uint64_t i) {
         if (i % 3 == 0) {
-            p->header.packet_type = VRT_PT_IF_DATA_WITHOUT_STREAM_ID;
+            p_.header.packet_type = VRT_PT_IF_DATA_WITHOUT_STREAM_ID;
         } else {
-            p->header.packet_type = VRT_PT_IF_DATA_WITH_STREAM_ID;
-            p->fields.stream_id   = i % 4;
+            p_.header.packet_type = VRT_PT_IF_DATA_WITH_STREAM_ID;
+            p_.fields.stream_id   = i % 4;
         }
         if (i % 5 == 0) {
-            p->header.has.class_id = false;
+            p_.header.has.class_id = false;
         } else {
-            p->header.has.class_id                    = true;
-            p->fields.class_id.oui                    = i % 2;
-            p->fields.class_id.information_class_code = i % 2;
-            p->fields.class_id.packet_class_code      = i % 2;
+            p_.header.has.class_id                    = true;
+            p_.fields.class_id.oui                    = i % 2;
+            p_.fields.class_id.information_class_code = i % 2;
+            p_.fields.class_id.packet_class_code      = i % 2;
         }
     });
 
@@ -327,17 +325,17 @@ TEST_F(SplitTest, SomeClassStreamIdDefault) {
 TEST_F(SplitTest, HexNaming) {
     p_.header.packet_type  = VRT_PT_IF_DATA_WITH_STREAM_ID;
     p_.header.has.class_id = true;
-    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [](uint64_t i, vrt_packet* p) {
+    common::generate_packet_sequence(TMP_FILE_PATH, &p_, N_PACKETS, [&](uint64_t i) {
         if (i % 2 == 0) {
-            p->fields.class_id.oui                    = 0xBAAAAD;
-            p->fields.class_id.information_class_code = 0x4B1D;
-            p->fields.class_id.packet_class_code      = 0xDEAD;
-            p->fields.stream_id                       = 0xDEADBEEF;
+            p_.fields.class_id.oui                    = 0xBAAAAD;
+            p_.fields.class_id.information_class_code = 0x4B1D;
+            p_.fields.class_id.packet_class_code      = 0xDEAD;
+            p_.fields.stream_id                       = 0xDEADBEEF;
         } else {
-            p->fields.class_id.oui                    = 0xABABAB;
-            p->fields.class_id.information_class_code = 0xBEBE;
-            p->fields.class_id.packet_class_code      = 0xDEDE;
-            p->fields.stream_id                       = 0xFEFEFEFE;
+            p_.fields.class_id.oui                    = 0xABABAB;
+            p_.fields.class_id.information_class_code = 0xBEBE;
+            p_.fields.class_id.packet_class_code      = 0xDEDE;
+            p_.fields.stream_id                       = 0xFEFEFEFE;
         }
     });
 
@@ -351,17 +349,17 @@ TEST_F(SplitTest, ByteSwap) {
     p_.header.has.class_id = true;
     common::generate_packet_sequence(
         TMP_FILE_PATH, &p_, N_PACKETS,
-        [](uint64_t i, vrt_packet* p) {
+        [&](uint64_t i) {
             if (i % 2 == 0) {
-                p->fields.class_id.oui                    = 0xBAAAAD;
-                p->fields.class_id.information_class_code = 0x4B1D;
-                p->fields.class_id.packet_class_code      = 0xDEAD;
-                p->fields.stream_id                       = 0xDEADBEEF;
+                p_.fields.class_id.oui                    = 0xBAAAAD;
+                p_.fields.class_id.information_class_code = 0x4B1D;
+                p_.fields.class_id.packet_class_code      = 0xDEAD;
+                p_.fields.stream_id                       = 0xDEADBEEF;
             } else {
-                p->fields.class_id.oui                    = 0xABABAB;
-                p->fields.class_id.information_class_code = 0xBEBE;
-                p->fields.class_id.packet_class_code      = 0xDEDE;
-                p->fields.stream_id                       = 0xFEFEFEFE;
+                p_.fields.class_id.oui                    = 0xABABAB;
+                p_.fields.class_id.information_class_code = 0xBEBE;
+                p_.fields.class_id.packet_class_code      = 0xDEDE;
+                p_.fields.stream_id                       = 0xFEFEFEFE;
             }
         },
         true);
