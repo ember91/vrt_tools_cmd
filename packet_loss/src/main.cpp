@@ -42,10 +42,12 @@ static vrt::packet_loss::ProgramArguments setup_arg_parse(CLI::App* app) {
     CLI::Option* opt_file_packet_loss{
         app->add_option("-p,--packet-loss", args.prob_packet_loss, "Probability that a packet is lost")};
     opt_file_packet_loss->required(true);
+    opt_file_packet_loss->check(CLI::Range(0.0, 1.0));
 
     // Burst loss
-    app->add_option("-B,--burst-loss", args.prob_burst_loss,
-                    "Probability that a packet is lost if the previous packet was lost");
+    CLI::Option* opt_file_burst_loss{app->add_option(
+        "-B,--burst-loss", args.prob_burst_loss, "Probability that a packet is lost if the previous packet was lost")};
+    opt_file_burst_loss->check(CLI::Range(0.0, 1.0));
 
     // Byte swap
     app->add_flag("-b,--byte-swap", args.do_byte_swap,
