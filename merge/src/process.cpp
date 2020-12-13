@@ -107,7 +107,7 @@ void process(const ProgramArguments& args) {
         total_file_size_bytes += stream->get_file_size();
     }
 
-    progresscpp::ProgressBar progress(static_cast<size_t>(total_file_size_bytes), 70);
+    progresscpp::ProgressBar progress(static_cast<uint64_t>(total_file_size_bytes), 70);
 
     try {
         // Loop until there are no more packets left in any input file

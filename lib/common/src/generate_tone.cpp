@@ -14,7 +14,7 @@ namespace vrt::common {
  *
  * \return Generated signal tone.
  */
-std::vector<float> generate_tone(size_t n, float fc, float sr) {
+std::vector<float> generate_tone(uint64_t n, float fc, float sr) {
     // M_PI is nonstandard :(
     const float PI{3.1415926F};
 

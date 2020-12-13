@@ -22,7 +22,7 @@ using namespace vrt;
 
 namespace fs = ::std::filesystem;
 
-static const size_t   N_PACKETS{100};
+static const uint64_t N_PACKETS{100};
 static const fs::path TMP_DIR{"test_tmp"};
 static const fs::path TMP_FILE_OUT_PATH{TMP_DIR / "merge.vrt"};
 
@@ -50,11 +50,11 @@ class MergeTest : public ::testing::Test {
     vrt_packet p_;
 };
 
-static std::vector<fs::path> generate_input_file_paths(size_t n) {
+static std::vector<fs::path> generate_input_file_paths(uint64_t n) {
     std::vector<fs::path> paths;
     paths.reserve(n);
 
-    for (size_t i{0}; i < n; ++i) {
+    for (uint64_t i{0}; i < n; ++i) {
         fs::path file_path{TMP_DIR};
         file_path /= "merge_";
         file_path += std::to_string(i);
@@ -169,7 +169,7 @@ static void check(bool do_byte_swap = false) {
 
 TEST_F(MergeTest, Sorted) {
     const uint64_t ps_in_s{1000000000000};
-    const size_t   n{4};
+    const uint64_t n{4};
 
     p_.header.packet_type = VRT_PT_IF_DATA_WITH_STREAM_ID;
     p_.header.tsi         = VRT_TSI_UTC;
@@ -200,7 +200,7 @@ TEST_F(MergeTest, Sorted) {
 
 TEST_F(MergeTest, ByteSwap) {
     const uint64_t ps_in_s{1000000000000};
-    const size_t   n{4};
+    const uint64_t n{4};
 
     p_.header.packet_type = VRT_PT_IF_DATA_WITH_STREAM_ID;
     p_.header.tsi         = VRT_TSI_UTC;

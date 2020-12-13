@@ -31,7 +31,7 @@ void process(const ProgramArguments& args) {
     common::InputStream input_stream(args.file_path, args.do_byte_swap, false);
 
     // Number of printed packets
-    size_t n_printed_packets{0};
+    uint64_t n_printed_packets{0};
 
     // Current packet index
     uint64_t i;
@@ -70,7 +70,7 @@ void process(const ProgramArguments& args) {
     if (i != 0) {
         if (n_printed_packets == 0) {
             std::cerr << "Warning: Skipped over all " << i << " packet(s)\n";
-        } else if (n_printed_packets < args.packet_count && args.packet_count != static_cast<size_t>(-1)) {
+        } else if (n_printed_packets < args.packet_count && args.packet_count != static_cast<uint64_t>(-1)) {
             std::cerr << "Warning: Printed only " << n_printed_packets << " out of " << args.packet_count
                       << " packet(s) due to end of file\n";
         }

@@ -40,7 +40,7 @@ void process(const ProgramArguments& args) {
     std::map<PacketPtr, StreamHistoryPtr, common::ComparatorId> id_streams;
 
     // Progress bar
-    progresscpp::ProgressBar progress(static_cast<size_t>(input_stream.get_file_size()), 70);
+    progresscpp::ProgressBar progress(static_cast<uint64_t>(input_stream.get_file_size()), 70);
 
     // Go over all packets in input file
     uint64_t i;

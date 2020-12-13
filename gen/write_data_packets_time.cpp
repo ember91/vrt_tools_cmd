@@ -14,7 +14,9 @@
 using namespace vrt;
 
 /* Size of packet in 32-bit words */
-static const size_t SIZE{515};
+static const uint64_t SIZE{515};
+
+static const uint64_t N_PACKETS{100};
 
 int main() {
     /* Generate signal data */
@@ -36,8 +38,6 @@ int main() {
     std::random_device                      rd;
     std::mt19937                            gen(rd());
     std::uniform_int_distribution<uint64_t> distrib(1, ps_in_s / 10);
-
-    const size_t N_PACKETS{100};
 
     try {
         auto func = [&](uint64_t) {

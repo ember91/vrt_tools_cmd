@@ -16,7 +16,7 @@ using namespace vrt;
 
 namespace fs = ::std::filesystem;
 
-static const size_t   N_PACKETS{10};
+static const uint64_t N_PACKETS{10};
 static const fs::path TMP_DIR{"test_tmp"};
 static const fs::path TMP_FILE_NAME{"split.vrt"};
 static const fs::path TMP_FILE_PATH{TMP_DIR / TMP_FILE_NAME};

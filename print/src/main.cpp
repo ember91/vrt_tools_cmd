@@ -38,16 +38,16 @@ static vrt::print::ProgramArguments setup_arg_parse(CLI::App* app) {
     opt_packet_skip->check(CLI::NonNegativeNumber);
     // Put prefixes in reverse order, so they are shown in ascending order.
     opt_packet_skip->transform(CLI::AsNumberWithUnit(
-        std::map<std::string, std::size_t>{{"T", 1000000000000}, {"G", 1000000000}, {"M", 1000000}, {"k", 1000}},
+        std::map<std::string, uint64_t>{{"T", 1000000000000}, {"G", 1000000000}, {"M", 1000000}, {"k", 1000}},
         CLI::AsNumberWithUnit::CASE_SENSITIVE));
 
-    args.packet_count = static_cast<size_t>(-1);
+    args.packet_count = static_cast<uint64_t>(-1);
     CLI::Option* opt_packet_count{
         app->add_option("-c,--packet-count", args.packet_count,
                         "Number of packets to print. Supports prefixes such as k, M, G, and T.")};
     opt_packet_count->check(CLI::PositiveNumber);
     opt_packet_count->transform(CLI::AsNumberWithUnit(
-        std::map<std::string, std::size_t>{{"T", 1000000000000}, {"G", 1000000000}, {"M", 1000000}, {"k", 1000}},
+        std::map<std::string, uint64_t>{{"T", 1000000000000}, {"G", 1000000000}, {"M", 1000000}, {"k", 1000}},
         CLI::AsNumberWithUnit::CASE_SENSITIVE));
 
     app->add_flag("-b,--byte-swap", args.do_byte_swap, "Apply byte swap before parsing file");

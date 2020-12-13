@@ -19,7 +19,7 @@ using namespace vrt;
 namespace fs = ::std::filesystem;
 
 /* Size of packet in 32-bit words */
-static const size_t SIZE{515};
+static const uint64_t SIZE{515};
 
 int main() {
     /* Packet data buffer */

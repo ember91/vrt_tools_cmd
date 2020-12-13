@@ -14,7 +14,9 @@
 using namespace vrt;
 
 /* Size of packet in 32-bit words */
-static const size_t SIZE{515};
+static const uint64_t SIZE{515};
+
+static const uint64_t N_PACKETS{100};
 
 int main() {
     /* Packet data buffer */
@@ -33,8 +35,6 @@ int main() {
     p.fields.stream_id   = 0xDEADBEEF;
     p.words_body         = s.size();
     p.body               = s.data();
-
-    const size_t N_PACKETS{100};
 
     try {
         common::generate_packet_sequence("var_stream_id.vrt", &p, N_PACKETS, [&](uint64_t i) {

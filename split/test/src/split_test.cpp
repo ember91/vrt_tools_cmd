@@ -25,7 +25,7 @@ using namespace vrt;
 
 namespace fs = ::std::filesystem;
 
-static const size_t   N_PACKETS{100};
+static const uint64_t N_PACKETS{100};
 static const fs::path TMP_DIR{"test_tmp"};
 static const fs::path TMP_FILE_NAME{"split.vrt"};
 static const fs::path TMP_FILE_PATH{TMP_DIR / TMP_FILE_NAME};
@@ -64,7 +64,7 @@ static void process(bool do_byte_swap = false) {
 static void compare(const std::vector<std::string>& file_names, bool do_byte_swap = false) {
     std::vector<uint32_t> buf;
 
-    size_t total_packets{0};
+    uint64_t total_packets{0};
     for (const auto& file_name : file_names) {
         fs::path file_path{TMP_DIR / file_name};
 

@@ -169,7 +169,7 @@ void process(const ProgramArguments& args) {
     common::InputStream input_stream(args.file_path_in, args.do_byte_swap);
 
     // Progress bar
-    progresscpp::ProgressBar progress(static_cast<size_t>(input_stream.get_file_size()), 70);
+    progresscpp::ProgressBar progress(static_cast<uint64_t>(input_stream.get_file_size()), 70);
 
     // Go over all packets in input file
     for (uint64_t i{0};; ++i) {

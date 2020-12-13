@@ -11,8 +11,8 @@ namespace vrt::print {
  */
 struct ProgramArguments {
     std::filesystem::path file_path{};
-    size_t                packet_skip{0};
-    size_t                packet_count{static_cast<size_t>(-1)};
+    uint64_t              packet_skip{0};
+    uint64_t              packet_count{static_cast<uint64_t>(-1)};
     bool                  do_byte_swap{false};
 };
 

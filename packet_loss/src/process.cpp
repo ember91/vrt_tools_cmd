@@ -53,7 +53,7 @@ void Processor::process() {
     common::OutputStream output_stream(program_args_.file_path_out);
 
     // Progress bar
-    progresscpp::ProgressBar progress(static_cast<size_t>(input_stream.get_file_size()), 70);
+    progresscpp::ProgressBar progress(static_cast<uint64_t>(input_stream.get_file_size()), 70);
 
     // Number of lost packets
     uint64_t n_lost{0};
