@@ -81,7 +81,8 @@
 			"cpp"
 		],
 		"C_Cpp.default.defines": [
-			"CMAKE_PROJECT_DESCRIPTION=\"Project definition\""
+			"CMAKE_PROJECT_Name=\"Editor definition: Project name\"",
+			"CMAKE_PROJECT_DESCRIPTION=\"Editor definition: Project description\""
 		]
 	}
 }

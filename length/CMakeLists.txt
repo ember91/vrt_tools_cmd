@@ -16,7 +16,8 @@ add_executable(${TARGET_NAME} ${FILES_SRC})
 
 # Add preprocessor flag with program description
 target_compile_definitions(
-  ${TARGET_NAME} PUBLIC "CMAKE_PROJECT_DESCRIPTION=\"${PROJECT_DESCRIPTION}\"")
+  ${TARGET_NAME} PUBLIC "CMAKE_PROJECT_NAME=\"${PROJECT_NAME}\""
+                        "CMAKE_PROJECT_DESCRIPTION=\"${PROJECT_DESCRIPTION}\"")
 
 # Set warning levels
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")

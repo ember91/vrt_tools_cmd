@@ -11,8 +11,11 @@
 #include "process.h"
 #include "program_arguments.h"
 
+#ifndef CMAKE_PROJECT_NAME
+#error "No project name definition from CMake"
+#endif
 #ifndef CMAKE_PROJECT_DESCRIPTION
-#error "No project description imported from CMake"
+#error "No project definition from CMake"
 #endif
 
 /**
@@ -67,7 +70,7 @@ int main(int argc, const char** argv) {
     // Speed up output
     std::ios_base::sync_with_stdio(false);
 
-    CLI::App app(CMAKE_PROJECT_DESCRIPTION, "vrt_print");
+    CLI::App app(CMAKE_PROJECT_DESCRIPTION, CMAKE_PROJECT_NAME);
 
     vrt::print::ProgramArguments program_args{setup_arg_parse(&app)};
     CLI11_PARSE(app, argc, argv)
