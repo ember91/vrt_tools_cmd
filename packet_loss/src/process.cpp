@@ -16,8 +16,6 @@
 
 namespace vrt::packet_loss {
 
-namespace fs = ::std::filesystem;
-
 // For convenience
 using PacketPtr = std::shared_ptr<vrt_packet>;
 
@@ -60,8 +58,8 @@ void Processor::process() {
     uint64_t n_lost{0};
 
     // Go over all packets in input file
-    uint64_t i;
-    for (i = 0;; ++i) {
+    uint64_t i{0};
+    for (;; ++i) {
         // Always read packet, so we get header size for progress bar
         if (!input_stream.read_next_packet()) {
             break;

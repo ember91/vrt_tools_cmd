@@ -55,7 +55,7 @@ endif()
 if(${CLANG_TIDY})
   message(STATUS "Enabling clang-tidy for C++")
   set(CMAKE_CXX_CLANG_TIDY
-      "clang-tidy;-checks=*,-readability-magic-numbers,-cppcoreguidelines-avoid-magic-numbers,-hicpp-signed-bitwise,-fuchsia-default-arguments-calls,-cppcoreguidelines-pro-bounds-pointer-arithmetic,-modernize-use-trailing-return-type,-cppcoreguidelines-pro-type-reinterpret-cast,-cert-err58-cpp,-cppcoreguidelines-non-private-member-variables-in-classes,-misc-non-private-member-variables-in-classes,-cppcoreguidelines-non-private-member-variables-in-classes,-cppcoreguidelines-special-member-functions,-fuchsia-statically-constructed-objects,-hicpp-special-member-functions,-cppcoreguidelines-owning-memory"
+      "clang-tidy;-checks=*,-readability-magic-numbers,-cppcoreguidelines-avoid-magic-numbers,-hicpp-signed-bitwise,-fuchsia-default-arguments-calls,-cppcoreguidelines-pro-bounds-pointer-arithmetic,-modernize-use-trailing-return-type,-cppcoreguidelines-pro-type-reinterpret-cast,-cert-err58-cpp,-cppcoreguidelines-non-private-member-variables-in-classes,-misc-non-private-member-variables-in-classes,-cppcoreguidelines-non-private-member-variables-in-classes,-cppcoreguidelines-special-member-functions,-fuchsia-statically-constructed-objects,-hicpp-special-member-functions,-cppcoreguidelines-owning-memory,-fuchsia-default-arguments-declarations"
   )
 endif()
 if(${CPPCHECK})

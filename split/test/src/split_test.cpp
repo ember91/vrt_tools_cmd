@@ -83,8 +83,8 @@ static void compare(const std::vector<std::string>& file_names, bool do_byte_swa
         vrt_header prev_header;
         vrt_fields prev_fields;
 
-        uint64_t i;
-        for (i = 0;; ++i) {
+        uint64_t i{0};
+        for (;; ++i) {
             // Make space for header
             if (buf.size() < VRT_WORDS_HEADER) {
                 buf.resize(VRT_WORDS_HEADER);

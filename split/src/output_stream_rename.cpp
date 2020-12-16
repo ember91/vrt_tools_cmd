@@ -18,7 +18,7 @@ namespace fs = ::std::filesystem;
  *
  * \throw std::runtime_error If file fails to open.
  */
-OutputStreamRename::OutputStreamRename(std::filesystem::path file_path) : OutputStream(file_path) {}
+OutputStreamRename::OutputStreamRename(std::filesystem::path file_path) : OutputStream(std::move(file_path)) {}
 
 /**
  * Destructor. Remove any temporary file.

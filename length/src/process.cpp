@@ -20,8 +20,6 @@
 
 namespace vrt::length {
 
-namespace fs = ::std::filesystem;
-
 // For convenience
 using PacketPtr        = std::shared_ptr<vrt_packet>;
 using StreamHistoryPtr = std::unique_ptr<StreamHistory>;
@@ -42,8 +40,8 @@ void process(const ProgramArguments& args) {
     progresscpp::ProgressBar progress(static_cast<uint64_t>(input_stream.get_file_size()), 70);
 
     // Go over all packets in input file
-    uint64_t i;
-    for (i = 0;; ++i) {
+    uint64_t i{0};
+    for (;; ++i) {
         if (!input_stream.read_next_packet()) {
             break;
         }
@@ -78,7 +76,7 @@ void process(const ProgramArguments& args) {
     // Print differences between packets
     common::PacketIdDiffs packet_diffs{common::packet_id_differences(v)};
     for (const auto& el : id_streams) {
-        print_difference(*el.second.get(), packet_diffs);
+        print_difference(*el.second, packet_diffs);
     }
 
     std::cout.flush();

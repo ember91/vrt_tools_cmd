@@ -29,8 +29,6 @@ namespace vrt::socket {
 
 // For convenience
 using PacketPtr = std::shared_ptr<vrt_packet>;
-namespace fs    = ::std::filesystem;
-namespace tm    = ::std::chrono;
 
 /**
  * Process file contents.
@@ -52,8 +50,8 @@ void process(const ProgramArguments& args) {
         libsocket::inet_dgram_client sock(args.host, args.service, LIBSOCKET_IPv4, 0);
 
         // Go over all packets in input file
-        uint64_t i;
-        for (i = 0;; ++i) {
+        uint64_t i{0};
+        for (;; ++i) {
             if (!input_stream.read_next_packet()) {
                 break;
             }

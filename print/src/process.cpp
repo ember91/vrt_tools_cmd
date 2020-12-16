@@ -15,8 +15,6 @@
 
 namespace vrt::print {
 
-namespace fs = ::std::filesystem;
-
 using PacketPtr = std::shared_ptr<vrt_packet>;
 
 /**
@@ -32,12 +30,10 @@ void process(const ProgramArguments& args) {
     // Number of printed packets
     uint64_t n_printed_packets{0};
 
-    // Current packet index
-    uint64_t i;
-
     // Note that we must go through all packets, since we don't know the size of a packet in the middle of the stream
     // is.
-    for (i = 0; n_printed_packets < args.packet_count; ++i) {
+    uint64_t i{0};
+    for (; n_printed_packets < args.packet_count; ++i) {
         // Check this after checking EOF
         bool do_print_packet{i >= args.packet_skip};
         if (do_print_packet) {

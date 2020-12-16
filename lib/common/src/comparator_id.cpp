@@ -68,4 +68,4 @@ struct ComparatorId {
     }
 };
 
-}
+}  // namespace vrt::common

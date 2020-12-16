@@ -15,7 +15,7 @@ void StreamHistory::update(const std::shared_ptr<vrt_packet>& packet) {
         sample_rate_ = packet->if_context.sample_rate;
     }
 
-    if (packet_first_.get() == nullptr) {
+    if (packet_first_ == nullptr) {
         packet_first_ = packet;
     }
     packet_cur_ = packet;

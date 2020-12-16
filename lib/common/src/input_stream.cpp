@@ -118,13 +118,13 @@ bool InputStream::read_next_packet() {
             ss << "Packet #" << pkt_idx_ << " in " << file_path_
                << ": Failed to parse fields section: " << vrt_string_error(words_fields);
             throw std::runtime_error(ss.str());
-        } else {
-            // Never any error here, since buffer size is sufficient
-            vrt_read_fields(&packet_->header, buf_byte_swap_.data() + VRT_WORDS_HEADER,
-                            buf_byte_swap_.size() - VRT_WORDS_HEADER, &packet_->fields, false);
-            std::cerr << "Warning: Packet #" << pkt_idx_ << " in " << file_path_
-                      << ": Failed to validate fields section: " << vrt_string_error(words_fields);
         }
+
+        // Never any error here, since buffer size is sufficient
+        vrt_read_fields(&packet_->header, buf_byte_swap_.data() + VRT_WORDS_HEADER,
+                        buf_byte_swap_.size() - VRT_WORDS_HEADER, &packet_->fields, false);
+        std::cerr << "Warning: Packet #" << pkt_idx_ << " in " << file_path_
+                  << ": Failed to validate fields section: " << vrt_string_error(words_fields);
     }
 
     // Parse IF context, if any
@@ -139,13 +139,13 @@ bool InputStream::read_next_packet() {
                 ss << "Packet #" << pkt_idx_ << " in " << file_path_
                    << ": Failed to parse IF context: " << vrt_string_error(words_if_context);
                 throw std::runtime_error(ss.str());
-            } else {
-                // Never any error here, since buffer size is sufficient
-                vrt_read_if_context(buf_byte_swap_.data() + words_header_fields,
-                                    buf_byte_swap_.size() - words_header_fields, &packet_->if_context, false);
-                std::cerr << "Warning: Packet #" << pkt_idx_ << " in " << file_path_
-                          << ": Failed to validate IF context: " << vrt_string_error(words_if_context);
             }
+
+            // Never any error here, since buffer size is sufficient
+            vrt_read_if_context(buf_byte_swap_.data() + words_header_fields,
+                                buf_byte_swap_.size() - words_header_fields, &packet_->if_context, false);
+            std::cerr << "Warning: Packet #" << pkt_idx_ << " in " << file_path_
+                      << ": Failed to validate IF context: " << vrt_string_error(words_if_context);
         }
     }
 
@@ -160,13 +160,13 @@ bool InputStream::read_next_packet() {
                 ss << "Packet #" << pkt_idx_ << " in " << file_path_
                    << ": Failed to parse trailer: " << vrt_string_error(words_trailer);
                 throw std::runtime_error(ss.str());
-            } else {
-                // Never any error here, since buffer size is sufficient
-                vrt_read_trailer(buf_byte_swap_.data() + packet_->header.packet_size - 1,
-                                 buf_byte_swap_.size() - (packet_->header.packet_size - 1), &packet_->trailer);
-                std::cerr << "Warning: Packet #" << pkt_idx_ << " in " << file_path_
-                          << ": Failed to validate trailer: " << vrt_string_error(words_trailer);
             }
+
+            // Never any error here, since buffer size is sufficient
+            vrt_read_trailer(buf_byte_swap_.data() + packet_->header.packet_size - 1,
+                             buf_byte_swap_.size() - (packet_->header.packet_size - 1), &packet_->trailer);
+            std::cerr << "Warning: Packet #" << pkt_idx_ << " in " << file_path_
+                      << ": Failed to validate trailer: " << vrt_string_error(words_trailer);
         }
     }
 
@@ -177,11 +177,11 @@ bool InputStream::read_next_packet() {
             std::stringstream ss;
             ss << "Packet #" << pkt_idx_ << " in " << file_path_ << ": Body is a negative size";
             throw std::runtime_error(ss.str());
-        } else {
-            packet_->words_body = 0;
-            packet_->body       = nullptr;
-            std::cerr << "Warning: Packet #" << pkt_idx_ << " in " << file_path_ << ": Body is a negative size";
         }
+
+        packet_->words_body = 0;
+        packet_->body       = nullptr;
+        std::cerr << "Warning: Packet #" << pkt_idx_ << " in " << file_path_ << ": Body is a negative size";
     } else {
         packet_->body = buf_.data() + VRT_WORDS_HEADER + words_fields;
     }
@@ -253,12 +253,12 @@ bool InputStream::read_parse_header() {
             ss << "Packet #" << pkt_idx_ << " in " << file_path_
                << ": Failed to parse header: " << vrt_string_error(words_header);
             throw std::runtime_error(ss.str());
-        } else {
-            // Never any error here, since buffer size is sufficient
-            vrt_read_header(buf_byte_swap_.data(), buf_byte_swap_.size(), &packet_->header, false);
-            std::cerr << "Warning: Packet #" << pkt_idx_ << " in " << file_path_
-                      << ": Failed to validate header: " << vrt_string_error(words_header);
         }
+
+        // Never any error here, since buffer size is sufficient
+        vrt_read_header(buf_byte_swap_.data(), buf_byte_swap_.size(), &packet_->header, false);
+        std::cerr << "Warning: Packet #" << pkt_idx_ << " in " << file_path_
+                  << ": Failed to validate header: " << vrt_string_error(words_header);
     }
 
     // No infinite loops thank you

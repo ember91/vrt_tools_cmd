@@ -122,7 +122,7 @@ static fs::path final_file_path(const fs::path& file_path_in, vrt_packet* packet
 static void finish(const fs::path& file_path_in, const PacketOutputStreamMap& output_streams) {
     // Check if all Class and Stream IDs are the same
     if (output_streams.size() <= 1) {
-        for (auto& el : output_streams) {
+        for (const auto& el : output_streams) {
             el.second->remove_file();
         }
         std::cerr << "Warning: All packets have the same Class and Stream ID (if any). Use the existing "
@@ -140,13 +140,13 @@ static void finish(const fs::path& file_path_in, const PacketOutputStreamMap& ou
 
         common::PacketIdDiffs packet_diffs{common::packet_id_differences(v)};
 
-        for (auto& el : output_streams) {
+        for (const auto& el : output_streams) {
             fs::path file_out{final_file_path(file_path_in, el.first.get(), packet_diffs)};
             el.second->rename_file(file_out);
         }
     } catch (...) {
         // Remove any newly created files before rethrow
-        for (auto& el : output_streams) {
+        for (const auto& el : output_streams) {
             el.second->remove_file();
         }
         throw;
