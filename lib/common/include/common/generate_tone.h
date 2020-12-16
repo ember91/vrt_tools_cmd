@@ -1,7 +1,6 @@
 #ifndef LIB_COMMON_INCLUDE_COMMON_GENERATE_TONE_H_
 #define LIB_COMMON_INCLUDE_COMMON_GENERATE_TONE_H_
 
-#include <cstddef>
 #include <cstdint>
 #include <vector>
 

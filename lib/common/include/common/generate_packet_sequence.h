@@ -1,7 +1,6 @@
 #ifndef LIB_COMMON_INCLUDE_COMMON_GENERATE_PACKET_SEQUENCE_H_
 #define LIB_COMMON_INCLUDE_COMMON_GENERATE_PACKET_SEQUENCE_H_
 
-#include <cstddef>
 #include <cstdint>
 #include <filesystem>
 #include <functional>

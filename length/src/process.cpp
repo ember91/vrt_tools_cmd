@@ -1,7 +1,6 @@
 #include "process.h"
 
 #include <cstdint>
-#include <cstdio>
 #include <filesystem>
 #include <iostream>
 #include <map>

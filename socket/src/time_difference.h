@@ -2,9 +2,11 @@
 #define VRT_SOCKET_SRC_TIME_DIFFERENCE_H_
 
 #include <chrono>
+#include <cstdint>
 #include <memory>
+#include <ratio>
 
-#include <vrt/vrt_types.h>
+struct vrt_packet;
 
 namespace vrt::socket {
 

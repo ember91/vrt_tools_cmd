@@ -1,6 +1,7 @@
 #ifndef LIB_COMMON_INCLUDE_COMMON_OUTPUT_STREAM_H_
 #define LIB_COMMON_INCLUDE_COMMON_OUTPUT_STREAM_H_
 
+#include <cstdint>
 #include <filesystem>
 #include <fstream>
 #include <vector>

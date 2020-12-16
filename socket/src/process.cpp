@@ -19,7 +19,9 @@
 
 #include "Progress-CPP/ProgressBar.hpp"
 #include "common/input_stream.h"
+#include "libsocket/headers/exception.hpp"
 #include "libsocket/headers/inetclientdgram.hpp"
+#include "libsocket/headers/libinetsocket.h"
 #include "program_arguments.h"
 #include "time_difference.h"
 

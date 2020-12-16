@@ -1,6 +1,7 @@
 #include "common/generate_tone.h"
 
 #include <cmath>
+#include <cstddef>
 #include <vector>
 
 namespace vrt::common {

@@ -2,6 +2,8 @@
 
 #include <cmath>
 
+#include <vrt/vrt_types.h>
+
 namespace vrt::socket {
 
 // For convenience
