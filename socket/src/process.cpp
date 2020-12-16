@@ -21,6 +21,7 @@
 #include "common/input_stream.h"
 #include "libsocket/headers/exception.hpp"
 #include "libsocket/headers/inetclientdgram.hpp"
+#include "libsocket/headers/inetclientstream.hpp"
 #include "libsocket/headers/libinetsocket.h"
 #include "program_arguments.h"
 #include "time_difference.h"
@@ -46,8 +47,15 @@ void process(const ProgramArguments& args) {
     // Time difference calculator
     TimeDifference time_diff(args.sample_rate);
 
+    std::shared_ptr<libsocket::inet_dgram_client> sock_udp;
+    std::shared_ptr<libsocket::inet_stream>       sock_tcp;
+
     try {
-        libsocket::inet_dgram_client sock(args.host, args.service, LIBSOCKET_IPv4, 0);
+        if (args.protocol == protocol_type::UDP) {
+            sock_udp = std::make_shared<libsocket::inet_dgram_client>(args.host, args.service, LIBSOCKET_IPv4, 0);
+        } else {
+            sock_tcp = std::make_shared<libsocket::inet_stream>(args.host, args.service, LIBSOCKET_IPv4, 0);
+        }
 
         // Go over all packets in input file
         uint64_t i{0};
@@ -62,7 +70,11 @@ void process(const ProgramArguments& args) {
             // Sleep
             std::this_thread::sleep_for(time_diff.calculate(pkt));
 
-            sock.snd(input_stream.get_buffer().data(), sizeof(uint32_t) * pkt->header.packet_size, 0);
+            if (args.protocol == protocol_type::UDP) {
+                sock_udp->snd(input_stream.get_buffer().data(), sizeof(uint32_t) * pkt->header.packet_size, 0);
+            } else {
+                sock_tcp->snd(input_stream.get_buffer().data(), sizeof(uint32_t) * pkt->header.packet_size, 0);
+            }
 
             // Handle progress bar
             progress += sizeof(uint32_t) * pkt->header.packet_size;

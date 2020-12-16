@@ -51,6 +51,12 @@ static vrt::socket::ProgramArguments setup_arg_parse(CLI::App* app) {
         "Sample rate [Hz]. If IF context sample rate appears in the stream it will take precedence over this option.")};
     opt_sample_rate->check(CLI::NonNegativeNumber);
 
+    // Protocol
+    std::map<std::string, vrt::socket::protocol_type> map{{"udp", vrt::socket::protocol_type::UDP},
+                                                          {"tcp", vrt::socket::protocol_type::TCP}};
+    CLI::Option* opt_protocol{app->add_option("-p,--protocol", args.protocol, "Network protocol")};
+    opt_protocol->transform(CLI::CheckedTransformer(map, CLI::ignore_case));
+
     return args;
 }
 
