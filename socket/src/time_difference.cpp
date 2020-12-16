@@ -19,7 +19,6 @@ Duration TimeDifference::sample_count(const PacketPtr& pkt) const {
     Duration dur;
     if (sample_rate_ == 0.0) {
         // Sending at integer seconds is an OK strategy
-        // TODO: Inform that supplying sample rate would give better results
         dur = tm::seconds(pkt->fields.integer_seconds_timestamp - pkt_0->fields.integer_seconds_timestamp);
     } else {
         // Due to validation we already know that fractional seconds is inside sample rate range.
@@ -51,7 +50,6 @@ Duration TimeDifference::free_running_count(const PacketPtr& pkt) const {
     Duration dur;
     if (sample_rate_ == 0.0) {
         // Sending at integer seconds is an OK strategy
-        // TODO: Inform that supplying sample rate would give better results
         dur = tm::seconds(pkt->fields.integer_seconds_timestamp - pkt_0->fields.integer_seconds_timestamp);
     } else {
         // Note that this works even in case of wraparound
@@ -82,13 +80,7 @@ Duration TimeDifference::calculate(const PacketPtr& pkt) {
         pkt_0 = pkt;
     }
 
-    // TODO: Parse sample rate in packet
-
     // No need to use picosecond precision. Nanosecond resolution for sleeping is sufficient.
-
-    // TODO: If timestamp is before, send instantly and display error
-
-    // TODO: Check that first packet has the same TSI and TSF as following
 
     tm::duration<int64_t, std::nano> dur;
     if (pkt->header.tsi == VRT_TSI_NONE) {
