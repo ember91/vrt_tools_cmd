@@ -69,6 +69,10 @@ Calculates number of packets and time difference for all different streams in a 
 
 Simulate packet loss by generating a file with some VRT packets missing.
 
+## VRT Socket
+
+Send packets over a socket with the same time interval as suggested by packet timestamps in a VRT packet file.
+
 ### Prerequisites
 
 * C++17 compiler, such as GCC
