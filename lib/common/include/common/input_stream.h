@@ -21,28 +21,30 @@ class InputStream {
     bool read_next_packet();
     bool skip_next_packet();
 
-    void write(std::ofstream& of);
-
     /**
-     * Get output file path.
-     *
      * \return Output file path.
      */
     const std::filesystem::path& get_file_path() const { return file_path_; }
 
     /**
-     * Get last read packet.
-     *
-     * \return Packet.
+     * \return Last read packet.
      */
     std::shared_ptr<vrt_packet> get_packet() const { return packet_; }
 
     /**
-     * Get input file size.
-     *
-     * \return File size [B].
+     * \return Input file size [B].
      */
     std::streampos get_file_size() const { return file_size_bytes_; }
+
+    /**
+     * \return Non-byte swapped packet buffer.
+     */
+    const std::vector<uint32_t>& get_buffer() { return buf_; }
+
+    /**
+     * \return Byte swapped packet buffer.
+     */
+    const std::vector<uint32_t>& get_buffer_byte_swap() { return buf_; }
 
    private:
     bool read_parse_header();

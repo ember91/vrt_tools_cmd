@@ -188,7 +188,7 @@ void process(const ProgramArguments& args) {
         }
 
         // Write input packet to output
-        input_stream.write(it->second->get_file());
+        it->second->write(input_stream.get_buffer(), packet->header.packet_size);
 
         // Handle progress bar
         progress += sizeof(uint32_t) * packet->header.packet_size;

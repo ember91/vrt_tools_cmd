@@ -3,6 +3,7 @@
 
 #include <filesystem>
 #include <fstream>
+#include <vector>
 
 namespace vrt::common {
 
@@ -16,12 +17,7 @@ class OutputStream {
 
     virtual void remove_file();
 
-    /**
-     * Get reference to file.
-     *
-     * \return Output file.
-     */
-    std::ofstream& get_file() { return file_; }
+    void write(const std::vector<uint32_t>& buf, int32_t words);
 
    protected:
     const std::filesystem::path file_path_;

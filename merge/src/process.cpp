@@ -117,7 +117,7 @@ void process(const ProgramArguments& args) {
             input_stream_queue.pop();
 
             // Write input packet to output
-            input_stream->write(output_stream.get_file());
+            output_stream.write(input_stream->get_buffer(), input_stream->get_packet()->header.packet_size);
 
             // Read next packet and insert at the right place into queue if any left
             if (input_stream->read_next_packet()) {

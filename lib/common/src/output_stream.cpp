@@ -51,4 +51,22 @@ void OutputStream::remove_file() {
     }
 }
 
+/**
+ * Write buffer to file.
+ *
+ * \param buf   Buffer to write.
+ * \param words Number of words to write.
+ *
+ * \throw std::runtime_error On I/O error.
+ */
+void OutputStream::write(const std::vector<uint32_t>& buf, int32_t words) {
+    try {
+        file_.write(reinterpret_cast<const char*>(buf.data()), sizeof(uint32_t) * words);
+    } catch (const std::ios::failure&) {
+        std::stringstream ss;
+        ss << "Failed to write to output file";
+        throw std::runtime_error(ss.str());
+    }
+}
+
 }  // namespace vrt::common

@@ -219,23 +219,6 @@ bool InputStream::skip_next_packet() {
 }
 
 /**
- * Write buffer to output file.
- *
- * \param of Output file.
- *
- * \throw std::runtime_error On I/O error.
- */
-void InputStream::write(std::ofstream& of) {
-    try {
-        of.write(reinterpret_cast<char*>(buf_.data()), sizeof(uint32_t) * packet_->header.packet_size);
-    } catch (const std::ios::failure&) {
-        std::stringstream ss;
-        ss << "Failed to write to output file";
-        throw std::runtime_error(ss.str());
-    }
-}
-
-/**
  * Skip next packet in stream. More efficient than reading it.
  *
  * \return False if End Of File.

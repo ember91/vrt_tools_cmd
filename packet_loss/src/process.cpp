@@ -71,7 +71,7 @@ void Processor::process() {
             n_lost++;
         } else {
             // Write input packet to output
-            input_stream.write(output_stream.get_file());
+            output_stream.write(input_stream.get_buffer(), packet->header.packet_size);
         }
 
         // Handle progress bar
