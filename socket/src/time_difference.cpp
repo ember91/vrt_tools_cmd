@@ -30,11 +30,12 @@ Duration TimeDifference::sample_count(const PacketPtr& pkt) const {
             dur = tm::seconds(pkt->fields.integer_seconds_timestamp - pkt_0_->fields.integer_seconds_timestamp) +
                   tm::nanoseconds(static_cast<uint64_t>(frac * 1e9));
         } else {
-            double frac{static_cast<double>(PS_IN_S - pkt_0_->fields.fractional_seconds_timestamp +
+            double frac{static_cast<double>(pkt_0_->fields.fractional_seconds_timestamp -
                                             pkt->fields.fractional_seconds_timestamp) /
                         sample_rate_};
-            dur = tm::seconds(pkt->fields.integer_seconds_timestamp - pkt_0_->fields.integer_seconds_timestamp - 1) +
-                  tm::nanoseconds(static_cast<uint64_t>(frac * 1e9));
+            // Don't decrease seconds here. -frac does that automatically.
+            dur = tm::seconds(pkt->fields.integer_seconds_timestamp - pkt_0_->fields.integer_seconds_timestamp) +
+                  tm::nanoseconds(static_cast<uint64_t>(-frac * 1e9));
         }
     }
 

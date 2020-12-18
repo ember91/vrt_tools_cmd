@@ -220,24 +220,24 @@ TEST_F(TimeDifferenceTest, UtcSampleCountWithSampleRate) {
     p2_->header.tsi                          = p1_->header.tsi;
     p2_->header.tsf                          = p1_->header.tsf;
     p2_->fields.integer_seconds_timestamp    = p1_->fields.integer_seconds_timestamp + 3;
-    p2_->fields.fractional_seconds_timestamp = p1_->fields.fractional_seconds_timestamp + 8000;
+    p2_->fields.fractional_seconds_timestamp = p1_->fields.fractional_seconds_timestamp - 8000;
 
     ASSERT_EQ(td_.calculate(p1_).count(), 0);
-    ASSERT_EQ(td_.calculate(p2_).count(), 3 * NS_IN_S + NS_IN_S / 2);
+    ASSERT_EQ(td_.calculate(p2_).count(), 3 * NS_IN_S - NS_IN_S / 2);
 }
 
 TEST_F(TimeDifferenceTest, UtcRealTime) {
     p1_->header.tsi                          = VRT_TSI_UTC;
     p1_->header.tsf                          = VRT_TSF_REAL_TIME;
     p1_->fields.integer_seconds_timestamp    = 10000;
-    p1_->fields.fractional_seconds_timestamp = 10000;
+    p1_->fields.fractional_seconds_timestamp = PS_IN_S * 3 / 4;
     p2_->header.tsi                          = p1_->header.tsi;
     p2_->header.tsf                          = p1_->header.tsf;
     p2_->fields.integer_seconds_timestamp    = p1_->fields.integer_seconds_timestamp + 3;
-    p2_->fields.fractional_seconds_timestamp = p1_->fields.fractional_seconds_timestamp + PS_IN_S / 2;
+    p2_->fields.fractional_seconds_timestamp = p1_->fields.fractional_seconds_timestamp - PS_IN_S / 2;
 
     ASSERT_EQ(td_.calculate(p1_).count(), 0);
-    ASSERT_EQ(td_.calculate(p2_).count(), 3 * NS_IN_S + NS_IN_S / 2);
+    ASSERT_EQ(td_.calculate(p2_).count(), 3 * NS_IN_S - NS_IN_S / 2);
 }
 
 TEST_F(TimeDifferenceTest, UtcFreeRunningCountWithoutSampleRate) {
