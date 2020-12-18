@@ -7,8 +7,8 @@ import signal
 import sys
 import time
 
-if len(sys.argv) != 2:
-    print("Usage: {} <UDP/TCP>".format(sys.argv[0]))
+if len(sys.argv) != 3:
+    print("Usage: {} <UDP/TCP> <service>".format(sys.argv[0]))
     exit(0)
 
 use_udp = True
@@ -20,22 +20,23 @@ else:
     print("Protocol type must be either UDP or TCP")
     exit(1)
 
+service = int(sys.argv[2])
+
 total_bytes   = 0
 total_packets = 0
 
 # Count total received bytes at SIGINT
 def signal_handler(sig, frame):
-    print("Received a total of {} packets totalling {} B".format(total_packets, total_bytes))
+    print("Received a total of {} packets, totalling {} B".format(total_packets, total_bytes))
     sys.exit(0)
 signal.signal(signal.SIGINT, signal_handler)
 
-# Address and port
-IP   = "localhost"
-PORT = 20001
+# Address
+IP = "localhost"
 
 # Setup listener
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM if use_udp else socket.SOCK_STREAM)
-sock.bind((IP, PORT))
+sock.bind((IP, service))
 if not use_udp:
     sock.listen(1)
     (conn, addr) = sock.accept()
