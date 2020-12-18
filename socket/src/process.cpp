@@ -30,6 +30,7 @@ namespace vrt::socket {
 
 // For convenience
 using PacketPtr = std::shared_ptr<vrt_packet>;
+namespace tm    = ::std::chrono;
 
 /**
  * Process file contents.
@@ -58,6 +59,9 @@ void process(const ProgramArguments& args) {
             sock_tcp = std::make_shared<libsocket::inet_stream>(args.host, args.service, LIBSOCKET_IPv4, 0);
         }
 
+        // Time of first packet
+        tm::time_point<tm::system_clock, tm::nanoseconds> t_loc_0;
+
         // Go over all packets in input file
         uint64_t i{0};
         for (;; ++i) {
@@ -65,11 +69,21 @@ void process(const ProgramArguments& args) {
                 break;
             }
 
+            // Get current time
+            tm::time_point<tm::system_clock, tm::nanoseconds> t_loc_now{tm::system_clock::now()};
+            if (i == 0) {
+                t_loc_0 = t_loc_now;
+            }
+
             // Find Class ID, Stream ID combination in map, or construct new output ID if needed
             PacketPtr pkt{input_stream.get_packet()};
 
             // Sleep
-            std::this_thread::sleep_for(time_diff.calculate(pkt));
+            auto                                              td{time_diff.calculate(pkt)};
+            tm::time_point<tm::system_clock, tm::nanoseconds> t_pkt_now{
+                tm::time_point<tm::system_clock, tm::nanoseconds>(td)};
+
+            std::this_thread::sleep_for(td - (t_loc_now - t_loc_0));
 
             if (args.protocol == protocol_type::UDP) {
                 sock_udp->snd(input_stream.get_buffer().data(), sizeof(uint32_t) * pkt->header.packet_size, 0);

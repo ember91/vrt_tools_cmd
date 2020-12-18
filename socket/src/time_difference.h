@@ -10,6 +10,9 @@ struct vrt_packet;
 
 namespace vrt::socket {
 
+/**
+ * Calculate time difference in time between the first supplied packet and following.
+ */
 class TimeDifference {
    public:
     std::chrono::duration<int64_t, std::nano> calculate(const std::shared_ptr<vrt_packet>& pkt);
@@ -45,17 +48,12 @@ class TimeDifference {
     /**
      * First packet.
      */
-    std::shared_ptr<vrt_packet> pkt_0;
+    std::shared_ptr<vrt_packet> pkt_0_;
 
     /**
      * Timestamp in first packet.
      */
-    std::chrono::time_point<std::chrono::system_clock, std::chrono::nanoseconds> t_pkt_0;
-
-    /**
-     * Time when first packet was parsed.
-     */
-    std::chrono::time_point<std::chrono::system_clock, std::chrono::nanoseconds> t_loc_0;
+    std::chrono::time_point<std::chrono::system_clock, std::chrono::nanoseconds> t_pkt_0_;
 };
 
 }  // namespace vrt::socket

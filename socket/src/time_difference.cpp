@@ -12,28 +12,28 @@ namespace tm    = ::std::chrono;
 using Duration  = tm::duration<int64_t, std::nano>;
 
 Duration TimeDifference::integer(const PacketPtr& pkt) const {
-    return tm::seconds(pkt->fields.integer_seconds_timestamp - pkt_0->fields.integer_seconds_timestamp);
+    return tm::seconds(pkt->fields.integer_seconds_timestamp - pkt_0_->fields.integer_seconds_timestamp);
 }
 
 Duration TimeDifference::sample_count(const PacketPtr& pkt) const {
     Duration dur;
     if (sample_rate_ == 0.0) {
         // Sending at integer seconds is an OK strategy
-        dur = tm::seconds(pkt->fields.integer_seconds_timestamp - pkt_0->fields.integer_seconds_timestamp);
+        dur = tm::seconds(pkt->fields.integer_seconds_timestamp - pkt_0_->fields.integer_seconds_timestamp);
     } else {
         // Due to validation we already know that fractional seconds is inside sample rate range.
         // Double precision is very likely sufficient precision.
-        if (pkt->fields.fractional_seconds_timestamp >= pkt_0->fields.fractional_seconds_timestamp) {
+        if (pkt->fields.fractional_seconds_timestamp >= pkt_0_->fields.fractional_seconds_timestamp) {
             double frac{static_cast<double>(pkt->fields.fractional_seconds_timestamp -
-                                            pkt_0->fields.fractional_seconds_timestamp) /
+                                            pkt_0_->fields.fractional_seconds_timestamp) /
                         sample_rate_};
-            dur = tm::seconds(pkt->fields.integer_seconds_timestamp - pkt_0->fields.integer_seconds_timestamp) +
+            dur = tm::seconds(pkt->fields.integer_seconds_timestamp - pkt_0_->fields.integer_seconds_timestamp) +
                   tm::nanoseconds(static_cast<uint64_t>(frac * 1e9));
         } else {
-            double frac{static_cast<double>(PS_IN_S - pkt_0->fields.fractional_seconds_timestamp +
+            double frac{static_cast<double>(PS_IN_S - pkt_0_->fields.fractional_seconds_timestamp +
                                             pkt->fields.fractional_seconds_timestamp) /
                         sample_rate_};
-            dur = tm::seconds(pkt->fields.integer_seconds_timestamp - pkt_0->fields.integer_seconds_timestamp - 1) +
+            dur = tm::seconds(pkt->fields.integer_seconds_timestamp - pkt_0_->fields.integer_seconds_timestamp - 1) +
                   tm::nanoseconds(static_cast<uint64_t>(frac * 1e9));
         }
     }
@@ -50,11 +50,11 @@ Duration TimeDifference::free_running_count(const PacketPtr& pkt) const {
     Duration dur;
     if (sample_rate_ == 0.0) {
         // Sending at integer seconds is an OK strategy
-        dur = tm::seconds(pkt->fields.integer_seconds_timestamp - pkt_0->fields.integer_seconds_timestamp);
+        dur = tm::seconds(pkt->fields.integer_seconds_timestamp - pkt_0_->fields.integer_seconds_timestamp);
     } else {
         // Note that this works even in case of wraparound
         double sec{
-            static_cast<double>(pkt->fields.fractional_seconds_timestamp - pkt_0->fields.integer_seconds_timestamp) /
+            static_cast<double>(pkt->fields.fractional_seconds_timestamp - pkt_0_->fields.integer_seconds_timestamp) /
             sample_rate_};
         uint64_t intg{static_cast<uint64_t>(sec)};  // Integer seconds
         double   frac{sec - std::floor(sec)};       // Fractional part
@@ -73,11 +73,11 @@ Duration TimeDifference::free_running_count(const PacketPtr& pkt) const {
  * \return Time to sleep.
  */
 Duration TimeDifference::calculate(const PacketPtr& pkt) {
-    bool is_first_pkt{pkt_0.get() == nullptr};
+    bool is_first_pkt{pkt_0_.get() == nullptr};
 
     // Save first packet
     if (is_first_pkt) {
-        pkt_0 = pkt;
+        pkt_0_ = pkt;
     }
 
     // No need to use picosecond precision. Nanosecond resolution for sleeping is sufficient.
@@ -113,15 +113,13 @@ Duration TimeDifference::calculate(const PacketPtr& pkt) {
     }
 
     tm::time_point<tm::system_clock, tm::nanoseconds> t_pkt_now{tm::time_point<tm::system_clock, tm::nanoseconds>(dur)};
-    tm::time_point<tm::system_clock, tm::nanoseconds> t_loc_now{tm::system_clock::now()};
 
     // Save first time points
     if (is_first_pkt) {
-        t_pkt_0 = t_pkt_now;
-        t_loc_0 = t_loc_now;
+        t_pkt_0_ = t_pkt_now;
     }
 
-    return (t_pkt_now - t_pkt_0) - (t_loc_now - t_loc_0);
+    return t_pkt_now - t_pkt_0_;
 }
 
 }  // namespace vrt::socket
