@@ -83,31 +83,36 @@ Duration TimeDifference::calculate(const PacketPtr& pkt) {
     // No need to use picosecond precision. Nanosecond resolution for sleeping is sufficient.
 
     tm::duration<int64_t, std::nano> dur;
-    if (pkt->header.tsi == VRT_TSI_NONE) {
-        if (pkt->header.tsf == VRT_TSF_FREE_RUNNING_COUNT) {
-            dur = free_running_count(pkt);
-        } else {
-            // We don't know better. Send instantly.
-            dur = tm::seconds(0);
-        }
+    if (pkt->header.tsi != pkt_0_->header.tsi || pkt->header.tsf != pkt_0_->header.tsf) {
+        // Current and first packet timestamps differ. Send instantly.
+        dur = tm::seconds(0);
     } else {
-        switch (pkt->header.tsf) {
-            case VRT_TSF_NONE: {
-                dur = integer(pkt);
-                break;
-            }
-            case VRT_TSF_SAMPLE_COUNT: {
-                dur = sample_count(pkt);
-                break;
-            }
-            case VRT_TSF_REAL_TIME: {
-                dur = real_time(pkt);
-                break;
-            }
-            case VRT_TSF_FREE_RUNNING_COUNT: {
-                // Just ignore integer seconds...
+        if (pkt->header.tsi == VRT_TSI_NONE) {
+            if (pkt->header.tsf == VRT_TSF_FREE_RUNNING_COUNT) {
                 dur = free_running_count(pkt);
-                break;
+            } else {
+                // We don't know better. Send instantly.
+                dur = tm::seconds(0);
+            }
+        } else {
+            switch (pkt->header.tsf) {
+                case VRT_TSF_NONE: {
+                    dur = integer(pkt);
+                    break;
+                }
+                case VRT_TSF_SAMPLE_COUNT: {
+                    dur = sample_count(pkt);
+                    break;
+                }
+                case VRT_TSF_REAL_TIME: {
+                    dur = real_time(pkt);
+                    break;
+                }
+                case VRT_TSF_FREE_RUNNING_COUNT: {
+                    // Just ignore integer seconds...
+                    dur = free_running_count(pkt);
+                    break;
+                }
             }
         }
     }
