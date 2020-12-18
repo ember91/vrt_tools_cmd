@@ -12,14 +12,19 @@ namespace vrt::socket {
 
 class TimeDifference {
    public:
-    /**
-     * Constructor.
-     *
-     * \param sample_rate Supplied sample rate
-     */
-    TimeDifference(double sample_rate = 0.0) : sample_rate_{sample_rate} {}
-
     std::chrono::duration<int64_t, std::nano> calculate(const std::shared_ptr<vrt_packet>& pkt);
+
+    /**
+     * \return Sample rate [Hz].
+     */
+    double get_sample_rate() const { return sample_rate_; };
+
+    /**
+     * Set sample rate.
+     *
+     * \param sample_rate Sample rate [Hz].
+     */
+    void set_sample_rate(double sample_rate) { sample_rate_ = sample_rate; };
 
    private:
     std::chrono::duration<int64_t, std::nano> integer(const std::shared_ptr<vrt_packet>& pkt) const;
@@ -35,7 +40,7 @@ class TimeDifference {
     /**
      * Sample rate [Hz].
      */
-    const double sample_rate_;
+    double sample_rate_{0.0};
 
     /**
      * First packet.

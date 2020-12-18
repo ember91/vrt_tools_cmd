@@ -45,7 +45,8 @@ void process(const ProgramArguments& args) {
     progresscpp::ProgressBar progress(static_cast<uint64_t>(input_stream.get_file_size()), 70);
 
     // Time difference calculator
-    TimeDifference time_diff(args.sample_rate);
+    TimeDifference time_diff;
+    time_diff.set_sample_rate(args.sample_rate);
 
     std::shared_ptr<libsocket::inet_dgram_client> sock_udp;
     std::shared_ptr<libsocket::inet_stream>       sock_tcp;
