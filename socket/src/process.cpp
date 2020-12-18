@@ -49,18 +49,21 @@ void process(const ProgramArguments& args) {
     TimeDifference time_diff;
     time_diff.set_sample_rate(args.sample_rate);
 
-    std::shared_ptr<libsocket::inet_dgram_client> sock_udp;
-    std::shared_ptr<libsocket::inet_stream>       sock_tcp;
+    std::unique_ptr<libsocket::inet_dgram_client> sock_udp;
+    std::unique_ptr<libsocket::inet_stream>       sock_tcp;
 
     try {
         if (args.protocol == protocol_type::UDP) {
-            sock_udp = std::make_shared<libsocket::inet_dgram_client>(args.host, args.service, LIBSOCKET_IPv4, 0);
+            sock_udp = std::make_unique<libsocket::inet_dgram_client>(args.host, args.service, LIBSOCKET_IPv4, 0);
         } else {
-            sock_tcp = std::make_shared<libsocket::inet_stream>(args.host, args.service, LIBSOCKET_IPv4, 0);
+            sock_tcp = std::make_unique<libsocket::inet_stream>(args.host, args.service, LIBSOCKET_IPv4, 0);
         }
 
         // Time of first packet
-        tm::time_point<tm::system_clock, tm::nanoseconds> t_loc_0;
+        tm::time_point<tm::system_clock, tm::nanoseconds> t_0;
+
+        // Time of last visual progress bar update
+        tm::time_point<tm::system_clock, tm::nanoseconds> t_progress_bar_update;
 
         // Go over all packets in input file
         uint64_t i{0};
@@ -70,20 +73,20 @@ void process(const ProgramArguments& args) {
             }
 
             // Get current time
-            tm::time_point<tm::system_clock, tm::nanoseconds> t_loc_now{tm::system_clock::now()};
+            tm::time_point<tm::system_clock, tm::nanoseconds> t_now{tm::system_clock::now()};
             if (i == 0) {
-                t_loc_0 = t_loc_now;
+                t_0 = t_now;
             }
 
             // Find Class ID, Stream ID combination in map, or construct new output ID if needed
             PacketPtr pkt{input_stream.get_packet()};
 
             // Sleep
-            auto                                              td{time_diff.calculate(pkt)};
+            tm::duration<int64_t, std::nano>                  td{time_diff.calculate(pkt)};
             tm::time_point<tm::system_clock, tm::nanoseconds> t_pkt_now{
                 tm::time_point<tm::system_clock, tm::nanoseconds>(td)};
 
-            std::this_thread::sleep_for(td - (t_loc_now - t_loc_0));
+            std::this_thread::sleep_for(td - (t_now - t_0));
 
             if (args.protocol == protocol_type::UDP) {
                 sock_udp->snd(input_stream.get_buffer().data(), sizeof(uint32_t) * pkt->header.packet_size, 0);
@@ -93,8 +96,9 @@ void process(const ProgramArguments& args) {
 
             // Handle progress bar
             progress += sizeof(uint32_t) * pkt->header.packet_size;
-            if (progress.get_ticks() % 65536 == 0) {
+            if (std::chrono::duration_cast<tm::seconds>(t_now - t_progress_bar_update).count() != 0) {
                 progress.display();
+                t_progress_bar_update = t_now;
             }
         }
     } catch (const libsocket::socket_exception& exc) {
