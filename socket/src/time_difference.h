@@ -35,6 +35,8 @@ class TimeDifference {
     std::chrono::duration<int64_t, std::nano> real_time(const std::shared_ptr<vrt_packet>& pkt) const;
     std::chrono::duration<int64_t, std::nano> free_running_count(const std::shared_ptr<vrt_packet>& pkt) const;
 
+    bool is_nonnegative(const std::shared_ptr<vrt_packet>& pkt) const;
+
     /**
      * Number of picoseconds in a second.
      */

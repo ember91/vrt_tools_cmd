@@ -36,7 +36,7 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
 endif()
 
 if(${TEST})
-  # add_subdirectory(test)
+  add_subdirectory(test)
 endif()
 
 # Set C++ standard

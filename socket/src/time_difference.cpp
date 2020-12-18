@@ -66,6 +66,36 @@ Duration TimeDifference::free_running_count(const PacketPtr& pkt) const {
 }
 
 /**
+ * Check if time goes forward.
+ *
+ * \param pkt Current packet.
+ *
+ * \return True if time difference is nonnegative.
+ */
+bool TimeDifference::is_nonnegative(const PacketPtr& pkt) const {
+    if (pkt->header.tsi == VRT_TSI_NONE && pkt->header.tsf == VRT_TSF_NONE) {
+        return true;
+    } else if (pkt->header.tsi != VRT_TSI_NONE && pkt->header.tsf == VRT_TSF_NONE) {
+        return pkt->fields.integer_seconds_timestamp >= pkt_0_->fields.integer_seconds_timestamp;
+    } else if (pkt->header.tsi == VRT_TSI_NONE && pkt->header.tsf != VRT_TSF_NONE) {
+        // Free running count going backwards is seen as nonnegative
+        return true;
+    } else {  // pkt->header.tsi != VRT_TSI_NONE && pkt->header.tsf != VRT_TSF_NONE
+        if (pkt->fields.integer_seconds_timestamp < pkt_0_->fields.integer_seconds_timestamp) {
+            return false;
+        } else if (pkt->fields.integer_seconds_timestamp > pkt_0_->fields.integer_seconds_timestamp) {
+            return true;
+        } else {  // pkt->fields.integer_seconds_timestamp == pkt_0_->fields.integer_seconds_timestamp
+            if (pkt->header.tsf == VRT_TSF_FREE_RUNNING_COUNT) {
+                return true;
+            } else {
+                return pkt->fields.fractional_seconds_timestamp >= pkt_0_->fields.fractional_seconds_timestamp;
+            }
+        }
+    }
+}
+
+/**
  * Calculate time between first packet and the current packet.
  *
  * \param pkt Current packet.
@@ -82,36 +112,32 @@ Duration TimeDifference::calculate(const PacketPtr& pkt) {
 
     // No need to use picosecond precision. Nanosecond resolution for sleeping is sufficient.
 
-    tm::duration<int64_t, std::nano> dur;
-    if (pkt->header.tsi != pkt_0_->header.tsi || pkt->header.tsf != pkt_0_->header.tsf) {
-        // Current and first packet timestamps differ. Send instantly.
-        dur = tm::seconds(0);
-    } else {
-        if (pkt->header.tsi == VRT_TSI_NONE) {
-            if (pkt->header.tsf == VRT_TSF_FREE_RUNNING_COUNT) {
-                dur = free_running_count(pkt);
-            } else {
-                // We don't know better. Send instantly.
-                dur = tm::seconds(0);
-            }
-        } else {
-            switch (pkt->header.tsf) {
-                case VRT_TSF_NONE: {
-                    dur = integer(pkt);
-                    break;
-                }
-                case VRT_TSF_SAMPLE_COUNT: {
-                    dur = sample_count(pkt);
-                    break;
-                }
-                case VRT_TSF_REAL_TIME: {
-                    dur = real_time(pkt);
-                    break;
-                }
-                case VRT_TSF_FREE_RUNNING_COUNT: {
-                    // Just ignore integer seconds...
+    tm::duration<int64_t, std::nano> dur{0};
+    if (pkt->header.tsi == pkt_0_->header.tsi && pkt->header.tsf == pkt_0_->header.tsf) {
+        if (is_nonnegative(pkt)) {
+            if (pkt->header.tsi == VRT_TSI_NONE) {
+                if (pkt->header.tsf == VRT_TSF_FREE_RUNNING_COUNT) {
                     dur = free_running_count(pkt);
-                    break;
+                }
+            } else {
+                switch (pkt->header.tsf) {
+                    case VRT_TSF_NONE: {
+                        dur = integer(pkt);
+                        break;
+                    }
+                    case VRT_TSF_SAMPLE_COUNT: {
+                        dur = sample_count(pkt);
+                        break;
+                    }
+                    case VRT_TSF_REAL_TIME: {
+                        dur = real_time(pkt);
+                        break;
+                    }
+                    case VRT_TSF_FREE_RUNNING_COUNT: {
+                        // Just ignore integer seconds...
+                        dur = free_running_count(pkt);
+                        break;
+                    }
                 }
             }
         }
