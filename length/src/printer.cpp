@@ -5,6 +5,7 @@
 #include <iostream>
 #include <memory>
 
+#include <vrt/vrt_time.h>
 #include <vrt/vrt_types.h>
 #include <vrt/vrt_util.h>
 
@@ -12,33 +13,6 @@
 #include "stream_history.h"
 
 namespace vrt::length {
-
-/**
- * Number of picoseconds in a second.
- */
-static const uint64_t PS_IN_S{1000000000000};
-
-/**
- * Calculate difference in integer seconds.
- *
- * \param fir  First packet in stream.
- * \param cur  Current packet in stream.
- * \return Difference [s].
- */
-static uint32_t d_int(vrt_packet* fir, vrt_packet* cur) {
-    return cur->fields.integer_seconds_timestamp - fir->fields.integer_seconds_timestamp;
-}
-
-/**
- * Calculate difference in fractional seconds.
- *
- * \param fir  First packet in stream.
- * \param cur  Current packet in stream.
- * \return Difference.
- */
-static uint64_t d_frac(vrt_packet* fir, vrt_packet* cur) {
-    return cur->fields.fractional_seconds_timestamp - fir->fields.fractional_seconds_timestamp;
-}
 
 /**
  * Print Class and Stream ID information.
@@ -77,143 +51,6 @@ static void print_ids(vrt_packet* p, const common::PacketIdDiffs& differences) {
 }
 
 /**
- * Print only integer time. Assumes it is set.
- *
- * \param fir  First packet in stream.
- * \param cur  Current packet in stream.
- */
-static void print_integer_time(vrt_packet* fir, vrt_packet* cur) {
-    if (fir->fields.integer_seconds_timestamp > cur->fields.integer_seconds_timestamp) {
-        std::cerr << "Integer timestamp of first packet occurs after timestamp of last packet\n";
-    } else {
-        std::cout << "Packet time difference: " << d_int(fir, cur) << " s\n";
-    }
-}
-
-/**
- * Print only fractional time. Assumes it is set.
- *
- * \param fir  First packet in stream.
- * \param cur  Current packet in stream.
- */
-static void print_fractional_time(vrt_packet* fir, vrt_packet* cur) {
-    // Note that it's hard to figure out anything about sample time or real time fractional timestamps
-    if (cur->header.tsf == VRT_TSF_FREE_RUNNING_COUNT) {
-        // Calculating this difference is probably OK. Even with high sample rates it works as long as the recording
-        // isn't in the order of years.
-        std::cout << d_frac(fir, cur) << " samples\n";
-    }
-}
-
-/**
- * Print integer and fractional time for Real time.
- *
- * \param fir  First packet in stream.
- * \param cur  Current packet in stream.
- */
-static void print_integer_fractional_real_time(vrt_packet* fir, vrt_packet* cur) {
-    if (fir->fields.fractional_seconds_timestamp >= PS_IN_S || cur->fields.fractional_seconds_timestamp >= PS_IN_S) {
-        std::cerr << "Fractional seconds outside bounds\n";
-        std::cout << d_int(fir, cur) << " s\n";
-    } else {
-        if (cur->fields.fractional_seconds_timestamp > fir->fields.fractional_seconds_timestamp) {
-            std::cout << d_int(fir, cur) << '.' << std::setfill('0') << std::setw(11) << d_frac(fir, cur) << " s\n";
-        } else {
-            std::cout << d_int(fir, cur) - 1 << '.' << std::setfill('0') << std::setw(11) << PS_IN_S - d_frac(cur, fir)
-                      << " s\n";
-        }
-
-        // Reset stream manipulators
-        std::cout << std::setw(0) << std::setfill(' ');
-    }
-}
-
-/**
- * Print integer and fractional time for Free running count.
- *
- * \param fir  First packet in stream.
- * \param cur  Current packet in stream.
- */
-static void print_integer_fractional_free_running_count(vrt_packet* fir, vrt_packet* cur) {
-    std::cout << d_int(fir, cur) << " s\n";
-    std::cout << d_frac(fir, cur) << " samples\n";
-}
-
-/**
- * Print integer and fractional time for Sample count.
- *
- * \param fir         First packet in stream.
- * \param cur         Current packet in stream.
- * \param sample_rate Sample rate [Hz].
- */
-static void print_integer_fractional_sample_count(vrt_packet* fir, vrt_packet* cur, double sample_rate) {
-    if (sample_rate == 0.0) {
-        if (cur->fields.fractional_seconds_timestamp > fir->fields.fractional_seconds_timestamp) {
-            std::cout << d_int(fir, cur) << " s\n";
-            std::cout << d_frac(fir, cur) << " samples\n";
-        } else {
-            std::cout << d_int(fir, cur) << " s\n";
-            std::cout << "Cannot print fractional second timestamps since sample rate is "
-                         "unknown\n";
-        }
-    } else {
-        if (fir->fields.fractional_seconds_timestamp >= sample_rate ||
-            cur->fields.fractional_seconds_timestamp >= sample_rate) {
-            std::cerr << "Fractional seconds outside bounds\n";
-            std::cout << d_int(fir, cur) << " s\n";
-        } else {
-            if (cur->fields.fractional_seconds_timestamp > fir->fields.fractional_seconds_timestamp) {
-                std::cout << d_int(fir, cur) << '.' << std::setfill('0') << std::setw(11)
-                          << static_cast<uint64_t>((d_frac(fir, cur)) / sample_rate * PS_IN_S) << " s\n";
-            } else {
-                std::cout << d_int(fir, cur) - 1 << '.' << std::setfill('0') << std::setw(11)
-                          << static_cast<uint64_t>((sample_rate - cur->fields.fractional_seconds_timestamp -
-                                                    fir->fields.fractional_seconds_timestamp) /
-                                                   sample_rate * PS_IN_S)
-                          << " s\n";
-            }
-        }
-
-        // Reset stream manipulators
-        std::cout << std::setw(0) << std::setfill(' ');
-    }
-}
-
-/**
- * Print both integer and fractional time.
- *
- * \param fir         First packet in stream.
- * \param cur         Current packet in stream.
- * \param sample_rate Sample rate [Hz].
- */
-static void print_integer_fractional_time(vrt_packet* fir, vrt_packet* cur, double sample_rate) {
-    if (cur->header.tsf != VRT_TSF_FREE_RUNNING_COUNT &&
-        fir->fields.integer_seconds_timestamp == cur->fields.integer_seconds_timestamp &&
-        fir->fields.fractional_seconds_timestamp > cur->fields.fractional_seconds_timestamp) {
-        std::cerr << "Timestamp of first packet occurs after timestamp of last packet\n";
-    } else {
-        switch (cur->header.tsf) {
-            case VRT_TSF_REAL_TIME: {
-                print_integer_fractional_real_time(fir, cur);
-                break;
-            }
-            case VRT_TSF_SAMPLE_COUNT: {
-                print_integer_fractional_sample_count(fir, cur, sample_rate);
-                break;
-            }
-            case VRT_TSF_FREE_RUNNING_COUNT: {
-                print_integer_fractional_free_running_count(fir, cur);
-                break;
-            }
-            default: {
-                // Do nothing. Should never end up here.
-                break;
-            }
-        }
-    }
-}
-
-/**
  * Print differences between first and last packets in a specific stream.
  *
  * \param stream_history Stream history.
@@ -228,14 +65,13 @@ void print_difference(const StreamHistory& stream_history, const common::PacketI
 
     std::cout << "Number of packets: " << stream_history.get_number_of_packets() << '\n';
 
-    bool integer{(cur->header.tsi != VRT_TSI_NONE && cur->header.tsi == fir->header.tsi)};
-    bool fractional{(cur->header.tsf != VRT_TSF_NONE && cur->header.tsf == fir->header.tsf)};
-    if (integer && !fractional) {
-        print_integer_time(fir, cur);
-    } else if (!integer && fractional) {
-        print_fractional_time(fir, cur);
-    } else {
-        print_integer_fractional_time(fir, cur, sample_rate);
+    vrt_time diff;
+    int      rv{vrt_time_difference(cur, fir, sample_rate, &diff)};
+    if (rv == 0) {
+        std::cout << "Time difference: " << diff.s << '.' << std::setfill('0') << std::setw(11) << diff.ps << " s\n";
+
+        // Reset stream manipulators
+        std::cout << std::setw(0) << std::setfill(' ');
     }
 }
 
