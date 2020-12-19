@@ -69,31 +69,31 @@ static void print_ephemeris(const vrt_ephemeris& e, bool ecef) {
         WriteCols("Fractional second timestamp", std::to_string(e.fractional_second_timestamp), 1);
     }
     if (e.has.position_x) {
-        WriteCols("position_x [m]", std::to_string(e.position_x), 1);
+        WriteCols("Position X [m]", std::to_string(e.position_x), 1);
     }
     if (e.has.position_y) {
-        WriteCols("position_y [m]", std::to_string(e.position_y), 1);
+        WriteCols("Position Y [m]", std::to_string(e.position_y), 1);
     }
     if (e.has.position_z) {
-        WriteCols("position_z [m]", std::to_string(e.position_z), 1);
+        WriteCols("Position Z [m]", std::to_string(e.position_z), 1);
     }
     if (e.has.attitude_alpha) {
-        WriteCols("altitude_alpha [degrees]", std::to_string(e.attitude_alpha), 1);
+        WriteCols("Altitude alpha [degrees]", std::to_string(e.attitude_alpha), 1);
     }
     if (e.has.attitude_beta) {
-        WriteCols("altitude_beta [degrees]", std::to_string(e.attitude_beta), 1);
+        WriteCols("Altitude beta [degrees]", std::to_string(e.attitude_beta), 1);
     }
     if (e.has.attitude_phi) {
-        WriteCols("altitude_phi [degrees]", std::to_string(e.attitude_phi), 1);
+        WriteCols("Altitude phi [degrees]", std::to_string(e.attitude_phi), 1);
     }
     if (e.has.velocity_dx) {
-        WriteCols("velocity_dx [m/s]", std::to_string(e.velocity_dx), 1);
+        WriteCols("Velocity dX [m/s]", std::to_string(e.velocity_dx), 1);
     }
     if (e.has.velocity_dy) {
-        WriteCols("velocity_dy [m/s]", std::to_string(e.velocity_dy), 1);
+        WriteCols("Velocity dY [m/s]", std::to_string(e.velocity_dy), 1);
     }
     if (e.has.velocity_dz) {
-        WriteCols("velocity_dz [m/s]", std::to_string(e.velocity_dz), 1);
+        WriteCols("Velocity dZ [m/s]", std::to_string(e.velocity_dz), 1);
     }
 }
 

@@ -1,5 +1,4 @@
 # Future
-* Capitalize letters in strings more consistently
 * Format integer and fractional second timestamps in both fields and context section nicely
 * Format timestamp adjustment more nicely
 * Format calibration time more nicely
