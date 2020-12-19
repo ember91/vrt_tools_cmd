@@ -31,6 +31,10 @@ class PercentageValidator : public CLI::Validator {
                 CLI::detail::rtrim(input);
             }
 
+            if (input.empty()) {
+                throw CLI::ValidationError("Input is empty");
+            }
+
             if (!has_percent) {
                 if (!CLI::detail::lexical_cast(input, num)) {
                     throw CLI::ValidationError(std::string("Value ") + input + " could not be converted to double");
@@ -39,15 +43,11 @@ class PercentageValidator : public CLI::Validator {
                 return {};
             }
 
-            if (!input.empty()) {
-                bool converted = CLI::detail::lexical_cast(input, num);
-                if (!converted) {
-                    throw CLI::ValidationError(std::string("Value ") + input + " could not be converted to double");
-                }
-                num = num / 100.0;
-            } else {
-                num = static_cast<double>(num);
+            bool converted = CLI::detail::lexical_cast(input, num);
+            if (!converted) {
+                throw CLI::ValidationError(std::string("Value ") + input + " could not be converted to double");
             }
+            num = num / 100.0;
 
             input = CLI::detail::to_string(num);
 
