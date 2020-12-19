@@ -39,6 +39,9 @@ static vrt::length::ProgramArguments setup_arg_parse(CLI::App* app) {
         "-s,--sample-rate", args.sample_rate,
         "Sample rate [Hz]. If IF context sample rate appears in the stream it will take precedence over this option.")};
     opt_sample_rate->check(CLI::NonNegativeNumber);
+    opt_sample_rate->transform(CLI::AsNumberWithUnit(
+        std::map<std::string, uint64_t>{{"T", 1000000000000}, {"G", 1000000000}, {"M", 1000000}, {"k", 1000}},
+        CLI::AsNumberWithUnit::CASE_SENSITIVE));
 
     return args;
 }
