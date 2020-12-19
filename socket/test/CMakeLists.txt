@@ -6,9 +6,7 @@ set(TARGET_NAME run_socket_tests)
 # Add test source files
 file(GLOB SRC_FILES CONFIGURE_DEPENDS
      ${CMAKE_CURRENT_SOURCE_DIR}/../test/src/*.cpp)
-add_executable(
-  ${TARGET_NAME} ${SRC_FILES}
-                 ${CMAKE_CURRENT_SOURCE_DIR}/../src/time_difference.cpp)
+add_executable(${TARGET_NAME} ${SRC_FILES})
 
 # Setup testing
 enable_testing()

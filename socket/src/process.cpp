@@ -15,6 +15,7 @@
 
 #include <iostream>
 
+#include <vrt/vrt_time.h>
 #include <vrt/vrt_types.h>
 
 #include "Progress-CPP/ProgressBar.hpp"
@@ -24,7 +25,6 @@
 #include "libsocket/headers/inetclientstream.hpp"
 #include "libsocket/headers/libinetsocket.h"
 #include "program_arguments.h"
-#include "time_difference.h"
 
 namespace vrt::socket {
 
@@ -45,10 +45,9 @@ void process(const ProgramArguments& args) {
     // Progress bar
     progresscpp::ProgressBar progress(static_cast<uint64_t>(input_stream.get_file_size()), 70);
 
-    // Time difference calculator
-    TimeDifference time_diff;
-    time_diff.set_sample_rate(args.sample_rate);
+    double sample_rate{args.sample_rate};
 
+    PacketPtr                                     pkt_0;
     std::unique_ptr<libsocket::inet_dgram_client> sock_udp;
     std::unique_ptr<libsocket::inet_stream>       sock_tcp;
 
@@ -75,14 +74,22 @@ void process(const ProgramArguments& args) {
             // Get current time
             tm::time_point<tm::system_clock, tm::nanoseconds> t_now{tm::system_clock::now()};
             if (i == 0) {
-                t_0 = t_now;
+                pkt_0 = input_stream.get_packet();
+                t_0   = t_now;
             }
 
             // Find Class ID, Stream ID combination in map, or construct new output ID if needed
             PacketPtr pkt{input_stream.get_packet()};
 
-            // Sleep
-            tm::duration<int64_t, std::nano>                  td{time_diff.calculate(pkt)};
+            // Calculate time until next packet
+            vrt_time time_diff;
+            if (vrt_time_difference(pkt.get(), pkt_0.get(), sample_rate, &time_diff) < 0 || time_diff.s < 0) {
+                // Don't sleep if error or negative time
+                time_diff.s  = 0;
+                time_diff.ps = 0;
+            }
+
+            tm::duration<int64_t, std::nano> td{tm::seconds(time_diff.s) + tm::nanoseconds(time_diff.ps / 1000)};
             tm::time_point<tm::system_clock, tm::nanoseconds> t_pkt_now{
                 tm::time_point<tm::system_clock, tm::nanoseconds>(td)};
 
