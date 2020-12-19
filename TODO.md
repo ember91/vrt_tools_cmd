@@ -10,3 +10,4 @@
 
 # Last
 * Check that header guards are all right
+* Static analysis
