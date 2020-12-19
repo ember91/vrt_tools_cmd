@@ -20,16 +20,13 @@
 
 #include "Progress-CPP/ProgressBar.hpp"
 #include "common/input_stream.h"
-#include "libsocket/headers/exception.hpp"
-#include "libsocket/headers/inetclientdgram.hpp"
-#include "libsocket/headers/inetclientstream.hpp"
-#include "libsocket/headers/libinetsocket.h"
 #include "program_arguments.h"
+#include "socket_abstraction.h"
 
 namespace vrt::socket {
 
 // For convenience
-using PacketPtr = std::shared_ptr<vrt_packet>;
+using PacketPtr = ::std::shared_ptr<vrt_packet>;
 namespace tm    = ::std::chrono;
 
 /**
@@ -47,15 +44,17 @@ void process(const ProgramArguments& args) {
 
     double sample_rate{args.sample_rate};
 
-    PacketPtr                                     pkt_0;
-    std::unique_ptr<libsocket::inet_dgram_client> sock_udp;
-    std::unique_ptr<libsocket::inet_stream>       sock_tcp;
+    PacketPtr                            pkt_0;
+    std::vector<std::unique_ptr<Socket>> sockets;
+    sockets.reserve(args.hosts.size());
 
     try {
-        if (args.protocol == protocol_type::UDP) {
-            sock_udp = std::make_unique<libsocket::inet_dgram_client>(args.host, args.service, LIBSOCKET_IPv4, 0);
-        } else {
-            sock_tcp = std::make_unique<libsocket::inet_stream>(args.host, args.service, LIBSOCKET_IPv4, 0);
+        for (const std::string& host : args.hosts) {
+            if (args.protocol == protocol_type::UDP) {
+                sockets.push_back(std::make_unique<SocketUdp>(host, args.service));
+            } else {
+                sockets.push_back(std::make_unique<SocketTcp>(host, args.service));
+            }
         }
 
         // Time of first packet
@@ -95,10 +94,8 @@ void process(const ProgramArguments& args) {
 
             std::this_thread::sleep_for(td - (t_now - t_0));
 
-            if (args.protocol == protocol_type::UDP) {
-                sock_udp->snd(input_stream.get_buffer().data(), sizeof(uint32_t) * pkt->header.packet_size, 0);
-            } else {
-                sock_tcp->snd(input_stream.get_buffer().data(), sizeof(uint32_t) * pkt->header.packet_size, 0);
+            for (auto& socket : sockets) {
+                socket->send(input_stream.get_buffer().data(), sizeof(uint32_t) * pkt->header.packet_size);
             }
 
             // Handle progress bar

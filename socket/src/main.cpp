@@ -33,7 +33,8 @@ static vrt::socket::ProgramArguments setup_arg_parse(CLI::App* app) {
 
     // Host
     CLI::Option* opt_host{
-        app->add_option("-H,--host", args.host, "Network host, for example an IP address or a host name")};
+        app->add_option("-H,--host", args.hosts,
+                        "Network hosts, for example a list of IP addresses or host names. Supports multiple hosts.")};
     opt_host->required();
 
     // Service
