@@ -2,6 +2,10 @@
 
 Command line tools for packets following the ANSI/VITA 49.0 Radio Transport (VRT) standard.
 
+## Under development
+
+**Note that this project is still under development. It may not be well tested and may not have all features implemented.**
+
 ## Getting Started
 
 In project root folder (`vrt_tools_cmd/`):
