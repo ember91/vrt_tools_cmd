@@ -19,24 +19,7 @@ target_include_directories(${TARGET_NAME} PUBLIC ${GTEST_INCLUDE_DIR})
 
 # Set warning levels
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-  if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    target_compile_options(
-      ${TARGET_NAME}
-      PRIVATE -Weverything
-              -Wno-c++98-compat-pedantic
-              -Wno-padded
-              -Wno-newline-eof
-              -Wno-global-constructors
-              -Wno-weak-vtables
-              -Wno-used-but-marked-unused)
-  elseif(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-    target_compile_options(${TARGET_NAME} PRIVATE -Wall -Wextra -Wpedantic
-                                                  -Wshadow)
-  elseif(CMAKE_CXX_COMPILER_ID MATCHES "Intel")
-    target_compile_options(${TARGET_NAME} PRIVATE -w3) # /W5 on Windows
-  elseif(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
-    target_compile_options(${TARGET_NAME} PRIVATE /W4)
-  endif()
+  enable_warnings(${TARGET_NAME})
 endif()
 
 # Set C++ standard
