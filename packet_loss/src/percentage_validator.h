@@ -15,7 +15,7 @@ class PercentageValidator : public CLI::Validator {
         func_ = [](std::string& input) -> std::string {
             double num;
 
-            CLI::detail::rtrim(input);
+            rtrim(input);
             if (input.empty()) {
                 throw CLI::ValidationError("Input is empty");
             }
@@ -28,35 +28,46 @@ class PercentageValidator : public CLI::Validator {
 
             if (has_percent) {
                 input.resize(static_cast<std::size_t>(std::distance(input.begin(), input.end() - 1)));
-                CLI::detail::rtrim(input);
+                rtrim(input);
             }
 
             if (input.empty()) {
                 throw CLI::ValidationError("Input is empty");
             }
 
+            try {
+                num = std::stod(input);
+            } catch (const std::invalid_argument&) {
+                throw CLI::ValidationError(std::string("Value ") + input + " could not be converted to double");
+            }
+
             if (!has_percent) {
-                if (!CLI::detail::lexical_cast(input, num)) {
-                    throw CLI::ValidationError(std::string("Value ") + input + " could not be converted to double");
-                }
                 // No need to modify input if no unit passed
                 return {};
             }
 
-            bool converted = CLI::detail::lexical_cast(input, num);
-            if (!converted) {
-                throw CLI::ValidationError(std::string("Value ") + input + " could not be converted to double");
-            }
             num = num / 100.0;
 
-            input = CLI::detail::to_string(num);
+            input = std::to_string(num);
 
             return {};
         };
     }
 
    private:
-    /// Generate description like this: NUMBER [UNIT]
+    /**
+     * Trim whitespace from right of string.
+     */
+    static std::string& rtrim(std::string& str) {
+        auto it =
+            std::find_if(str.rbegin(), str.rend(), [](char ch) { return !std::isspace<char>(ch, std::locale()); });
+        str.erase(it.base(), str.end());
+        return str;
+    }
+
+    /**
+     * Generate description like this: NUMBER [UNIT]
+     */
     static std::string generate_description() {
         std::stringstream out;
         out << "double [%]";
