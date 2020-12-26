@@ -8,6 +8,8 @@ Command line tools for packets following the ANSI/VITA 49.0 Radio Transport (VRT
 
 ## Getting Started
 
+**Remember to clone submodules as well, with `git clone --recurse-submodules ...`**
+
 In project root folder (`vrt_tools_cmd/`):
 ```
 mkdir Release
