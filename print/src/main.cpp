@@ -32,8 +32,18 @@ static vrt::print::ProgramArguments setup_arg_parse(CLI::App* app) {
     opt_file->required(true);
     opt_file->check(CLI::ExistingFile);
 
+    // Sample rate
+    CLI::Option* opt_sample_rate{app->add_option(
+        "-s,--sample-rate", args.sample_rate,
+        "Sample rate [Hz]. If IF context sample rate appears in the stream it will take precedence over this option.")};
+    opt_sample_rate->check(CLI::NonNegativeNumber);
+    opt_sample_rate->transform(CLI::AsNumberWithUnit(
+        std::map<std::string, uint64_t>{{"T", 1000000000000}, {"G", 1000000000}, {"M", 1000000}, {"k", 1000}},
+        CLI::AsNumberWithUnit::CASE_SENSITIVE));
+
+    // Packet skip
     CLI::Option* opt_packet_skip{app->add_option(
-        "-s,--packet-skip", args.packet_skip,
+        "-S,--packet-skip", args.packet_skip,
         "Number of packets to skip before starting to print. Supports prefixes such as k, M, G, and T.")};
     opt_packet_skip->check(CLI::NonNegativeNumber);
     // Put prefixes in reverse order, so they are shown in ascending order.
@@ -41,6 +51,7 @@ static vrt::print::ProgramArguments setup_arg_parse(CLI::App* app) {
         std::map<std::string, uint64_t>{{"T", 1000000000000}, {"G", 1000000000}, {"M", 1000000}, {"k", 1000}},
         CLI::AsNumberWithUnit::CASE_SENSITIVE));
 
+    // Packet count
     args.packet_count = static_cast<uint64_t>(-1);
     CLI::Option* opt_packet_count{
         app->add_option("-c,--packet-count", args.packet_count,
@@ -50,6 +61,7 @@ static vrt::print::ProgramArguments setup_arg_parse(CLI::App* app) {
         std::map<std::string, uint64_t>{{"T", 1000000000000}, {"G", 1000000000}, {"M", 1000000}, {"k", 1000}},
         CLI::AsNumberWithUnit::CASE_SENSITIVE));
 
+    // Byte swap
     app->add_flag("-b,--byte-swap", args.do_byte_swap, "Apply byte swap before parsing file");
 
     return args;

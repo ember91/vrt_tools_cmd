@@ -3,18 +3,15 @@
 
 #include <cstdint>
 
-struct vrt_fields;
-struct vrt_header;
-struct vrt_if_context;
-struct vrt_trailer;
+struct vrt_packet;
 
 namespace vrt::print {
 
-void print_header(const vrt_header& header);
-void print_fields(const vrt_header& header, const vrt_fields& fields);
-void print_body(const vrt_header& header, int32_t words_body);
-void print_if_context(const vrt_if_context& if_context);
-void print_trailer(const vrt_trailer& trailer);
+void print_header(const vrt_packet& packet);
+void print_fields(const vrt_packet& packet, double sample_rate);
+void print_body(const vrt_packet& packet);
+void print_if_context(const vrt_packet& packet);
+void print_trailer(const vrt_packet& packet);
 
 }  // namespace vrt::print
 

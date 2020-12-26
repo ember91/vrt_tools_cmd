@@ -49,15 +49,15 @@ void process(const ProgramArguments& args) {
 
         PacketPtr packet{input_stream.get_packet()};
 
-        print_header(packet->header);
-        print_fields(packet->header, packet->fields);
-        print_body(packet->header, packet->words_body);
+        print_header(*packet);
+        print_fields(*packet, args.sample_rate);
+        print_body(*packet);
 
         if (packet->header.packet_type == VRT_PT_IF_CONTEXT) {
-            print_if_context(packet->if_context);
+            print_if_context(*packet);
         }
         if (packet->header.has.trailer) {
-            print_trailer(packet->trailer);
+            print_trailer(*packet);
         }
     }
 

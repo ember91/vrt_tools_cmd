@@ -1,9 +1,12 @@
 #include "type_printer.h"
 
+#include <iomanip>
 #include <iostream>
+#include <sstream>
 #include <string>
 
 #include <vrt/vrt_string.h>
+#include <vrt/vrt_time.h>
 #include <vrt/vrt_types.h>
 #include <vrt/vrt_util.h>
 
@@ -100,9 +103,10 @@ static void print_ephemeris(const vrt_ephemeris& e, bool ecef) {
 /**
  * Print header.
  *
- * \param header Header.
+ * \param packet Packet.
  */
-void print_header(const vrt_header& header) {
+void print_header(const vrt_packet& packet) {
+    const vrt_header& header{packet.header};
     WriteCols("Packet type", vrt_string_packet_type(header.packet_type));
     // No idea to print has.class_id and has.trailer
     WriteCols("tsm", vrt_string_tsm(header.tsm));
@@ -115,35 +119,47 @@ void print_header(const vrt_header& header) {
 /**
  * Print fields.
  *
- * \param header Header.
- * \param fields Fields.
+ * \param packet      Packet.
+ * \param sample_rate Sample rate [Hz].
  */
-void print_fields(const vrt_header& header, const vrt_fields& fields) {
-    if (vrt_has_stream_id(&header)) {
-        WriteCols("Stream ID", Uint32ToHexStr(fields.stream_id));
+void print_fields(const vrt_packet& packet, double sample_rate) {
+    if (vrt_has_stream_id(&packet.header)) {
+        WriteCols("Stream ID", Uint32ToHexStr(packet.fields.stream_id));
     }
-    if (header.has.class_id) {
+    if (packet.header.has.class_id) {
         std::cout << "Class ID\n";
-        WriteCols("OUI", Uint32ToHexStr(fields.class_id.oui, 6), 1);
-        WriteCols("Information class code", Uint32ToHexStr(fields.class_id.information_class_code, 4), 1);
-        WriteCols("Packet class code", Uint32ToHexStr(fields.class_id.packet_class_code, 4), 1);
+        WriteCols("OUI", Uint32ToHexStr(packet.fields.class_id.oui, 6), 1);
+        WriteCols("Information class code", Uint32ToHexStr(packet.fields.class_id.information_class_code, 4), 1);
+        WriteCols("Packet class code", Uint32ToHexStr(packet.fields.class_id.packet_class_code, 4), 1);
     }
-    if (header.tsi != VRT_TSI_NONE) {
-        WriteCols("Integer seconds timestamp", std::to_string(fields.integer_seconds_timestamp));
+    if (packet.header.tsi != VRT_TSI_NONE) {
+        WriteCols("Integer seconds timestamp", std::to_string(packet.fields.integer_seconds_timestamp));
     }
-    if (header.tsf != VRT_TSF_NONE) {
-        WriteCols("Fractional seconds timestamp", std::to_string(fields.fractional_seconds_timestamp));
+    if (packet.header.tsf != VRT_TSF_NONE) {
+        WriteCols("Fractional seconds timestamp", std::to_string(packet.fields.fractional_seconds_timestamp));
+    }
+    vrt_calendar_time cal_time;
+    if (vrt_time_calendar(&packet, sample_rate, &cal_time) == 0) {
+        std::stringstream ss;
+        ss << std::setfill('0');
+        ss << 1900 + cal_time.year << '-' << std::setw(2) << 1 + cal_time.mon << '-' << cal_time.mday << ' '
+           << cal_time.hour << ':' << cal_time.min << ':' << cal_time.sec;
+        ss << std::setw(0);
+        if (packet.header.tsf != VRT_TSF_NONE) {
+            ss << '.' << std::setw(12) << cal_time.ps;
+        }
+        WriteCols("Time", ss.str());
     }
 }
 
 /**
  * Print body.
  *
- * \param header     Header.
- * \param words_body Number of words in body.
+ * \param packet Packet.
  */
-void print_body(const vrt_header& header, int32_t words_body) {
-    switch (header.packet_type) {
+void print_body(const vrt_packet& packet) {
+    int32_t words_body{packet.words_body};
+    switch (packet.header.packet_type) {
         case VRT_PT_IF_DATA_WITHOUT_STREAM_ID:
         case VRT_PT_IF_DATA_WITH_STREAM_ID:
         case VRT_PT_EXT_DATA_WITHOUT_STREAM_ID:
@@ -165,9 +181,10 @@ void print_body(const vrt_header& header, int32_t words_body) {
 /**
  * Print IF context.
  *
- * \param if_context IF context.
+ * \param packet Packet.
  */
-void print_if_context(const vrt_if_context& if_context) {
+void print_if_context(const vrt_packet& packet) {
+    const vrt_if_context& if_context{packet.if_context};
     if (if_context.context_field_change_indicator) {
         WriteCols("Changed", BoolToStr(if_context.context_field_change_indicator));
     }
@@ -336,9 +353,10 @@ void print_if_context(const vrt_if_context& if_context) {
 /**
  * Print trailer.
  *
- * \param trailer Trailer.
+ * \param packet Packet.
  */
-void print_trailer(const vrt_trailer& trailer) {
+void print_trailer(const vrt_packet& packet) {
+    const vrt_trailer& trailer{packet.trailer};
     if (trailer.has.calibrated_time) {
         WriteCols("Calibrated time", BoolToStr(trailer.calibrated_time));
     }
