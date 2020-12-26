@@ -2,3 +2,7 @@
 path = lib/CLI11
 url = git@github.com:CLIUtils/CLI11.git
 branch = v1.9.1
+[submodule "lib/libsocket"]
+path = lib/libsocket
+url = git@github.com:dermesser/libsocket.git
+branch = v2.5.0
