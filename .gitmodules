@@ -1,0 +1,4 @@
+[submodule "lib/CLI11"]
+path = lib/CLI11
+url = git@github.com:CLIUtils/CLI11.git
+branch = v1.9.1
