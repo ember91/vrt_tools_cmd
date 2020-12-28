@@ -18,6 +18,7 @@ struct ProgramArguments {
     bool                     do_byte_swap{false};          /**< True if byte swap is enabled */
     double                   sample_rate{0.0};             /**< Sample rate [Hz] */
     protocol_type            protocol{protocol_type::UDP}; /**< Network protocol */
+    bool                     do_loop{false};               /**< True if loop at end */
 };
 
 }  // namespace vrt::socket

@@ -23,6 +23,8 @@ class ProgressBar {
 
     void done();
 
+    void reset();
+
    private:
     const uint64_t                              total_ticks;
     const unsigned int                          bar_width;

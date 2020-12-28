@@ -1,2 +1,2 @@
 * Read sample rate from IF context.
-* Add option to loop when the stream ends?
+* When looping, sleep as long as previous sleep

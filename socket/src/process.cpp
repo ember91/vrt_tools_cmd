@@ -67,7 +67,18 @@ void process(const ProgramArguments& args) {
         uint64_t i{0};
         for (;; ++i) {
             if (!input_stream.read_next_packet()) {
-                break;
+                if (args.do_loop) {
+                    // Loop forever
+                    input_stream.reset();
+                    if (!input_stream.read_next_packet()) {
+                        // Break regardless of loop command
+                        break;
+                    }
+                    i = 0;
+                    progress.reset();
+                } else {
+                    break;
+                }
             }
 
             // Get current time
@@ -82,7 +93,9 @@ void process(const ProgramArguments& args) {
 
             // Calculate time until next packet
             vrt_time time_diff;
-            if (vrt_time_difference(pkt.get(), pkt_0.get(), sample_rate, &time_diff) < 0 || time_diff.s < 0) {
+            if (vrt_time_difference_fields(&pkt->header, &pkt->fields, &pkt_0->header, &pkt_0->fields, sample_rate,
+                                           &time_diff) < 0 ||
+                time_diff.s < 0) {
                 // Don't sleep if error or negative time
                 time_diff.s  = 0;
                 time_diff.ps = 0;

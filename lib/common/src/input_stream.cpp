@@ -218,6 +218,14 @@ bool InputStream::skip_next_packet() {
 }
 
 /**
+ * Reset input stream from start.
+ */
+void InputStream::reset() {
+    file_.clear();
+    file_.seekg(0);
+}
+
+/**
  * Skip next packet in stream. More efficient than reading it.
  *
  * \return False if End Of File.

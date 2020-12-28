@@ -61,6 +61,9 @@ static vrt::socket::ProgramArguments setup_arg_parse(CLI::App* app) {
     CLI::Option* opt_protocol{app->add_option("-p,--protocol", args.protocol, "Network protocol")};
     opt_protocol->transform(CLI::CheckedTransformer(map, CLI::ignore_case));
 
+    // Loop
+    app->add_flag("-l,--loop", args.do_loop, "Loop when reaching end of stream");
+
     return args;
 }
 

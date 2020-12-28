@@ -33,4 +33,9 @@ void ProgressBar::done() {
     std::cout << std::endl;
 }
 
+void ProgressBar::reset() {
+    ticks = 0;
+    display();
+}
+
 }  // namespace progresscpp

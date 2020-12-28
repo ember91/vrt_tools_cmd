@@ -20,6 +20,7 @@ class InputStream {
 
     bool read_next_packet();
     bool skip_next_packet();
+    void reset();
 
     /**
      * \return Output file path.
