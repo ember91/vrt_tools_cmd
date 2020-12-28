@@ -15,12 +15,33 @@
 namespace vrt::print {
 
 /**
+ * Print calendar time.
+ *
+ * \param tsf       Timestamp fractional.
+ * \param cal_time  Calendar time.
+ * \param ind_lvl   Indentation level.
+ */
+static void print_calendar_time(vrt_tsf tsf, const vrt_calendar_time& cal_time, unsigned int ind_lvl) {
+    std::stringstream ss;
+    ss << std::setfill('0');
+    ss << 1900 + cal_time.year << '-' << std::setw(2) << 1 + cal_time.mon << '-' << std::setw(2) << cal_time.mday << ' '
+       << cal_time.hour << ':' << cal_time.min << ':' << cal_time.sec;
+    ss << std::setw(0);
+    if (tsf != VRT_TSF_NONE) {
+        ss << '.' << std::setw(12) << cal_time.ps;
+    }
+    WriteCols("(Time)", ss.str(), ind_lvl);
+}
+
+/**
  * Print formatted GPS/INS geolocation.
  *
- * \param g   Formatted geolocation.
- * \param gps True if GPS geolocation, False otherwise.
+ * \param c             IF context.
+ * \param sample_rate   Sample rate [Hz].
+ * \param gps           True if GPS geolocation, False otherwise.
  */
-static void print_formatted_geolocation(const vrt_formatted_geolocation& g, bool gps) {
+static void print_formatted_geolocation(const vrt_if_context& c, double sample_rate, bool gps) {
+    const vrt_formatted_geolocation& g{gps ? c.formatted_gps_geolocation : c.formatted_ins_geolocation};
     std::cout << "Formatted " << (gps ? "GPS" : "INS") << " geolocation\n";
     WriteCols("TSI", vrt_string_tsi(g.tsi), 1);
     WriteCols("TSF", vrt_string_tsf(g.tsf), 1);
@@ -30,6 +51,16 @@ static void print_formatted_geolocation(const vrt_formatted_geolocation& g, bool
     }
     if (g.tsf != VRT_TSF_UNDEFINED) {
         WriteCols("Fractional second timestamp", std::to_string(g.fractional_second_timestamp), 1);
+    }
+    vrt_calendar_time cal_time;
+    int               rv;
+    if (gps) {
+        rv = vrt_time_calendar_gps_geolocation(&c, sample_rate, &cal_time);
+    } else {
+        rv = vrt_time_calendar_ins_geolocation(&c, sample_rate, &cal_time);
+    }
+    if (rv == 0) {
+        print_calendar_time(gps ? c.formatted_gps_geolocation.tsf : c.formatted_ins_geolocation.tsf, cal_time, 1);
     }
     if (g.has.latitude) {
         WriteCols("Latitude [degrees]", std::to_string(g.latitude), 1);
@@ -57,10 +88,12 @@ static void print_formatted_geolocation(const vrt_formatted_geolocation& g, bool
 /**
  * Print ECEF/Relative ephemeris.
  *
- * \param e    Ephemeris.
- * \param ecef True if ECEF ephmemeris, false otherwise.
+ * \param c           IF context.
+ * \param sample_rate Sample rate [Hz].
+ * \param ecef        True if ECEF ephmemeris, false otherwise.
  */
-static void print_ephemeris(const vrt_ephemeris& e, bool ecef) {
+static void print_ephemeris(const vrt_if_context& c, double sample_rate, bool ecef) {
+    const vrt_ephemeris& e{ecef ? c.ecef_ephemeris : c.relative_ephemeris};
     std::cout << (ecef ? "ECEF" : "Relative") << " ephemeris\n";
     WriteCols("TSI", vrt_string_tsi(e.tsi), 1);
     WriteCols("TSF", vrt_string_tsf(e.tsf), 1);
@@ -70,6 +103,16 @@ static void print_ephemeris(const vrt_ephemeris& e, bool ecef) {
     }
     if (e.tsf != VRT_TSF_UNDEFINED) {
         WriteCols("Fractional second timestamp", std::to_string(e.fractional_second_timestamp), 1);
+    }
+    vrt_calendar_time cal_time;
+    int               rv;
+    if (ecef) {
+        rv = vrt_time_calendar_ecef_ephemeris(&c, sample_rate, &cal_time);
+    } else {
+        rv = vrt_time_calendar_relative_ephemeris(&c, sample_rate, &cal_time);
+    }
+    if (rv == 0) {
+        print_calendar_time(ecef ? c.ecef_ephemeris.tsf : c.relative_ephemeris.tsf, cal_time, 1);
     }
     if (e.has.position_x) {
         WriteCols("Position X [m]", std::to_string(e.position_x), 1);
@@ -139,16 +182,8 @@ void print_fields(const vrt_packet& packet, double sample_rate) {
         WriteCols("Fractional seconds timestamp", std::to_string(packet.fields.fractional_seconds_timestamp));
     }
     vrt_calendar_time cal_time;
-    if (vrt_time_calendar(&packet, sample_rate, &cal_time) == 0) {
-        std::stringstream ss;
-        ss << std::setfill('0');
-        ss << 1900 + cal_time.year << '-' << std::setw(2) << 1 + cal_time.mon << '-' << cal_time.mday << ' '
-           << cal_time.hour << ':' << cal_time.min << ':' << cal_time.sec;
-        ss << std::setw(0);
-        if (packet.header.tsf != VRT_TSF_NONE) {
-            ss << '.' << std::setw(12) << cal_time.ps;
-        }
-        WriteCols("Time", ss.str());
+    if (vrt_time_calendar_fields(&packet.header, &packet.fields, sample_rate, &cal_time) == 0) {
+        print_calendar_time(packet.header.tsf, cal_time, 1);
     }
 }
 
@@ -181,9 +216,10 @@ void print_body(const vrt_packet& packet) {
 /**
  * Print IF context.
  *
- * \param packet Packet.
+ * \param packet      Packet.
+ * \param sample_rate Sample rate [Hz].
  */
-void print_if_context(const vrt_packet& packet) {
+void print_if_context(const vrt_packet& packet, double sample_rate) {
     const vrt_if_context& if_context{packet.if_context};
     if (if_context.context_field_change_indicator) {
         WriteCols("Changed", BoolToStr(if_context.context_field_change_indicator));
@@ -225,6 +261,10 @@ void print_if_context(const vrt_packet& packet) {
     }
     if (if_context.has.timestamp_calibration_time) {
         WriteCols("Timestamp calibration time", std::to_string(if_context.timestamp_calibration_time));
+        vrt_calendar_time cal_time;
+        if (vrt_time_calendar_calibration(&packet.header, &if_context, &cal_time) == 0) {
+            print_calendar_time(VRT_TSF_NONE, cal_time, 1);
+        }
     }
     if (if_context.has.temperature) {
         WriteCols("Temperature [degrees C]", std::to_string(if_context.temperature));
@@ -279,16 +319,16 @@ void print_if_context(const vrt_packet& packet) {
         WriteCols("Vector size", std::to_string(if_context.data_packet_payload_format.vector_size), 1);
     }
     if (if_context.has.formatted_gps_geolocation) {
-        print_formatted_geolocation(if_context.formatted_gps_geolocation, true);
+        print_formatted_geolocation(if_context, sample_rate, true);
     }
     if (if_context.has.formatted_ins_geolocation) {
-        print_formatted_geolocation(if_context.formatted_ins_geolocation, false);
+        print_formatted_geolocation(if_context, sample_rate, false);
     }
     if (if_context.has.ecef_ephemeris) {
-        print_ephemeris(if_context.ecef_ephemeris, true);
+        print_ephemeris(if_context, sample_rate, true);
     }
     if (if_context.has.relative_ephemeris) {
-        print_ephemeris(if_context.relative_ephemeris, false);
+        print_ephemeris(if_context, sample_rate, false);
     }
     if (if_context.has.ephemeris_reference_identifier) {
         WriteCols("Ephemeris reference identifier", Uint32ToHexStr(if_context.ephemeris_reference_identifier));

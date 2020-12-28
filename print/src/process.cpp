@@ -54,7 +54,7 @@ void process(const ProgramArguments& args) {
         print_body(*packet);
 
         if (packet->header.packet_type == VRT_PT_IF_CONTEXT) {
-            print_if_context(*packet);
+            print_if_context(*packet, args.sample_rate);
         }
         if (packet->header.has.trailer) {
             print_trailer(*packet);

@@ -60,7 +60,7 @@ TEST_F(PrintFieldsTest, ClassId) {
 
 TEST_F(PrintFieldsTest, IntegerSecondsTimestampUtc) {
     p_.header.tsi                       = VRT_TSI_UTC;
-    p_.fields.integer_seconds_timestamp = 0x1EDCBA98;
+    p_.fields.integer_seconds_timestamp = 1608751092;
 }
 
 TEST_F(PrintFieldsTest, IntegerSecondsTimestampOther) {
@@ -75,14 +75,14 @@ TEST_F(PrintFieldsTest, FractionalSecondsTimestampSampleCount) {
 
 TEST_F(PrintFieldsTest, IntegerFractionalSecondsTimestampUtcSampleCount) {
     p_.header.tsi                          = VRT_TSI_UTC;
-    p_.fields.integer_seconds_timestamp    = 0x1EDCBA98;
+    p_.fields.integer_seconds_timestamp    = 1608751092;
     p_.header.tsf                          = VRT_TSF_SAMPLE_COUNT;
     p_.fields.fractional_seconds_timestamp = SAMPLE_RATE / 2;
 }
 
 TEST_F(PrintFieldsTest, IntegerFractionalSecondsTimestampUtcRealTime) {
     p_.header.tsi                          = VRT_TSI_UTC;
-    p_.fields.integer_seconds_timestamp    = 0x1EDCBA98;
+    p_.fields.integer_seconds_timestamp    = 1608751092;
     p_.header.tsf                          = VRT_TSF_REAL_TIME;
     p_.fields.fractional_seconds_timestamp = 500000000000;
 }

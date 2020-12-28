@@ -10,7 +10,7 @@ namespace vrt::print {
 void print_header(const vrt_packet& packet);
 void print_fields(const vrt_packet& packet, double sample_rate);
 void print_body(const vrt_packet& packet);
-void print_if_context(const vrt_packet& packet);
+void print_if_context(const vrt_packet& packet, double sample_rate);
 void print_trailer(const vrt_packet& packet);
 
 }  // namespace vrt::print

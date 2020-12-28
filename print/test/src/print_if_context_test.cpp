@@ -8,11 +8,13 @@
 
 #include "../../src/type_printer.h"
 
+static constexpr double SAMPLE_RATE{16e6};
+
 class PrintIfContextTest : public ::testing::Test {
    protected:
     void SetUp() override { vrt_init_packet(&p_); }
 
-    void TearDown() override { vrt::print::print_if_context(p_); }
+    void TearDown() override { vrt::print::print_if_context(p_, SAMPLE_RATE); }
 
     vrt_packet p_;
 };
@@ -80,8 +82,9 @@ TEST_F(PrintIfContextTest, TimestampAdjustment) {
 }
 
 TEST_F(PrintIfContextTest, TimestampCalibrationTime) {
+    p_.header.tsi                                = VRT_TSI_UTC;  // Ensure calendar time is printed
     p_.if_context.has.timestamp_calibration_time = true;
-    p_.if_context.timestamp_calibration_time     = 0xABABABAB;
+    p_.if_context.timestamp_calibration_time     = 1608751092;
 }
 
 TEST_F(PrintIfContextTest, Temperature) {
@@ -306,13 +309,21 @@ TEST_F(PrintIfContextTest, FormattedGpsGeolocationOui) {
 TEST_F(PrintIfContextTest, FormattedGpsGeolocationIntegerSecondTimestamp) {
     p_.if_context.has.formatted_gps_geolocation                      = true;
     p_.if_context.formatted_gps_geolocation.tsi                      = VRT_TSI_UTC;
-    p_.if_context.formatted_gps_geolocation.integer_second_timestamp = 0xABABABAB;
+    p_.if_context.formatted_gps_geolocation.integer_second_timestamp = 1608751092;
 }
 
 TEST_F(PrintIfContextTest, FormattedGpsGeolocationFractionalSecondTimestamp) {
     p_.if_context.has.formatted_gps_geolocation                         = true;
     p_.if_context.formatted_gps_geolocation.tsf                         = VRT_TSF_REAL_TIME;
     p_.if_context.formatted_gps_geolocation.fractional_second_timestamp = 0xABABABABBABABABA;
+}
+
+TEST_F(PrintIfContextTest, FormattedGpsGeolocationIntegerFractionalSecondTimestamp) {
+    p_.if_context.has.formatted_gps_geolocation                         = true;
+    p_.if_context.formatted_gps_geolocation.tsi                         = VRT_TSI_UTC;
+    p_.if_context.formatted_gps_geolocation.tsf                         = VRT_TSF_SAMPLE_COUNT;
+    p_.if_context.formatted_gps_geolocation.integer_second_timestamp    = 1608751092;
+    p_.if_context.formatted_gps_geolocation.fractional_second_timestamp = 8e6;
 }
 
 TEST_F(PrintIfContextTest, FormattedGpsGeolocationLatitude) {
@@ -368,13 +379,21 @@ TEST_F(PrintIfContextTest, FormattedInsGeolocationOui) {
 TEST_F(PrintIfContextTest, FormattedInsGeolocationIntegerSecondTimestamp) {
     p_.if_context.has.formatted_ins_geolocation                      = true;
     p_.if_context.formatted_ins_geolocation.tsi                      = VRT_TSI_UTC;
-    p_.if_context.formatted_ins_geolocation.integer_second_timestamp = 0xABABABAB;
+    p_.if_context.formatted_ins_geolocation.integer_second_timestamp = 1608751092;
 }
 
 TEST_F(PrintIfContextTest, FormattedInsGeolocationFractionalSecondTimestamp) {
     p_.if_context.has.formatted_ins_geolocation                         = true;
     p_.if_context.formatted_ins_geolocation.tsf                         = VRT_TSF_REAL_TIME;
     p_.if_context.formatted_ins_geolocation.fractional_second_timestamp = 0xABABABABBABABABA;
+}
+
+TEST_F(PrintIfContextTest, FormattedInsGeolocationIntegerFractionalSecondTimestamp) {
+    p_.if_context.has.formatted_ins_geolocation                         = true;
+    p_.if_context.formatted_ins_geolocation.tsi                         = VRT_TSI_UTC;
+    p_.if_context.formatted_ins_geolocation.tsf                         = VRT_TSF_SAMPLE_COUNT;
+    p_.if_context.formatted_ins_geolocation.integer_second_timestamp    = 1608751092;
+    p_.if_context.formatted_ins_geolocation.fractional_second_timestamp = 8e6;
 }
 
 TEST_F(PrintIfContextTest, FormattedInsGeolocationLatitude) {
@@ -430,13 +449,21 @@ TEST_F(PrintIfContextTest, EcefEphemerisOui) {
 TEST_F(PrintIfContextTest, EcefEphemerisIntegerSecondTimestamp) {
     p_.if_context.has.ecef_ephemeris                      = true;
     p_.if_context.ecef_ephemeris.tsi                      = VRT_TSI_UTC;
-    p_.if_context.ecef_ephemeris.integer_second_timestamp = 0xABABABAB;
+    p_.if_context.ecef_ephemeris.integer_second_timestamp = 1608751092;
 }
 
 TEST_F(PrintIfContextTest, EcefEphemerisFractionalSecondTimestamp) {
     p_.if_context.has.ecef_ephemeris                         = true;
-    p_.if_context.ecef_ephemeris.tsf                         = VRT_TSF_REAL_TIME;
+    p_.if_context.ecef_ephemeris.tsf                         = VRT_TSF_FREE_RUNNING_COUNT;
     p_.if_context.ecef_ephemeris.fractional_second_timestamp = 0xABABABABBABABABA;
+}
+
+TEST_F(PrintIfContextTest, EcefEphemerisIntegerFractionalSecondTimestamp) {
+    p_.if_context.has.ecef_ephemeris                         = true;
+    p_.if_context.ecef_ephemeris.tsi                         = VRT_TSI_UTC;
+    p_.if_context.ecef_ephemeris.tsf                         = VRT_TSF_SAMPLE_COUNT;
+    p_.if_context.ecef_ephemeris.integer_second_timestamp    = 1608751092;
+    p_.if_context.ecef_ephemeris.fractional_second_timestamp = 8e6;
 }
 
 TEST_F(PrintIfContextTest, EcefEphemerisPositionX) {
@@ -502,13 +529,21 @@ TEST_F(PrintIfContextTest, RelativeEphemerisOui) {
 TEST_F(PrintIfContextTest, RelativeEphemerisIntegerSecondTimestamp) {
     p_.if_context.has.relative_ephemeris                      = true;
     p_.if_context.relative_ephemeris.tsi                      = VRT_TSI_UTC;
-    p_.if_context.relative_ephemeris.integer_second_timestamp = 0xABABABAB;
+    p_.if_context.relative_ephemeris.integer_second_timestamp = 1608751092;
 }
 
 TEST_F(PrintIfContextTest, RelativeEphemerisFractionalSecondTimestamp) {
     p_.if_context.has.relative_ephemeris                         = true;
     p_.if_context.relative_ephemeris.tsf                         = VRT_TSF_REAL_TIME;
     p_.if_context.relative_ephemeris.fractional_second_timestamp = 0xABABABABBABABABA;
+}
+
+TEST_F(PrintIfContextTest, RelativeEphemerisIntegerFractionalSecondTimestamp) {
+    p_.if_context.has.relative_ephemeris                         = true;
+    p_.if_context.relative_ephemeris.tsi                         = VRT_TSI_UTC;
+    p_.if_context.relative_ephemeris.tsf                         = VRT_TSF_SAMPLE_COUNT;
+    p_.if_context.relative_ephemeris.integer_second_timestamp    = 1608751092;
+    p_.if_context.relative_ephemeris.fractional_second_timestamp = 8e6;
 }
 
 TEST_F(PrintIfContextTest, RelativeEphemerisPositionX) {
