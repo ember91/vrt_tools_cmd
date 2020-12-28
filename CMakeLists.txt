@@ -156,8 +156,6 @@ if(${TEST})
   message(STATUS "Compiling test suite")
 endif()
 
-find_package(Libvrt REQUIRED)
-
 add_subdirectory(gen)
 add_subdirectory(length)
 add_subdirectory(lib)

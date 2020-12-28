@@ -91,7 +91,8 @@
 		],
 		"search.exclude": {
 			"doc/html": true,
-			"lib/CLI11": true
+			"lib/CLI11": true,
+			"lib/libvrt": true
 		}
 	}
 }

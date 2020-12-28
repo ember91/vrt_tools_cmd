@@ -5,10 +5,10 @@
 #include <sstream>
 #include <string>
 
-#include <vrt/vrt_string.h>
-#include <vrt/vrt_time.h>
-#include <vrt/vrt_types.h>
-#include <vrt/vrt_util.h>
+#include "vrt/vrt_string.h"
+#include "vrt/vrt_time.h"
+#include "vrt/vrt_types.h"
+#include "vrt/vrt_util.h"
 
 #include "stringify.h"
 

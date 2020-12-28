@@ -5,9 +5,9 @@
 #include <iostream>
 #include <memory>
 
-#include <vrt/vrt_time.h>
-#include <vrt/vrt_types.h>
-#include <vrt/vrt_util.h>
+#include "vrt/vrt_time.h"
+#include "vrt/vrt_types.h"
+#include "vrt/vrt_util.h"
 
 #include "common/packet_id_differences.h"
 #include "stream_history.h"

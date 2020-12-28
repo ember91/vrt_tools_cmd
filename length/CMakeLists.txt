@@ -32,8 +32,8 @@ endif()
 set_target_properties(${TARGET_NAME} PROPERTIES CXX_STANDARD 17)
 
 # Include directory and library
-target_include_directories(${TARGET_NAME} SYSTEM PUBLIC ${Libvrt_INCLUDE_DIR})
-target_link_libraries(${TARGET_NAME} ${Libvrt_LIBRARY} CLI11 Progress-CPP
+target_include_directories(${TARGET_NAME} SYSTEM PUBLIC)
+target_link_libraries(${TARGET_NAME} vrt CLI11 Progress-CPP
                       vrt_common)
 
 # Install executable

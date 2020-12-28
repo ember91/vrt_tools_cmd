@@ -15,8 +15,8 @@
 
 #include <iostream>
 
-#include <vrt/vrt_time.h>
-#include <vrt/vrt_types.h>
+#include "vrt/vrt_time.h"
+#include "vrt/vrt_types.h"
 
 #include "Progress-CPP/ProgressBar.hpp"
 #include "common/input_stream.h"

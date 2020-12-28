@@ -3,7 +3,7 @@
 * input_stream could perhaps return a normal C pointer
 * When sample rate is supplied as a command line parameter it should be able to set it for a Class/Stream ID only
 * When IF context sample rate is in a packet it should be for a specific Class/Stream ID only
-* Add libvrt submodule
+* libvrt submodule should refer to a version branch and not master
 
 # Last
 * Check that header guards are all right

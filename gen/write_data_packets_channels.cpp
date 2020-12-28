@@ -5,8 +5,8 @@
 #include <stdexcept>
 #include <vector>
 
-#include <vrt/vrt_init.h>
-#include <vrt/vrt_types.h>
+#include "vrt/vrt_init.h"
+#include "vrt/vrt_types.h"
 
 #include "common/generate_packet_sequence.h"
 #include "common/generate_tone.h"

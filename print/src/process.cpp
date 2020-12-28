@@ -6,7 +6,7 @@
 #include <memory>
 #include <string>
 
-#include <vrt/vrt_types.h>
+#include "vrt/vrt_types.h"
 
 #include "common/input_stream.h"
 #include "program_arguments.h"

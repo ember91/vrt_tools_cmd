@@ -10,8 +10,8 @@
 #include <utility>
 #include <vector>
 
-#include <vrt/vrt_types.h>
-#include <vrt/vrt_util.h>
+#include "vrt/vrt_types.h"
+#include "vrt/vrt_util.h"
 
 #include "Progress-CPP/ProgressBar.hpp"
 #include "common/comparator_id.h"

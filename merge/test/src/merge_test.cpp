@@ -8,10 +8,10 @@
 #include <string>
 #include <vector>
 
-#include <vrt/vrt_init.h>
-#include <vrt/vrt_read.h>
-#include <vrt/vrt_types.h>
-#include <vrt/vrt_words.h>
+#include "vrt/vrt_init.h"
+#include "vrt/vrt_read.h"
+#include "vrt/vrt_types.h"
+#include "vrt/vrt_words.h"
 
 #include "../../src/process.h"
 #include "../../src/program_arguments.h"

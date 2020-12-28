@@ -1,7 +1,7 @@
 #include <memory>
 
-#include <vrt/vrt_types.h>
-#include <vrt/vrt_util.h>
+#include "vrt/vrt_types.h"
+#include "vrt/vrt_util.h"
 
 namespace vrt::common {
 

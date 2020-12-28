@@ -11,10 +11,10 @@
 #include <utility>
 #include <vector>
 
-#include <vrt/vrt_read.h>
-#include <vrt/vrt_string.h>
-#include <vrt/vrt_types.h>
-#include <vrt/vrt_words.h>
+#include "vrt/vrt_read.h"
+#include "vrt/vrt_string.h"
+#include "vrt/vrt_types.h"
+#include "vrt/vrt_words.h"
 
 #include "common/byte_swap.h"
 

@@ -84,7 +84,6 @@ Send packets over a socket with the same time interval as suggested by packet ti
 * C++17 compiler, such as GCC
 * CMake
 * Build system such as GNU Make
-* [libvrt](https://github.com/ember91/libvrt)
 * (Google test framework, for the tests)
 
 ## Author

@@ -3,8 +3,8 @@
 #include <array>
 #include <cstdint>
 
-#include <vrt/vrt_init.h>
-#include <vrt/vrt_types.h>
+#include "vrt/vrt_init.h"
+#include "vrt/vrt_types.h"
 
 #include "../../src/type_printer.h"
 

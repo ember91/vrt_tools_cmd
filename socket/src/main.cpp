@@ -2,7 +2,7 @@
 #include <iostream>
 #include <stdexcept>
 
-#include <vrt/vrt_util.h>
+#include "vrt/vrt_util.h"
 
 #include "CLI/CLI.hpp"
 

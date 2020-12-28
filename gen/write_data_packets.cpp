@@ -7,10 +7,10 @@
 #include <string>
 #include <vector>
 
-#include <vrt/vrt_init.h>
-#include <vrt/vrt_string.h>
-#include <vrt/vrt_types.h>
-#include <vrt/vrt_write.h>
+#include "vrt/vrt_init.h"
+#include "vrt/vrt_string.h"
+#include "vrt/vrt_types.h"
+#include "vrt/vrt_write.h"
 
 #include "common/generate_tone.h"
 

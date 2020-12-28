@@ -3,8 +3,8 @@
 #include <filesystem>
 #include <string>
 
-#include <vrt/vrt_init.h>
-#include <vrt/vrt_types.h>
+#include "vrt/vrt_init.h"
+#include "vrt/vrt_types.h"
 
 #include "../../src/process.h"
 #include "../../src/program_arguments.h"

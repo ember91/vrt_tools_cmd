@@ -21,9 +21,9 @@ endif()
 set_target_properties(${TARGET_NAME} PROPERTIES CXX_STANDARD 17)
 
 # Include directory and library
-target_include_directories(${TARGET_NAME} SYSTEM PUBLIC ${Libvrt_INCLUDE_DIR})
+target_include_directories(${TARGET_NAME} SYSTEM PUBLIC)
 target_include_directories(${TARGET_NAME} PUBLIC include)
-target_link_libraries(${TARGET_NAME} ${Libvrt_LIBRARY})
+target_link_libraries(${TARGET_NAME} vrt)
 
 # Install library
 install(TARGETS ${PROJECT_NAME} DESTINATION bin)

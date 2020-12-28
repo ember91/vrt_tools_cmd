@@ -1,6 +1,6 @@
 #include "stream_history.h"
 
-#include <vrt/vrt_types.h>
+#include "vrt/vrt_types.h"
 
 namespace vrt::length {
 
