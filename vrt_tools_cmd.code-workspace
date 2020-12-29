@@ -70,7 +70,9 @@
 			"list": "cpp",
 			"unordered_set": "cpp",
 			"shared_mutex": "cpp",
-			"thread": "cpp"
+			"thread": "cpp",
+			"any": "cpp",
+			"cinttypes": "cpp"
 		},
 		"files.insertFinalNewline": true,
 		"doxdocgen.cpp.tparamTemplate": "\\tparam {param} ",
