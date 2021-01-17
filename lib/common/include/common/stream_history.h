@@ -1,12 +1,12 @@
-#ifndef VRT_LENGTH_SRC_STREAM_HISTORY_H_
-#define VRT_LENGTH_SRC_STREAM_HISTORY_H_
+#ifndef VRT_COMMON_SRC_STREAM_HISTORY_H_
+#define VRT_COMMON_SRC_STREAM_HISTORY_H_
 
 #include <cstdint>
 #include <memory>
 
 struct vrt_packet;
 
-namespace vrt::length {
+namespace vrt::common {
 
 /**
  * History of a stream.
@@ -32,6 +32,6 @@ class StreamHistory {
     uint64_t n_packets_{0};
 };
 
-}  // namespace vrt::length
+}  // namespace vrt::common
 
 #endif

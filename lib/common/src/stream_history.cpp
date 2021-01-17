@@ -1,8 +1,8 @@
-#include "stream_history.h"
+#include "common/stream_history.h"
 
 #include "vrt/vrt_types.h"
 
-namespace vrt::length {
+namespace vrt::common {
 
 /**
  * Update stream history with new packet.
@@ -23,4 +23,4 @@ void StreamHistory::update(const std::shared_ptr<vrt_packet>& packet) {
     n_packets_++;
 }
 
-}  // namespace vrt::length
+}  // namespace vrt::common

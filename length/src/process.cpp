@@ -14,15 +14,15 @@
 #include "common/comparator_id.h"
 #include "common/input_stream.h"
 #include "common/packet_id_differences.h"
+#include "common/stream_history.h"
 #include "printer.h"
 #include "program_arguments.h"
-#include "stream_history.h"
 
 namespace vrt::length {
 
 // For convenience
-using PacketPtr        = std::shared_ptr<vrt_packet>;
-using StreamHistoryPtr = std::unique_ptr<StreamHistory>;
+using PacketPtr        = ::std::shared_ptr<vrt_packet>;
+using StreamHistoryPtr = ::std::unique_ptr<common::StreamHistory>;
 
 /**
  * Process file contents.
@@ -50,7 +50,7 @@ void process(const ProgramArguments& args) {
         PacketPtr packet{input_stream.get_packet()};
         auto      it{id_streams.find(packet)};
         if (it == id_streams.end()) {
-            auto pair{id_streams.emplace(packet, std::make_unique<StreamHistory>(args.sample_rate))};
+            auto pair{id_streams.emplace(packet, std::make_unique<common::StreamHistory>(args.sample_rate))};
 
             it = pair.first;
         }

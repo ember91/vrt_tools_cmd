@@ -3,19 +3,23 @@
 #include <cstdint>
 #include <filesystem>
 #include <iostream>
+#include <map>
 #include <memory>
 #include <string>
 
 #include "vrt/vrt_types.h"
 
+#include "common/comparator_id.h"
 #include "common/input_stream.h"
+#include "common/stream_history.h"
 #include "program_arguments.h"
 #include "stringify.h"
 #include "type_printer.h"
 
 namespace vrt::print {
 
-using PacketPtr = std::shared_ptr<vrt_packet>;
+using PacketPtr        = std::shared_ptr<vrt_packet>;
+using StreamHistoryPtr = std::unique_ptr<common::StreamHistory>;
 
 /**
  * Process file contents.
@@ -29,6 +33,8 @@ void process(const ProgramArguments& args) {
 
     // Number of printed packets
     uint64_t n_printed_packets{0};
+
+    std::map<PacketPtr, StreamHistoryPtr, common::ComparatorId> id_streams;
 
     // Note that we must go through all packets, since we don't know the size of a packet in the middle of the stream
     // is.
@@ -53,8 +59,18 @@ void process(const ProgramArguments& args) {
         print_fields(*packet, args.sample_rate);
         print_body(*packet);
 
+        // Get sample rate
+        double sample_rate{args.sample_rate};
+        auto   it{id_streams.find(packet)};
+        if (it == id_streams.end()) {
+            id_streams[packet] = std::make_unique<common::StreamHistory>(args.sample_rate);
+        } else {
+            it->second->update(packet);
+            sample_rate = it->second->get_sample_rate();
+        }
+
         if (packet->header.packet_type == VRT_PT_IF_CONTEXT) {
-            print_if_context(*packet, args.sample_rate);
+            print_if_context(*packet, sample_rate);
         }
         if (packet->header.has.trailer) {
             print_trailer(*packet);

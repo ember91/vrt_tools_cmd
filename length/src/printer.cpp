@@ -10,7 +10,7 @@
 #include "vrt/vrt_util.h"
 
 #include "common/packet_id_differences.h"
-#include "stream_history.h"
+#include "common/stream_history.h"
 
 namespace vrt::length {
 
@@ -56,7 +56,7 @@ static void print_ids(vrt_packet* p, const common::PacketIdDiffs& differences) {
  * \param stream_history Stream history.
  * \param differences    Differences between streams.
  */
-void print_difference(const StreamHistory& stream_history, const common::PacketIdDiffs& differences) {
+void print_difference(const common::StreamHistory& stream_history, const common::PacketIdDiffs& differences) {
     vrt_packet* fir{stream_history.get_packet_first().get()};
     vrt_packet* cur{stream_history.get_packet_current().get()};
     double      sample_rate{stream_history.get_sample_rate()};
@@ -66,7 +66,7 @@ void print_difference(const StreamHistory& stream_history, const common::PacketI
     std::cout << "Number of packets: " << stream_history.get_number_of_packets() << '\n';
 
     vrt_time diff;
-    int      rv{vrt_time_difference(cur, fir, sample_rate, &diff)};
+    int      rv{vrt_time_difference_fields(&cur->header, &cur->fields, &fir->header, &fir->fields, sample_rate, &diff)};
     if (rv == 0) {
         std::cout << "Time difference: " << diff.s << '.' << std::setfill('0') << std::setw(11) << diff.ps << " s\n";
 

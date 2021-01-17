@@ -19,15 +19,18 @@
 #include "vrt/vrt_types.h"
 
 #include "Progress-CPP/ProgressBar.hpp"
+#include "common/comparator_id.h"
 #include "common/input_stream.h"
+#include "common/stream_history.h"
 #include "program_arguments.h"
 #include "socket_abstraction.h"
 
 namespace vrt::socket {
 
 // For convenience
-using PacketPtr = ::std::shared_ptr<vrt_packet>;
-namespace tm    = ::std::chrono;
+using PacketPtr        = ::std::shared_ptr<vrt_packet>;
+namespace tm           = ::std::chrono;
+using StreamHistoryPtr = ::std::unique_ptr<common::StreamHistory>;
 
 /**
  * Process file contents.
@@ -42,7 +45,7 @@ void process(const ProgramArguments& args) {
     // Progress bar
     progresscpp::ProgressBar progress(static_cast<uint64_t>(input_stream.get_file_size()), 70);
 
-    double sample_rate{args.sample_rate};
+    std::map<PacketPtr, StreamHistoryPtr, common::ComparatorId> id_streams;
 
     PacketPtr                            pkt_0;
     std::vector<std::unique_ptr<Socket>> sockets;
@@ -90,6 +93,16 @@ void process(const ProgramArguments& args) {
 
             // Find Class ID, Stream ID combination in map, or construct new output ID if needed
             PacketPtr pkt{input_stream.get_packet()};
+
+            // Get sample rate
+            double sample_rate{args.sample_rate};
+            auto   it{id_streams.find(pkt)};
+            if (it == id_streams.end()) {
+                id_streams[pkt] = std::make_unique<common::StreamHistory>(args.sample_rate);
+            } else {
+                it->second->update(pkt);
+                sample_rate = it->second->get_sample_rate();
+            }
 
             // Calculate time until next packet
             vrt_time time_diff;
