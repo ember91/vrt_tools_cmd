@@ -7,10 +7,8 @@ set(TARGET_NAME run_length_tests)
 file(GLOB SRC_FILES CONFIGURE_DEPENDS
      ${CMAKE_CURRENT_SOURCE_DIR}/../test/src/*.cpp)
 add_executable(
-  ${TARGET_NAME}
-  ${SRC_FILES} ${CMAKE_CURRENT_SOURCE_DIR}/../src/stream_history.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/../src/printer.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/../src/process.cpp)
+  ${TARGET_NAME} ${SRC_FILES} ${CMAKE_CURRENT_SOURCE_DIR}/../src/printer.cpp
+                 ${CMAKE_CURRENT_SOURCE_DIR}/../src/process.cpp)
 
 # Setup testing
 enable_testing()

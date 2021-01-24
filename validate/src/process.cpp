@@ -13,8 +13,6 @@
 #include <utility>
 #include <vector>
 
-#include <iostream>
-
 #include "vrt/vrt_time.h"
 #include "vrt/vrt_types.h"
 
