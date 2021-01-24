@@ -47,9 +47,13 @@ void process(const ProgramArguments& args) {
             std::cout << std::string(80, '-') << '\n';
             WriteCols("#", std::to_string(i));
 
-            input_stream.read_next_packet();
+            if (!input_stream.read_next_packet()) {
+                break;
+            }
         } else {
-            input_stream.skip_next_packet();
+            if (!input_stream.skip_next_packet()) {
+                break;
+            }
             continue;
         }
 
