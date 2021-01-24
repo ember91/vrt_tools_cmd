@@ -45,7 +45,6 @@ void process(const ProgramArguments& args) {
         if (do_print_packet) {
             n_printed_packets++;
             std::cout << std::string(80, '-') << '\n';
-            WriteCols("#", std::to_string(i));
 
             if (!input_stream.read_next_packet()) {
                 break;
@@ -59,6 +58,7 @@ void process(const ProgramArguments& args) {
 
         PacketPtr packet{input_stream.get_packet()};
 
+        WriteCols("#", std::to_string(i));
         print_header(*packet);
         print_fields(*packet, args.sample_rate);
         print_body(*packet);
